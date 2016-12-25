@@ -1,0 +1,21 @@
+from itertools import combinations, chain
+
+
+def get_power_set_list_comprehension(arr):
+    power_set = [[]]
+    for ele in arr:
+        power_set.extend([subset + [ele] for subset in power_set])
+    return power_set
+
+
+def get_power_set_iter_tools(arr):
+    arr_len = len(arr)
+    power_set = []
+    for subset in chain.from_iterable([combinations(arr, set_size) for set_size in xrange(1, arr_len+2)]):
+        power_set.append(subset)
+    return power_set
+
+if __name__ == '__main__':
+    arr = [1, 2, 3]
+    print get_power_set_list_comprehension(arr)
+    print get_power_set_iter_tools(arr)
