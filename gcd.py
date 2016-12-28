@@ -16,10 +16,24 @@ GCD(m, n) : 3
 
 
 def gcd(a, b):
-    pass
-
+    if a == 0:
+        return b
+    if b == 0:
+        return a
+    if a<b:
+        temp = a
+        a = b
+        b = temp
+    while(1):
+        remainder = a % b
+        if remainder == 0:
+            return b
+        else:
+            a = b
+            b = remainder
 
 if __name__ == '__main__':
-    a = 10
-    b = 15
+    a, b = [10, 15]
+    a, b = [55, 34]
+    a, b = [121393, 75025]
     print gcd(a, b)
