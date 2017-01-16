@@ -1,21 +1,24 @@
 def colorful_number(A):
-    from itertools import combinations, chain
-    arr = [int(x) for x in str(A)]
-    power_set = []
-    arr_len = len(arr)
+    num = str(A)
+    contiguous_subsequence_set = set()
+    num_len = len(num)
     subset_prod_set = set()
-    for subset in chain.from_iterable(combinations(arr, set_len) for set_len in xrange(1, arr_len+2)):
-        power_set.append(subset)
-    for subset in power_set:
+    subset_len = 1
+    while(subset_len <= num_len):
+        i = 0
+        while(subset_len+i<=num_len):
+            contiguous_subsequence_set.add(num[i:i+subset_len])
+            i+=1
+        subset_len += 1
+    for subset in contiguous_subsequence_set:
         subset_product = 1
         for ele in subset:
-            subset_product *= ele
+            subset_product *= int(ele)
         subset_prod_set.add(subset_product)
-    print subset_prod_set
-    if len(subset_prod_set) == ((2**arr_len) -1):
+    if len(subset_prod_set) == len(contiguous_subsequence_set):
         return 1
     else:
         return 0
 
 if __name__ == '__main__':
-    print colorful_number(263)
+    print colorful_number(99)
