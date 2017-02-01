@@ -33,19 +33,24 @@ Note: Each word is guaranteed not to exceed L in length.
 """
 
 
-def justify_text(word_list, char_len):
+def justify_text(word_list, line_width):
+    # optimize this
+    if len(word_list) == 0:
+        return []
     cur_line = []
     cur_word_len = 0
     justified_lines = []
     spaces_per_word = 1
+    extra_spaces = 0
     for word in word_list:
         # Initially we try to stuff one spaces per word
-        if (cur_word_len+len(word)+len(cur_line)) <= char_len:
+        if (cur_word_len+len(word)+len(cur_line)) <= line_width:
             cur_word_len += len(word)
             cur_line.append(word)
         else:
-            spaces_per_word = (char_len-cur_word_len)/(len(cur_line)-1)
-            extra_spaces = (char_len-cur_word_len) % (len(cur_line)-1)
+            if len(cur_line)>1:
+                spaces_per_word = (line_width-cur_word_len)/(len(cur_line)-1)
+                extra_spaces = (line_width-cur_word_len) % (len(cur_line)-1)
             spaced_cur_line = []
             for cur_word in cur_line[:-1]:
                 spaced_cur_line.append(cur_word)
@@ -53,21 +58,31 @@ def justify_text(word_list, char_len):
                 if extra_spaces:
                     spaced_cur_line.append(' ')
                     extra_spaces -= 1
-            spaced_cur_line.append(cur_line[-1])
+            if len(cur_line)==1:
+                spaced_cur_line.append(cur_line[-1]+' '*(line_width-len(cur_line[-1])))
+            else:
+                spaced_cur_line.append(cur_line[-1])
             justified_lines.append(spaced_cur_line)
             cur_line = [word]
             cur_word_len = len(word)
             spaces_per_word = 1
+    if not justified_lines and not cur_line:
+        return []
     # Add the last word
-    justified_lines.append(''.join(cur_line))
+    justified_lines.append(' '.join(cur_line))
+    justified_lines[-1]+=(' '*(line_width-len(justified_lines[-1])))
     res = []
     for each in justified_lines:
         res.append(''.join(each))
     return res
 
 if __name__ == '__main__':
-    word_list = ["This", "is", "an", "example", "of", "text", "justification.", "But", "sometimes", "justification", "is", "not", "so", "good"]
-    char_len = 16
-    # word_list = []
-    # char_len = 1
-    print justify_text(word_list, char_len)
+    # word_list = ["This", "is", "an", "example", "of", "text", "justification.", "But", "sometimes", "justification", "is", "not", "so", "good"]
+    # line_width = 16
+    # word_list = ["This", "is", "an", "example", "of", "text", "justification."]
+    # line_width = 16
+    # word_list = [ "" ]
+    # line_width=10
+    word_list =  [ "am", "fasgoprn", "lvqsrjylg", "rzuslwan", "xlaui", "tnzegzuzn", "kuiwdc", "fofjkkkm", "ssqjig", "tcmejefj", "uixgzm", "lyuxeaxsg", "iqiyip", "msv", "uurcazjc", "earsrvrq", "qlq", "lxrtzkjpg", "jkxymjus", "mvornwza", "zty", "q", "nsecqphjy" ]
+    line_width = 14
+    print justify_text(word_list, line_width)
