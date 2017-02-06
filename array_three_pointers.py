@@ -21,11 +21,10 @@ Output : 5
 """
 
 
-# O(n^3) worst case for naive approach.
+# O(p + q + r) where p, q and r are sizes of arr1[], arr2[] and arr3[] respectively.
 def min_max_diff_three_pointers(arr1, arr2, arr3):
-    import sys
     i, j, k = 0, 0, 0
-    min_till_now = sys.maxint
+    min_till_now = float('inf')
     while(i < len(arr1) and j < len(arr2) and k < len(arr3)):
         cur_min = min(arr1[i], arr2[j], arr3[k])
         cur_max = max(arr1[i], arr2[j], arr3[k])
