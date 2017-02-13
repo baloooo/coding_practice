@@ -1,20 +1,20 @@
 # coding: utf-8
 """
-Determine if a Sudoku is valid, according to: http://sudoku.com.au/TheRules.aspx
-
-The Sudoku board could be partially filled, where empty cells are filled with the character ‘.’.
-
-
-
+The Sudoku board could be partially filled, where empty cells are filled with
+the character ‘.’.
 The input corresponding to the above configuration :
 
-["53..7....", "6..195...", ".98....6.", "8...6...3", "4..8.3..1", "7...2...6", ".6....28.", "...419..5", "....8..79"]
+["53..7....", "6..195...", ".98....6.", "8...6...3", "4..8.3..1", "7...2...6",
+".6....28.", "...419..5", "....8..79"]
 A partially filled sudoku which is valid.
 
  Note:
- A valid Sudoku board (partially filled) is not necessarily solvable. Only the filled cells need to be validated.
+ A valid Sudoku board (partially filled) is not necessarily solvable.
+ Only the filled cells need to be validated.
  Return 0 / 1 ( 0 for false, 1 for true ) for this problem
 """
+
+
 def valid_sudoku(sudoku):
     # scan in row major order
     for row in sudoku:
@@ -52,8 +52,7 @@ def valid_sudoku(sudoku):
                         return 0
     return 1
 
-
-
 if __name__ == '__main__':
-    sudoku = ["53..7....", "6..195...", ".98....6.", "8...6...3", "4..8.3..1", "7...2...6", ".6....28.", "...419..5", "....8..79"]
+    sudoku = ["53..7....", "6..195...", ".98....6.", "8...6...3", "4..8.3..1",
+              "7...2...6", ".6....28.", "...419..5", "....8..79"]
     print valid_sudoku(sudoku)
