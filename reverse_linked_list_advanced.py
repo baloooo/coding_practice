@@ -8,34 +8,50 @@ return 1->4->3->2->5->NULL.
 """
 
 from linkedlistbase import (
-    Node, construct_linked_list_from_array,
+    ListNode, construct_linked_list_from_array,
     print_linked_list)
 
 
+class Solution:
+    def __init__(self):
+        self.new_head = None
+
+    def reverse_linked_list_recursion(self, A):
+        cur_node = A
+        def reverse(cur_node):
+            if cur_node.next is None:
+                self.new_head = cur_node
+                return cur_node
+            next_node = reverse(cur_node.next)
+            next_node.next = cur_node
+            return cur_node
+        last_node = reverse(cur_node)
+        last_node.next = None
+        return self.new_head
+
+
 def reverse_linked_list_with_params(A, m, n):
-    original_head = head = A
-    for i in xrange(1, m-1):
-        head = head.next
-    lower_half = head
-    if lower_half.next is None:
-        return lower_half
-    print 'lower half starts here', head.val
-    last = None
-    cur = head
-    nxt = reverse_pipe_end_node = cur.next
-    print 'm: %d, n: %d' % (m, n)
-    # for i in xrange(m, n+2):
-    i = m
-    while(i <= n):
-        print 'i: ', i
-        nxt = cur.next
-        cur.next = last
-        last = cur
-        cur = nxt
-        i += 1
-    reverse_pipe_end_node.next = cur
-    lower_half.next = last
-    return original_head
+    cur = A
+    last_unswapped_node = original_head = Node(-1)
+    diff = n-m+1
+    last_unswapped_node.next = cur
+    # traverse till m
+    while cur and m>1:
+        cur = cur.next
+        last_unswapped_node = cur
+        m -= 1
+    prev = last_unswapped_node
+    first_swapped_node = cur
+    # swap from m to n
+    while(cur and diff>1):
+        cur.next = prev
+        prev = cur
+        cur = cur.next
+        diff -= 1
+    # link back nodes from n to end
+    last_unswapped_node.next = prev
+    first_swapped_node.next = cur
+    return original_head.next
 
 
 def reverse_linked_list_optimized(A):
@@ -90,10 +106,15 @@ if __name__ == '__main__':
     # inp_arr = [1]
     # inp_arr = [1, 2]
     # inp_arr = [1, 2, 3]
-    m = 1
-    n = 4
+    # m = 4
+    # n = 4
+    # head = construct_linked_list_from_array(inp_arr)
+    # print_linked_list(head)
+    # print
+    # print_linked_list(reverse_linked_list_with_params(head, m, n))
+    # print_linked_list(reverse_linked_list(head))
     head = construct_linked_list_from_array(inp_arr)
     print_linked_list(head)
     print
-    print_linked_list(reverse_linked_list_with_params(head, m, n))
-    # print_linked_list(reverse_linked_list(head))
+    sol = Solution()
+    print_linked_list(sol.reverse_linked_list_recursion(head))

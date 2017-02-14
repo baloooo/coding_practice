@@ -3,6 +3,14 @@ from itertools import combinations, chain
 
 def get_power_set_list_comprehension(arr):
     power_set = [[]]
+    """
+    # for every additional element in our set
+      the power set consists of the subsets that don't
+      contain this element (just take the previous power set)
+      plus the subsets that do contain the element (use list
+      comprehension to add [x] onto everything in the
+      previous power set.
+    """
     for ele in arr:
         power_set.extend([subset + [ele] for subset in power_set])
     return power_set
