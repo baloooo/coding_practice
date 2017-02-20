@@ -74,10 +74,30 @@ class Solution():
             return result[0]
         return result
 
+    def possible_nqueens_optimized(self, n):
+        cols = [False]*n
+        main_diagonal = [False]*2*n
+        anti_diagonal = [False]*2*n
+        solutions = []
+        def nqueen(row, cur_sol):
+            if row == n:
+                solutions.append(map(lambda x: '.' * x + "Q" + '.' * (n - x - 1), cur_sol))
+            for cur_col in xrange(n):
+                if not cols[cur_col] and not main_diagonal[cur_col+row] and not anti_diagonal[abs(cur_col-row)]:
+                    cols[cur_col] = main_diagonal[cur_col+row] = anti_diagonal[cur_col+row] = True
+                    # cur_sol holds the position(col number) of Q at each row,
+                    # so cur_sol[0] tells the position of Q at row 0
+                    nqueen(row+1, cur_sol+[cur_col])
+                    cols[cur_col] = main_diagonal[cur_col+row] = anti_diagonal[cur_col+row] = False
+        nqueen(0, [])
+        return solutions
+
+
+
 if __name__ == '__main__':
     sol = Solution()
     n = 4
-    for nqueen_combination in sol.possible_nqueens(n):
+    for nqueen_combination in sol.possible_nqueens_optimized(n):
         for each in nqueen_combination:
             print each
         print
