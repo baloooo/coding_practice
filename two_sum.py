@@ -20,16 +20,43 @@ Output: index1 = 1, index2 = 2
 """
 
 
+# sum not unique
 # 2 sum with sorting O(nlogn)
+# working solution for above question
 def two_sum_with_sorting(arr, target):
-    pass
+    from collections import defaultdict
+    inp_map = defaultdict(list)  # {ele: [index1, index2]}
+    possible_sol = []
+    for index, ele in enumerate(arr):
+        inp_map[ele].append(index)
+    for index, ele in enumerate(arr):
+        second_ele = target-ele
+        for cur_index in inp_map[second_ele]:
+            if cur_index != index and index < cur_index:
+                possible_sol.append([index+1, cur_index+1])
+    # Sort for min index2
+    # index2_sorted_list = sorted(possible_sol, lambda: x x[1])
+    if not possible_sol:
+        return []
+    elif len(possible_sol) == 1:
+        return possible_sol[0]
+    possible_sol.sort(key=lambda x: x[1])
+    # if multiple combinations with same index2, sort on index1 for this subset
+    if possible_sol[0][1] == possible_sol[1][1]:
+        index1_sorted_list = [possible_sol[0]]
+        index = 1
+        while(index1_sorted_list[0][1] == possible_sol[index][1]):
+            index1_sorted_list.append(possible_sol[index])
+            index += 1
+        index1_sorted_list.sort(key=lambda x: x[0])
+        return index1_sorted_list[0]
+    return possible_sol[0]
 
 
-# if sum is unique
+# if sum is unique, and input is unique
 def two_sum_with_hash(arr, target):
-    inp_map = {}
     matches = []
-    # for index, ele in enumerate(arr, start=len(arr)-1 -1, -1):
+    inp_map = {}  # {ele: index_of_ele in arr}
     for index in xrange(len(arr)-1, -1, -1):
         ele = arr[index]
         inp_map[ele] = index
@@ -76,8 +103,14 @@ if __name__ == '__main__':
     # arr = [4, 7, -4, 2, 2, 2, 3, -5, -3, 9, -4, 9, -7, 7, -1, 9, 9, 4, 1, -4, -2, 3, -3, -5, 4, -7, 7, 9, -4, 4, -8]
     # target = -3
     # arr = [2, 2, 7, 7]
+    # target = 9
+    # arr = [1, 1, 1]
+    # target = 2
+    # print two_sum_with_hash(arr, target)
     # arr = [2, 7, 11, 15]
-    # print two_sum(arr, 9)
-    arr = [1, 1, 1]
+    # target = 9
+    # arr = [ -10, -10, -10 ]
+    # target = -5
+    arr = [7, 2, -5, 10, -3, 4, 9, 1, -6, -10]
     target = 2
-    print two_sum_with_hash(arr, target)
+    print two_sum_with_sorting(arr, target)
