@@ -3,35 +3,38 @@ class Solution:
         from math import factorial
         arr = range(1, n+1)
         # find arr arrangement, and remaining k
-        start = 0
         rep = factorial(n-1)
-        if not k % rep:
-            new_sequence_index = (k/rep)-1
-            self.count = rep-1
+        if k % rep == 0:
+            if k/rep == 0:
+                swap_index = 0
+            else:
+                swap_index = (k/rep)-1
         else:
-            new_sequence_index = k/rep
-            self.count = (k % rep)
-        arr[0], arr[new_sequence_index] = arr[new_sequence_index], arr[0]
+            swap_index = k/rep
+        self.count = (k % rep)
+        arr[0], arr[swap_index] = arr[swap_index], arr[0]
+        # print 'arr: {0} ,swap_index: {1}, count: {2}'.format(
+        #    arr, swap_index, self.count)
 
-        def permutation(start, end):
+        def permute(start, end):
             if start == end:
-                if self.count != 0:
-                    self.count -= 1
+                self.count -= 1
                 print arr
                 return
             else:
                 for index in xrange(start, end):
                     arr[start], arr[index] = arr[index], arr[start]
-                    permutation(index+1, end)
+                    permute(start+1, end)
                     if not self.count:
-                        print 'final arr', arr
                         return
                     arr[start], arr[index] = arr[index], arr[start]
-        permutation(start, len(arr))
+        permute(0, len(arr))
         return arr
 
 if __name__ == '__main__':
     sol = Solution()
-    n, k = 4, 10
-    # n, k = 3, 4
+    n, k = 4, 11
+    # n, k = 3, 2
+    # n, k = 2, 2
+    # n, k = 1, 1
     print sol.permutation_sequence(n, k)
