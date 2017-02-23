@@ -17,5 +17,15 @@ def construct_tree_from_array(arr):
           inf  75 125 inf
 
     """
-    cur_node = Node(arr[0])
-    cur_node
+    head = root = Node(arr[0])
+    for index, ele in enumerate(arr[1:]):
+        cur_node = Node(ele)
+        if index % 2 == 0:
+            root.left = cur_node
+        else:
+            root.right = cur_node
+            if root.left.val != float('inf'):
+                root = root.left
+            else:
+                root = root.right
+    return head
