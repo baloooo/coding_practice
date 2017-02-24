@@ -29,7 +29,7 @@ def permute_recursive_optimized(arr):
 # Time: O(n*n!) (For each n! permutations we'll be copying arr of size n)
 # Space: O(len(arr)) // In the form of stack frames.
 # Duplicates: Not allowed
-# Lexicographic sorted: No
+# Lexicographic sorted: Yes
 def permute_recursive_best_naive(arr):
     permutations = []
 
@@ -51,6 +51,7 @@ def permute_recursive_best_naive(arr):
 
 
 def permute_recursive_heap_naive(arr):
+    # heap as in inventor heap
     permutations = []
 
     def permute(arr, cur_size, n):
@@ -69,7 +70,7 @@ def permute_recursive_heap_naive(arr):
 
 if __name__ == '__main__':
     arr = [1, 2, 3, 4]
-    # for x in permute_recursive_best_naive(arr):
-    #     print x
-    for x in permute_recursive_heap_naive(arr):
+    for x in permute_recursive_best_naive(arr):
         print x
+    # for x in permute_recursive_heap_naive(arr):
+    #     print x
