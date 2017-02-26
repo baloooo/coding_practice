@@ -51,10 +51,10 @@ def array_to_tree(arr):
     return root
 
 
-def construct_tree_from_array(arr):
+def level_order_array_to_tree(arr):
     """
     Tree will be constructed in a row major order from the arr with
-    float('inf') depicting absence of nodes.
+    None depicting absence of nodes.
     [100, 50, 150, inf, 75, 125, inf]
                 100
                /   \
@@ -63,15 +63,31 @@ def construct_tree_from_array(arr):
           inf  75 125 inf
 
     """
-    head = root = Node(arr[0])
-    for index, ele in enumerate(arr[1:]):
-        cur_node = Node(ele)
-        if index % 2 == 0:
-            root.left = cur_node
+    node_object_list = [False]*len(arr)
+    for index, ele in enumerate(arr):
+        if ele == None:
+            continue
+        if node_object_list[index]:
+            cur_node = node_object_list[index]
+        elif node_object_list[index] != True:
+            cur_node = Node(ele)
+            node_object_list[index] = cur_node
         else:
-            root.right = cur_node
-            if root.left.val != float('inf'):
-                root = root.left
-            else:
-                root = root.right
-    return head
+            continue
+        if 2*index+1 > (len(arr)-1):
+            break
+        if arr[2*index+1] is None:
+            node_object_list[2*index+1] = True
+        else:
+            left_node = Node(arr[2*index+1])
+            cur_node.left = left_node
+            node_object_list[2*index+1] = left_node
+        if 2*index+2 > (len(arr)-1):
+            break
+        if arr[2*index+2] is None:
+            node_object_list[2*index+2] = True
+        else:
+            right_node = Node(arr[2*index+2])
+            cur_node.right = right_node
+            node_object_list[2*index+2] = right_node
+    return node_object_list[0]
