@@ -25,23 +25,26 @@ def inorder_recursion(root):
 
 def inorder_iteration(root):
     # trick is to use stack, which recursion uses also.
-    stack = []
-    if root.right is not None:
-        stack.append(root.right)
-    stack.append(root.val)
-    root = root.left
+    from tree_base import Node
+    stack = [root]
+    tos = None
     while(stack):
-        if root is None:
+        if tos is None:
             tos = stack.pop()
-            if tos 
+        if not isinstance(tos, Node):
+            print tos
+            tos = stack.pop()
             continue
-        if root.right is not None:
-            stack.append(root.right)
-        stack.append(root.val)
-        root=root
+        if tos.right is not None:
+            stack.append(tos.right)
+        stack.append(tos.val)
+        tos = tos.left
+
+
 
 if __name__ == '__main__':
     from tree_base import level_order_array_to_tree
-    arr = [1, None, 2, None, None, 3, None]
+    # arr = [1, None, 2, None, None, 3, None]
+    arr = ['A', 'B', 'C', 'D', "E", "F", "G"]
     root = level_order_array_to_tree(arr)
-    print inorder_recursion(root)
+    print inorder_iteration(root)
