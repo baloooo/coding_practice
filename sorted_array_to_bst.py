@@ -17,32 +17,47 @@ A height balanced BST  :
 from tree_base import print_tree_dfs, Node
 
 
-def get_bst(arr):
-    from math import ceil
-    tree_root = None
+class Solution:
+    def __init__(self):
+        self.tree_root = None
 
-    def construct_bst(root, arr, left, right):
-        if left+1 == right:
-            root.left = arr[left]
-            return
-        median = left + ceil((right-left)/2)
-        if root is None:
-            global tree_root
-            tree_root = root = Node(arr[median])
-        else:
-            new_node = Node(arr[median])
-            if root.left is None:
-                root.left = new_node
+    def get_bst(self, arr):
+        from math import ceil
+
+        def construct_bst(root, arr, left, right):
+            if left == right:
+                if root.left is None:
+                    root.left = Node(arr[left])
+                else:
+                    root.right = Node(arr[left])
+                return
+            median = int(left + ceil((right-left)/2.0))
+            if root is None:
+                self.tree_root = root = Node(arr[median])
             else:
-                root.right = new_node
-        construct_bst(root, arr, left, median-1)
-        construct_bst(root, arr, median+1, right)
-    construct_bst(tree_root, arr, 1, len(arr)-1)
-    return tree_root
+                new_node = Node(arr[median])
+                if root.left is None:
+                    root.left = new_node
+                    root = root.left
+                else:
+                    root.right = new_node
+                    root = root.right
+            if left <= (median-1):
+                construct_bst(root, arr, left, median-1)
+            if median+1 <= right:
+                construct_bst(root, arr, median+1, right)
+        if len(arr) == 1:
+            return Node(arr[0])
+        construct_bst(self.tree_root, arr, 0, len(arr)-1)
+        return self.tree_root
 
 
 if __name__ == '__main__':
-    arr = [1, 2, 3]
-    arr = [10, 20, 30, 40, 50, 60]
-    root = get_bst(arr)
+    # arr = [0, 1, 2, 3]
+    # arr = range(15)
+    arr = [0, 1]
+    arr = [0, 1, 2]
+    arr = [0]
+    sol = Solution()
+    root = sol.get_bst(arr)
     print_tree_dfs(root)
