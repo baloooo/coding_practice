@@ -65,11 +65,11 @@ def level_order_array_to_tree(arr):
     """
     node_object_list = [False]*len(arr)
     for index, ele in enumerate(arr):
-        if ele == None:
+        if ele is None:
             continue
         if node_object_list[index]:
             cur_node = node_object_list[index]
-        elif node_object_list[index] != True:
+        elif node_object_list[index] is not True:
             cur_node = Node(ele)
             node_object_list[index] = cur_node
         else:
