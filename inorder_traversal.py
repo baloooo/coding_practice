@@ -12,16 +12,20 @@ Given binary tree
    3
 return [1,3,2].
 """
+
+
 def inorder_recursion(root):
     inorder_list = []
+
     def inorder(root):
         if root is None:
-            return 
+            return
         inorder(root.left)
         inorder_list.append(root.val)
         inorder(root.right)
     inorder(root)
     return inorder_list
+
 
 def inorder_iteration(root):
     # trick is to use stack, which recursion uses also.
@@ -39,7 +43,6 @@ def inorder_iteration(root):
             stack.append(tos.right)
         stack.append(tos.val)
         tos = tos.left
-
 
 
 if __name__ == '__main__':
