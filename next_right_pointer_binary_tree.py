@@ -54,8 +54,7 @@ if __name__ == '__main__':
     # inp = """621367 400139 986434 318453 562082 727076 -1 208016 340383 409269  # noqa
     # -1 702531 983736 187691 -1 -1 387077 -1 534779 647033 719463 824451 -1 -1
     # -1 373900 -1 517606 -1 -1 -1 -1 720965 -1 834145 -1 -1 -1 -1 -1 -1 -1 -1"""  # noqa
-    inp = """1 2 3 4 5 6 -1 7 8 9 -1 10 11 12 -1 -1 13 -1 14 15 16 17 -1 -1
-    -1 18 -1 19 -1 -1 -1 -1 20 -1 21 -1 -1 -1 -1 -1 -1 -1 -1"""
+    inp = """1 2 3 4 5 6 -1 7 8 9 -1 10 11 12 -1 -1 13 -1 14 15 16 17 -1 -1 -1 18 -1 19 -1 -1 -1 -1 20 -1 21 -1 -1 -1 -1 -1 -1 -1 -1"""  # noqa
     arr = []
     for ele in inp.split(" "):
         if ele != '-1':
@@ -64,16 +63,11 @@ if __name__ == '__main__':
             arr.append(None)
     # arr = [1, 2, 3, 4, 5, 6, 7]
     root = level_order_array_to_tree(arr)
-    next_right_pointer(root)
-    while root:
-        if root.left:
-            cur_root = root.left
-            root = root.left
-        else:
-            cur_root = root.right
-            root = root.right
-        while cur_root is not None:
-            print cur_root.val,
-            cur_root = cur_root.next
     import ipdb
     ipdb.set_trace()
+    next_right_pointer(root)
+    import ipdb
+    ipdb.set_trace()
+    while root:
+        print root
+        root = root.left

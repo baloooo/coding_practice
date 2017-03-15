@@ -1,8 +1,15 @@
 # -*- coding: utf-8
 class Node:
+    def __repr__(self):
+        if self is None:
+            return "None"
+        else:
+            return "{0} -> {1}".format(self.val, self.next)
+
     def __init__(self, x):
         self.left = None
         self.right = None
+        self.next = None
         self.val = x
 
 
