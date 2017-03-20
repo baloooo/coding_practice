@@ -57,6 +57,9 @@ def array_to_tree(arr):
             node_map[ele].right = cur_node
     return root
 
+def construct_tree_from_levelorder_inorder(inorder, levelorder):
+    pass
+
 
 def level_order_array_to_tree(arr):
     """
@@ -68,33 +71,52 @@ def level_order_array_to_tree(arr):
              50    150
             / \    /  \
           inf  75 125 inf
-
+    Note: It has to be complete binary tree like above example.
+                100
+                  \
+                  150
+                    \
+                    175
+    won't work.
     """
     node_object_list = [False]*len(arr)
     for index, ele in enumerate(arr):
         if ele is None:
             continue
-        if node_object_list[index]:
+        if isinstance(node_object_list[index], Node):
             cur_node = node_object_list[index]
-        elif node_object_list[index] is not True:
+        elif not node_object_list[index]:
             cur_node = Node(ele)
             node_object_list[index] = cur_node
         else:
             continue
-        if 2*index+1 > (len(arr)-1):
-            break
-        if arr[2*index+1] is None:
-            node_object_list[2*index+1] = True
-        else:
-            left_node = Node(arr[2*index+1])
-            cur_node.left = left_node
-            node_object_list[2*index+1] = left_node
-        if 2*index+2 > (len(arr)-1):
-            break
-        if arr[2*index+2] is None:
-            node_object_list[2*index+2] = True
-        else:
-            right_node = Node(arr[2*index+2])
-            cur_node.right = right_node
-            node_object_list[2*index+2] = right_node
+        for i in range(1, 3):
+            if 2*index+i > (len(arr)-1):
+                # left child of cur_node out of bounds.
+                break
+            if arr[2*index+i] is None:
+                # subsituting node_obj_list with boolean instead of more descriptive val to preserve space.
+                node_object_list[2*index+i] = True
+            else:
+                child_node = Node(arr[2*index+i])
+                if i % 2:
+                    cur_node.left = child_node
+                else:
+                    cur_node.right = child_node
+                node_object_list[2*index+i] = child_node
+        # if 2*index+2 > (len(arr)-1):
+        #     break
+        # if arr[2*index+2] is None:
+        #     node_object_list[2*index+2] = True
+        # else:
+        #     right_node = Node(arr[2*index+2])
+        #     cur_node.right = right_node
+        #     node_object_list[2*index+2] = right_node
     return node_object_list[0]
+
+if __name__ == '__main__':
+    arr = [1, 2, 3, None, None, 4, None, None, 5]
+    arr = [100, None, 150, None, 175]
+    root = level_order_array_to_tree(arr) 
+    print_tree_dfs(root)
+    import ipdb; ipdb.set_trace()

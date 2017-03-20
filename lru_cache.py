@@ -65,6 +65,8 @@ class LRUCache:
         self.cache = {}
 
     def _move_to_end(self, val_node):
+        if self.list.last == val_node:
+            return
         self.list.last.next = val_node
         val_node.prev = self.list.last
         val_node.next = None
@@ -134,16 +136,7 @@ if __name__ == '__main__':
             if cache.get(inp_arr[index+1]) == out[out_index]:
                 print "passed: {0}".format(out[out_index])
             else:
-                import ipdb
-                ipdb.set_trace()
                 print "failed: expected: {0}, got: {1}".format(
                     out[out_index], cache.get(inp_arr[index+1]))
             index += 2
             out_index += 1
-    # cache.set(1, 10)
-    # cache.set(5, 12)
-    # print cache.get(5)
-    # print cache.get(1)
-    # print cache.get(10)
-    # cache.set(6, 14)
-    # print cache.get(5)
