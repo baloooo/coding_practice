@@ -19,25 +19,40 @@ The number of ways decoding "12" is 2.
 
 class Solution:
     def __init__(self):
-        self.sum = 0
         self.encoded_text = ''
+        self.text_len_to_num_ways_map = {}
 
     def decode(self, encoded_text):
-        self.ways_to_decode(len(encoded_text)-2)
-        self.encoded_text = encoded_text
-        return self.sum
+        if not encoded_text:
+            return 0
+        # strip zeroes if any since they just don't matter + it's assumed there're no zeroes in between.
+        self.encoded_text = encoded_text.strip('0')
+        return self.ways_to_decode(0)
 
     def ways_to_decode(self, text_end_delimeter):
-        if text_end_delimeter == len(self.encoded_text)-2:
+        if text_end_delimeter == len(self.encoded_text)-1:
             return 1
-        if text_end_delimeter == len(self.encoded_text)-3:
+        if text_end_delimeter == len(self.encoded_text)-2:
             if int(self.encoded_text[text_end_delimeter:]) <= 26:
                 return 2
             else:
                 return 1
-        return (self.ways_to_decode(text_end_delimeter+1) +
-                self.ways_to_decode(text_end_delimeter+2))
+        if self.text_len_to_num_ways_map.get(text_end_delimeter+1):
+            lh = self.text_len_to_num_ways_map[text_end_delimeter+1]
+        else:
+            lh = self.ways_to_decode(text_end_delimeter+1)
+            # memoization
+            self.text_len_to_num_ways_map[text_end_delimeter+1] = lh
+        if self.text_len_to_num_ways_map.get(text_end_delimeter+2):
+            rh = self.text_len_to_num_ways_map[text_end_delimeter+2]
+        else:
+            rh = self.ways_to_decode(text_end_delimeter+2)
+            self.text_len_to_num_ways_map[text_end_delimeter+2] = rh
+        return lh+rh
+                
 
 if __name__ == '__main__':
     encoded_text = '1234'
+    encoded_text = '01'
+    encoded_text = '261155971756562'
     print Solution().decode(encoded_text)
