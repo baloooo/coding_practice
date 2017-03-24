@@ -65,12 +65,37 @@ class LRUCache:
         self.cache = {}
 
     def _move_to_end(self, val_node):
+        # val_node at last
         if self.list.last == val_node:
             return
+        # val_node at beginning
+        if val_node == self.list.head:
+            self.list.head = self.list.head.next
+            self.list.head.prev = None
+        else:
+            # val_node at between
+            if val_node.prev:
+                val_node.prev.next = val_node.next
         self.list.last.next = val_node
         val_node.prev = self.list.last
         val_node.next = None
         self.list.last = val_node
+        # if val_node != self.list.last:
+        #     self._move_to_end(val_node)
+        #     if val_node == self.list.head:
+        #         self.list.head = val_node.next
+        #         try:
+        #             self.list.head.prev = None
+        #         except AttributeError as err:
+        #             print err
+        #             import ipdb
+        #             ipdb.set_trace()
+        #     else:
+        #         val_node.prev.next = val_node.next
+        # self.list.last.next = val_node
+        # val_node.prev = self.list.last
+        # val_node.next = None
+        # self.list.last = val_node
 
     def get(self, key):
         # move this node to end
@@ -79,16 +104,20 @@ class LRUCache:
         except KeyError:
             # todo: change it to int
             return '-1'
-        if val_node != self.list.last:
-            self._move_to_end(val_node)
-            if val_node == self.list.head:
-                self.list.head = val_node.next
-                try:
-                    self.list.head.prev = None
-                except AttributeError as err:
-                    import ipdb; ipdb.set_trace()
-            else:
-                val_node.prev.next = val_node.next
+        self._move_to_end(val_node)
+
+        # if val_node != self.list.last:
+        #     self._move_to_end(val_node)
+        #     if val_node == self.list.head:
+        #         self.list.head = val_node.next
+        #         try:
+        #             self.list.head.prev = None
+        #         except AttributeError as err:
+        #             print err
+        #             import ipdb
+        #             ipdb.set_trace()
+        #     else:
+        #         val_node.prev.next = val_node.next
         return self.cache[key].val
 
     def set(self, key, value):
@@ -97,10 +126,16 @@ class LRUCache:
             val_node = self.cache[key]
             if self.list.head == val_node and self.list.head.next:
                 self.list.head = self.list.head.next
+                self.list.head.prev = None
         else:
             if self.capacity == 0:
                 # Delete LRU (head node)
-                del self.cache[self.list.head.key]
+                try:
+                    del self.cache[self.list.head.key]
+                except KeyError as err:
+                    print err
+                    import ipdb
+                    ipdb.set_trace()
                 self.list.head = self.list.head.next
                 if self.list.head:
                     self.list.head.prev = None
