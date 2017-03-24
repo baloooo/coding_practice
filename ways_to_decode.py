@@ -25,7 +25,6 @@ class Solution:
     def decode(self, encoded_text):
         if not encoded_text:
             return 0
-        # strip zeroes if any since they just don't matter + it's assumed there're no zeroes in between.
         self.encoded_text = encoded_text.strip('0')
         return self.ways_to_decode(0)
 
@@ -49,10 +48,21 @@ class Solution:
             rh = self.ways_to_decode(text_end_delimeter+2)
             self.text_len_to_num_ways_map[text_end_delimeter+2] = rh
         return lh+rh
-                
 
 if __name__ == '__main__':
-    encoded_text = '1234'
-    encoded_text = '01'
-    encoded_text = '261155971756562'
-    print Solution().decode(encoded_text)
+    test_cases = [('1234', 3),
+                  ('10', 1),
+                  ('101', 1),
+                  ('1102', 1),
+                  ('0', 0),
+                  ('01', 0),
+                  ('1100', 0),
+                  ('1002', 0),
+                  ('261155971756562', True)]
+    for test_case in test_cases:
+        result = Solution().decode(test_case[0])
+        if result == test_case[1]:
+            print "Test case: {0} Passed".format(test_case[0])
+        else:
+            print ("Test case: {0} Failed: Got result: {1}, Expected: {2}".
+                   format(test_case[0], result, test_case[1]))
