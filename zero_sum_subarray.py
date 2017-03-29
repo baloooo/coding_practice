@@ -26,14 +26,29 @@ class Solution:
         pass
 
     def k_sum_subarray_without_negative(self, arr, target_sum):
-        # No negative values in inp_arr
+        # Time: O(n^2) Space: O(1)
         for i in xrange(len(arr)):
             for j in xrange(len(arr)):
                 if sum(arr[i:j+1]) == target_sum:
                     return (i, j)
         return -1
 
+    def k_sum_subarray_without_negative_optimized(self, arr, target_sum):
+        i, j = 0, 0
+        cur_sum = arr[i]
+        for index in xrange(1, len(arr)):
+            if cur_sum == target_sum:
+                return (i, j)
+            if cur_sum < target_sum:
+                j += 1
+                cur_sum += arr[j]
+            else:
+                i += 1
+                cur_sum -= arr[i]
+
+
+
 
 if __name__ == '__main__':
-    arr = [4, 2, 3, 1, 6]
-    print Solution().k_sum_subarray_without_negative(arr, 7)
+    arr = [4, 2, 3, -1, -6]
+    print Solution().k_sum_subarray_without_negative(arr, -7)
