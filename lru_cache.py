@@ -65,7 +65,7 @@ class LRUCache:
         self.cache = {}
 
     def _move_to_end(self, val_node):
-        # val_node at last
+        # if val_node is at last
         if self.list.last == val_node:
             return
         # val_node at beginning
@@ -76,26 +76,11 @@ class LRUCache:
             # val_node at between
             if val_node.prev:
                 val_node.prev.next = val_node.next
+        # move val_node to end.
         self.list.last.next = val_node
         val_node.prev = self.list.last
         val_node.next = None
         self.list.last = val_node
-        # if val_node != self.list.last:
-        #     self._move_to_end(val_node)
-        #     if val_node == self.list.head:
-        #         self.list.head = val_node.next
-        #         try:
-        #             self.list.head.prev = None
-        #         except AttributeError as err:
-        #             print err
-        #             import ipdb
-        #             ipdb.set_trace()
-        #     else:
-        #         val_node.prev.next = val_node.next
-        # self.list.last.next = val_node
-        # val_node.prev = self.list.last
-        # val_node.next = None
-        # self.list.last = val_node
 
     def get(self, key):
         # move this node to end
@@ -105,28 +90,12 @@ class LRUCache:
             # todo: change it to int
             return '-1'
         self._move_to_end(val_node)
-
-        # if val_node != self.list.last:
-        #     self._move_to_end(val_node)
-        #     if val_node == self.list.head:
-        #         self.list.head = val_node.next
-        #         try:
-        #             self.list.head.prev = None
-        #         except AttributeError as err:
-        #             print err
-        #             import ipdb
-        #             ipdb.set_trace()
-        #     else:
-        #         val_node.prev.next = val_node.next
         return self.cache[key].val
 
     def set(self, key, value):
         if self.cache.get(key):
             self.cache[key].val = value
             val_node = self.cache[key]
-            if self.list.head == val_node and self.list.head.next:
-                self.list.head = self.list.head.next
-                self.list.head.prev = None
         else:
             if self.capacity == 0:
                 # Delete LRU (head node)
