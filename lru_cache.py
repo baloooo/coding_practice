@@ -49,9 +49,26 @@ class DoublyLinkList:
         self.head = None
         self.last = None
 
-    def insert(self, key, value):
-        val_node = DoublyLinkListNode(key, value)
-        return val_node
+    def move_to_end(self, val_node):
+        # val_node doesn't exist in list
+
+        # if val_node is at last
+        if self.last == val_node:
+            return
+        # val_node at beginning
+        if val_node == self.head:
+            self.head = self.head.next
+            self.head.prev = None
+        else:
+            # val_node at between
+            if val_node.prev:
+                val_node.prev.next = val_node.next
+                val_node.next.prev = val_node.prev
+        # move val_node to end.
+        self.last.next = val_node
+        val_node.prev = self.last
+        val_node.next = None
+        self.last = val_node
 
     def delete(self, key, value):
         pass
@@ -64,32 +81,14 @@ class LRUCache:
         self.list = DoublyLinkList()
         self.cache = {}
 
-    def _move_to_end(self, val_node):
-        # if val_node is at last
-        if self.list.last == val_node:
-            return
-        # val_node at beginning
-        if val_node == self.list.head:
-            self.list.head = self.list.head.next
-            self.list.head.prev = None
-        else:
-            # val_node at between
-            if val_node.prev:
-                val_node.prev.next = val_node.next
-        # move val_node to end.
-        self.list.last.next = val_node
-        val_node.prev = self.list.last
-        val_node.next = None
-        self.list.last = val_node
-
     def get(self, key):
         # move this node to end
         try:
             val_node = self.cache[key]
         except KeyError:
             # todo: change it to int
-            return '-1'
-        self._move_to_end(val_node)
+            return -1
+        self.list.move_to_end(val_node)
         return self.cache[key].val
 
     def set(self, key, value):
@@ -99,12 +98,7 @@ class LRUCache:
         else:
             if self.capacity == 0:
                 # Delete LRU (head node)
-                try:
-                    del self.cache[self.list.head.key]
-                except KeyError as err:
-                    print err
-                    import ipdb
-                    ipdb.set_trace()
+                del self.cache[self.list.head.key]
                 self.list.head = self.list.head.next
                 if self.list.head:
                     self.list.head.prev = None
@@ -112,11 +106,12 @@ class LRUCache:
                     self.list.last = None
             else:
                 self.capacity -= 1
-            val_node = self.list.insert(key, value)
+            # val_node = self.list.insert(key, value)
+            val_node = DoublyLinkListNode(key, value)
             self.cache[key] = val_node
         # udpate node order based on access time.
         if self.list.last:
-            self._move_to_end(val_node)
+            self.list.move_to_end(val_node)
         else:
             self.list.head = self.list.last = val_node
 
@@ -135,10 +130,11 @@ if __name__ == '__main__':
         if op == 'S':
             key, value = inp_arr[index+1], inp_arr[index+2]
             cache.set(key, value)
+            print 'SET %s: %s' % (key, value)
             index += 3
         else:
             if cache.get(inp_arr[index+1]) == out[out_index]:
-                print "passed: {0}".format(out[out_index])
+                print "passed: OP: GET {0}".format(inp_arr[index+1])
             else:
                 print "failed: expected: {0}, got: {1}".format(
                     out[out_index], cache.get(inp_arr[index+1]))
