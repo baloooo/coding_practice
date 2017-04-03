@@ -13,46 +13,67 @@ Another example is ")()())", where the longest valid parentheses substring is
 # Time: O(n)
 # Space: O(n) (in the form of stack)
 class Solution:
-    def __init__(self):
-        self.max_valid_paran_len = 0
+    def longest_valid_paranthesis_optimized(self, inp_str):
+        # Time: O(n)
+        # Space: O(1)
+        pass
 
+    """
+    Algo:
+	1) Create an empty stack and push -1 to it. The first element
+	   of stack is used to provide base for next valid string. 
+
+	2) Initialize result as 0.
+
+	3) If the character is '(' i.e. str[i] == '('), push index 
+	   'i' to the stack. 
+	   
+	2) Else (if the character is ')')
+	   a) Pop an item from stack (Most of the time an opening bracket)
+	   b) If stack is not empty, then find length of current valid
+	      substring by taking difference between current index and
+	      top of the stack. If current length is more than result,
+	      then update the result.
+	   c) If stack is empty, push current index as base for next
+	      valid substring.
+
+	3) Return result.
+    """
     def longest_valid_paranthesis(self, inp_str):
-        stack = []
-        last_succesfull_start = last_succesfull_end = 0
-        for cur_index, char in enumerate(inp_str):
-            cur_max_len = 0
-            if char == ')':
-                if not stack or stack[-1][0] == ')':
-                    stack = []
-                    last_succesfull_start = last_succesfull_end = 0
-                else:  # stack[-1] is '(':
-                    cur_opening_paran = stack.pop()[1]
-                    if last_succesfull_end == 0:
-                        last_succesfull_start = cur_opening_paran
-                        last_succesfull_end = cur_index
-                        cur_max_len = cur_index - cur_opening_paran + 1
-                    elif cur_opening_paran == last_succesfull_end+1:
-                        last_succesfull_end = cur_index
-                        cur_max_len = cur_index - last_succesfull_start + 1
-                    else:
-                        cur_max_len = cur_index - cur_opening_paran + 1
-                    self.max_valid_paran_len = max(
-                        self.max_valid_paran_len, cur_max_len)
+        # Time: O(n)
+        # Space: O(n)
+        longest, last, stack = 0, -1, []
+        for index, char in enumerate(inp_str):
+            if char == '(':
+                stack.append(index)
+            elif not stack:
+                last = index
             else:
-                stack.append((char, cur_index))
-        return self.max_valid_paran_len
+                stack.pop()
+                if stack:
+                    longest = max(longest, index-stack[-1])
+                else:
+                    longest = max(longest, index-last)
+        return longest
 
 
 if __name__ == '__main__':
-    inp_str, res = "()", 1
-    inp_str, res = ")()())", 4
-    inp_str, res = "()((()()))())()((()))", 12
-    inp_str, res = "(", 0
-    inp_str, res = "(()", 2
-    inp_str, res = "((((((", 0
-    inp_str, res = "))))))", 0
-    inp_str, res = "()(((((())())((()())(())((((())))())((()()))(()(((()()(()((()()))(())()))(((", 30
-    inp_str, res = ")()))(())((())))))())()(((((())())((()())(())((((())))())((()()))(()(((()()(()((()()))(())()))(((", 30
-    inp_str, res = "()()()(((()()()()", 8
-    # inp_str, res = "((()))", 6
-    print Solution().longest_valid_paranthesis(inp_str)
+    test_cases = [
+        ("()", 2),
+        (")()())", 4),
+        ("()((()()))())()((()))", 12),
+        ("(", 0),
+        ("(()", 2),
+        ("((((((", 0),
+        ("))))))", 0),
+        ("()(((((())())((()())(())((((())))())((()()))(()(((()()(()((()()))(())()))(((", 30),
+        (")()))(())((())))))())()(((((())())((()())(())((((())))())((()()))(()(((()()(()((()()))(())()))(((", 30),
+        ("()()()(((()()()()", 8),
+        ("((()))", 6),
+    ]
+    for test_case in test_cases: 
+        res =  Solution().longest_valid_paranthesis(test_case[0])
+        if res == test_case[1]:
+            print "Passed"
+        else:
+            print "Failed: Test case: {0} Expected: {1} but got {2}".format(test_case[0], test_case[1], res)
