@@ -62,22 +62,35 @@ edit distance between
 
 
 class Solution2:
-    def __init__(self):
-        pass
 
-    def edit_distance(str1, str2):
-        pass
+    def edit_distance(self, str1, str2, str1_index, str2_index):
+        if str1_index == len(str1):
+            return str2_index
+        if str2_index == len(str2):
+            return str1_index
+        if str1[str1_index] == str2[str2_index]:
+            return self.edit_distance(str1, str2, str1_index+1, str2_index+2)
+        return 1+min(
+            self.edit_distance(str1, str2, str1_index+1, str2_index),
+            self.edit_distance(str1, str2, str1_index, str2_index+1),
+            self.edit_distance(str1, str2, str1_index+1, str2_index+1)
+            )
+
+    def edit_distance(self, str1, str2):
+        str1_index = str2_index = 0
+        edit_distance_dp = [[0 for _ in xrange(len(str2))]*len(str1)]
 
 if __name__ == '__main__':
     # For finding edit distance
     test_cases = [
-        ('bc', 'c', True),
-        ('abcdefg', 'abcdeab', False),
-        ('aa', 'a', True),
-        ('gfg', 'gf', True),
+        # ('bc', 'c', True),
+        # ('abcdefg', 'abcdeab', False),
+        # ('aa', 'a', True),
+        # ('gfg', 'gf', True),
+        ('saturday', 'sunday', 4)
     ]
     for test_case in test_cases:
-        res = Solution2().edit_distance(test_case[0], test_case[1])
+        res = Solution2().edit_distance(test_case[0], test_case[1], 0, 0)
         if res == test_case[2]:
             print "Passed"
         else:
