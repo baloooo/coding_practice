@@ -21,8 +21,9 @@ class Solution:
             return self.memo['%s-%s' % (amount, coins[index:])]
         except KeyError:
             total_ways = (
-                self.total_ways_to_coin_change(coins, amount-coins[index], index)
-                + self.total_ways_to_coin_change(coins, amount, index+1))
+                self.total_ways_to_coin_change(
+                    coins, amount-coins[index], index) +
+                self.total_ways_to_coin_change(coins, amount, index+1))
             self.memo['%s-%s' % (amount, coins[index:])] = total_ways
             return total_ways
 
@@ -44,28 +45,22 @@ class Solution:
         Note:
         You may assume that you have an infinite number of each kind of coin.
         """
-        coins.sort()
-        cur_sum = 0
-        denom_count = 0
-        denoms = []
-        while cur_sum != amount and coins:
-            if cur_sum+coins[-1] <= amount:
-                cur_sum += coins[-1]
-                denom_count += 1
-                denoms.append(coins[-1])
-            else:
-                coins.pop()
-        if cur_sum == amount:
-            return denom_count
-        else:
-            import ipdb
-            ipdb.set_trace()
-            return -1
+        # dp=[min_coins_needed_to_make_cur_index_amount]
+        MAX = float('inf')
+        dp = [0] + [MAX] * amount
+        for cur_amount in xrange(1, amount+1):
+            for cur_coin in xrange(len(coins)):
+                # If we can make cur_amount with current coin
+                if coins[cur_coin] <= cur_amount:
+                    dp[cur_amount] = min(
+                        dp[cur_amount], dp[cur_amount-coins[cur_coin]]+1)
+        return dp[amount] if dp[amount] != MAX else -1
 
 if __name__ == '__main__':
     coins, amount = [186, 419, 83, 408], 6249
     # print Solution().min_coin_change(coins, amount)
-    coins, amount = [1, 2, 3], 4
-    sol = Solution()
-    print sol.make_change(coins, amount)
-    print sol.memo
+    # coins, amount = [1, 2, 3], 4
+    # sol = Solution()
+    # print sol.make_change(coins, amount)
+    # print sol.memo
+    print Solution().min_coin_change(coins, amount)
