@@ -63,7 +63,7 @@ edit distance between
 
 class Solution2:
 
-    def edit_distance(self, str1, str2, str1_index, str2_index):
+    def edit_distance_recursion(self, str1, str2, str1_index, str2_index):
         if str1_index == len(str1):
             return str2_index
         if str2_index == len(str2):
@@ -71,14 +71,32 @@ class Solution2:
         if str1[str1_index] == str2[str2_index]:
             return self.edit_distance(str1, str2, str1_index+1, str2_index+2)
         return 1+min(
-            self.edit_distance(str1, str2, str1_index+1, str2_index),
-            self.edit_distance(str1, str2, str1_index, str2_index+1),
-            self.edit_distance(str1, str2, str1_index+1, str2_index+1)
+            self.edit_distance(str1, str2, str1_index+1, str2_index),  # noqa Insert/Delete in str2
+            self.edit_distance(str1, str2, str1_index, str2_index+1),  # noqa Insert/Delete in str1
+            self.edit_distance(str1, str2, str1_index+1, str2_index+1)  # noqa Replace
             )
 
-    def edit_distance(self, str1, str2):
-        str1_index = str2_index = 0
-        edit_distance_dp = [[0 for _ in xrange(len(str2))]*len(str1)]
+    def edit_distance_dp(self, str1, str2):
+        """
+        http://www.geeksforgeeks.org/dynamic-programming-set-5-edit-distance/
+        https://discuss.leetcode.com/category/80/edit-distance
+        https://discuss.leetcode.com/topic/17639/20ms-detailed-explained-c-solutions-o-n-space
+        """
+        dp = [[0 for _ in xrange(len(str2)+1)] for _ in xrange(len(str1)+1)]
+        for i in xrange(len(str1)+1):
+            for j in xrange(len(str2)+1):
+                if i == 0:
+                    dp[i][j] = j
+                elif j == 0:
+                    dp[i][j] = i
+                elif str1[i-1] == str2[j-1]:
+                    dp[i][j] = dp[i-1][j-1]
+                else:
+                    dp[i][j] = 1+min(
+                        dp[i-1][j],
+                        dp[i][j-1],
+                        dp[i-1][j-1])
+        return dp[len(str1)][len(str2)]
 
 if __name__ == '__main__':
     # For finding edit distance
@@ -87,10 +105,11 @@ if __name__ == '__main__':
         # ('abcdefg', 'abcdeab', False),
         # ('aa', 'a', True),
         # ('gfg', 'gf', True),
-        ('saturday', 'sunday', 4)
+        ('saturday', 'sunday', 3)
     ]
     for test_case in test_cases:
-        res = Solution2().edit_distance(test_case[0], test_case[1], 0, 0)
+        # res = Solution2().edit_distance_dp(test_case[0], test_case[1], 0, 0)
+        res = Solution2().edit_distance_dp(test_case[0], test_case[1])
         if res == test_case[2]:
             print "Passed"
         else:
