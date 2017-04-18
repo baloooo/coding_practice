@@ -10,6 +10,7 @@ def get_power_set_list_comprehension(arr):
       plus the subsets that do contain the element (use list
       comprehension to add [x] onto everything in the
       previous power set.
+    O/P: [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]
     """
     for ele in arr:
         power_set.extend([subset + [ele] for subset in power_set])
