@@ -6,11 +6,14 @@ class Node:
         else:
             return "{0} -> {1}".format(self.val, self.next)
 
-    def __init__(self, x):
+    def __init__(self, x, **kwargs):
         self.left = None
         self.right = None
         self.next = None
         self.val = x
+        # To allow arbitrary items to be set on Node
+        for key, value in kwargs.items():
+            self.key = value
 
 
 def print_tree_dfs(root):
@@ -57,6 +60,7 @@ def array_to_tree(arr):
             node_map[ele].right = cur_node
     return root
 
+
 def construct_tree_from_levelorder_inorder(inorder, levelorder):
     pass
 
@@ -95,7 +99,8 @@ def level_order_array_to_tree(arr):
                 # left child of cur_node out of bounds.
                 break
             if arr[2*index+i] is None:
-                # subsituting node_obj_list with boolean instead of more descriptive val to preserve space.
+                # subsituting node_obj_list with boolean instead of more
+                # descriptive val to preserve space.
                 node_object_list[2*index+i] = True
             else:
                 child_node = Node(arr[2*index+i])
@@ -117,6 +122,6 @@ def level_order_array_to_tree(arr):
 if __name__ == '__main__':
     arr = [1, 2, 3, None, None, 4, None, None, 5]
     arr = [100, None, 150, None, 175]
-    root = level_order_array_to_tree(arr) 
+    root = level_order_array_to_tree(arr)
     print_tree_dfs(root)
     import ipdb; ipdb.set_trace()

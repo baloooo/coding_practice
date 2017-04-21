@@ -1,49 +1,39 @@
-from Queue import Queue
-n_tc = int(raw_input().strip())
+"""
+Given a binary tree, return the level order traversal of its nodes' values.
+(ie, from left to right, level by level).
 
-class Node:
-    def __init__(self, data):
-        self.visited = False
-        self.adjacent_nodes = set()
-        self.distance_from_start = 0
+For example:
+Given binary tree [3,9,20,null,null,15,7],
+    3
+   / \
+  9  20
+    /  \
+   15   7
+return its level order traversal as:
+[
+  [3],
+  [9,20],
+  [15,7]
+]
+"""
 
-def bfs(start_node):
-    inp_queue = Queue()
-    inp_queue.put(start_node)
-    while inp_queue.qsize():
-        node = inp_queue.get()
-        node.visited = True
-        for each in node.adjacent_nodes:
-            if not each.visited:
-                inp_queue.put(each)
-                each.distance_from_start=node.distance_from_start+6
-                each.visited = True
-    
 
-for i in xrange(n_tc):
-    nodes, edges = [int(x) for x in raw_input().strip().split(' ')]
-    node_map = {}
-    for edge in xrange(edges):
-        node1, node2 = [int(x) for x in raw_input().strip().split(' ')]
-        if node_map.get(node1):
-            node_a = node_map.get(node1)
-        else:
-            node_a = Node(node1)
-            node_map[node1] = node_a
-        if node_map.get(node2):
-            node_b = node_map.get(node2)
-        else:
-            node_b = Node(node2)
-            node_map[node2] = node_b
-        node_a.adjacent_nodes.add(node_b)
-        node_b.adjacent_nodes.add(node_a)
+class Solution:
+    def __init__(self):
+        pass
 
-    start_node = int(raw_input().strip())
-    bfs(node_map[start_node])
-    for each in xrange(1, nodes+1):
-        if each!=start_node:
-            if node_map.get(each) and node_map.get(each).visited:
-                print node_map[each].distance_from_start,
-            else:
-                print -1,
-    print
+    def level_order(self, root):
+        if not root:
+            return []
+        all_nodes, next_level = [], [root]
+        while next_level:
+            print next_level
+            all_nodes.append([node.val for node in next_level])
+            next_level = [child for node in next_level for child in [node.left, node.right] if child]  # noqa
+        return all_nodes
+
+if __name__ == '__main__':
+    from tree_base import level_order_array_to_tree
+    arr = [1, 2, 3, 4]
+    root = level_order_array_to_tree(arr)
+    print Solution().level_order(root)
