@@ -49,14 +49,32 @@ class Graph:
                 vertices_count += 1
                 self.mst.append([u, v, w])
             index += 1
-        print 'Cost of MST is ', sum([edge[2] for edge in self.mst])
+        return sum([edge[2] for edge in self.mst])
 
 
 if __name__ == '__main__':
-    g = Graph(4)
-    g.add_edge(0, 1, 10)
-    g.add_edge(0, 2, 6)
-    g.add_edge(0, 3, 5)
-    g.add_edge(1, 3, 15)
-    g.add_edge(2, 3, 4)
-    g.kruskal_mst()
+    n, edges = 5, [
+          [1, 2, 3],
+          [2, 3, 4],
+          [3, 4, 5],
+          [4, 5, 6],
+          [5, 1, 2],
+          [2, 4, 3],
+          [2, 5, 5],
+          [1, 3, 2],
+        ]
+    g = Graph(n)
+    for u, v, w in edges:
+        g.add_edge(u-1, v-1, w)
+    print 'MST cost is ', g.kruskal_mst()
+    # g = Graph(4)
+    # g.add_edge(0, 1, 1)
+    # g.add_edge(1, 2, 4)
+    # g.add_edge(0, 3, 3)
+    # g.add_edge(3, 2, 2)
+    # g.add_edge(0, 2, 10)
+    # g.add_edge(0, 1, 10)
+    # g.add_edge(0, 2, 6)
+    # g.add_edge(0, 3, 5)
+    # g.add_edge(1, 3, 15)
+    # g.add_edge(2, 3, 4)
