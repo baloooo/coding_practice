@@ -2,6 +2,16 @@
 Given a graph and a source vertex in graph, find shortest paths from source to
 all vertices in the given graph.
 http://www.bogotobogo.com/python/python_Dijkstras_Shortest_Path_Algorithm.php
+One source, one destination:
+Greedy Best First Search
+A* - commonly used in games
+One source, all destinations, or all sources, one destination:
+Breadth First Search - unweighted edges
+Dijkstra’s Algorithm - adds weights to edges
+Bellman-Ford - supports negative weights
+All sources, all destinations:
+Floyd-Warshall
+Johnson’s Algorithm
 """
 
 import sys

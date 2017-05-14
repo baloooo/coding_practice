@@ -1,6 +1,7 @@
 """
 Find all bridges in a graph.
 Algo is similar to one used in articulation points i.e tarjan's algo.
+http://stackoverflow.com/questions/11218746/bridges-in-a-connected-graph
 """
 
 
@@ -22,6 +23,14 @@ class Graph:
         self.bridges = set()
 
     def find_bridges(self, node_map):
+        """
+        This assumes graph is connected else we'll have to call find_bridges in a loop
+        unitll all non visited nodes are visited.
+        for node in node_map:
+            if not node.visited:
+                self.dfs(node)
+        return [(u.data, v.data) for u, v in self.bridges]
+        """
         self.dfs(node_map[0])
         return [(u.data, v.data) for u, v in self.bridges]
 
@@ -33,53 +42,16 @@ class Graph:
         for adjacent_node in cur_node.adjacent:
             # if adjacent_node not visited yet.
             if adjacent_node.visited_time is None:
+                adjacent_node.parent = cur_node
                 self.dfs(adjacent_node)
                 cur_node.low_time = min(cur_node.low_time,
                                         adjacent_node.low_time)
-                if cur_node.low_time == cur_node.visited_time:
-                    # This means an edge b/w cur_node and adjacent_node will be a bridge.  # noqa
+                if adjacent_node.low_time == adjacent_node.visited_time:
+                    # This means an edge b/w cur_node and adjacent_node will be a bridge, as this adjacent_node doesn't have any back edge (as low_time is what we set at the beginning)  # noqa
                     self.bridges.add((cur_node, adjacent_node))
             elif adjacent_node != cur_node.parent:
                 cur_node.low_time = min(cur_node.low_time,
                                         adjacent_node.visited_time)
-
-        for adjacent_node in cur_node.adjacent:
-            if adjacent_node == cur_node.parent:
-                continue
-            if not adjacent_node.visited:
-                adjacent_node.parent = cur_node
-                cur_node.child_count += 1
-                self.dfs(adjacent_node)
-                if cur_node.visited_time <= adjacent_node.low_time:
-                    """
-                    This means that cur_node doesn't have any backedge to any
-                    of it's ancestors and therefore removing this node will
-                    disconnect subtree rooted at cur_node from rest of the
-                    graph.
-                    """
-                    articulation_point = True
-                else:
-                    # Check if the subtree rooted with v has a connection to
-                    # one of the ancestors of u,to be precise earliest ancestor
-                    cur_node.low_time = min(cur_node.low_time,
-                                            adjacent_node.low_time)
-            else:
-                """
-                if adjacent is already visited see if this was visited earlier
-                than current node meaning it's visited time is less, if yes
-                then this would be a back edge and therefore update current
-                node's low time which is basically the visited time stamp of
-                the earliest node that can be visited from cur_node.
-                Notice: min here is with adjacent's visited time whereas
-                if we were visiting this for the first time we'd take min
-                b/w adjacent's low time (as above)
-                """
-                cur_node.low_time = min(cur_node.low_time,
-                                        adjacent_node.visited_time)
-        # cur_node.parent is None only for the root of DFS
-        if ((cur_node.parent is None and cur_node.child_count >= 2) or
-                cur_node.parent is not None and articulation_point):
-            self.cut_vertices.add(cur_node)
 
 if __name__ == '__main__':
     test_cases = [
@@ -101,4 +73,4 @@ if __name__ == '__main__':
             u_node.adjacent.add(v_node)
             v_node.adjacent.add(u_node)
         g = Graph()
-        print g.find_articulation_points(node_map)
+        print g.find_bridges(node_map)
