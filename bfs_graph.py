@@ -1,5 +1,6 @@
 from collections import deque
 
+
 class SimpleGraph:
     def __init__(self):
         self.edges = {}
@@ -36,13 +37,10 @@ class SimpleGraph:
 if __name__ == '__main__':
     graph_object = SimpleGraph()
     graph_object.edges = {
-	'A': ['B'],
-	'B': ['A', 'C', 'D'],
-	'C': ['A'],
-	'D': ['E', 'A'],
-	'E': ['B']
+        'A': ['B'],
+        'B': ['A', 'C', 'D'],
+        'C': ['A'],
+        'D': ['E', 'A'],
+        'E': ['B']
     }
     print graph_object.bfs('C', 'E')
-
-
-

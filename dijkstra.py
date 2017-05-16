@@ -22,6 +22,7 @@ class Vertex:
         # Node value ('A'/'B' or 0/1/2 or 'Tokyo'/'Osaka' etc.
         self.id = node
         # {adjacent_node: edge weight b/w cur_node and adjacent_node}
+        # self.adjacent = {'B': 5, 'C': 8}
         self.adjacent = {}
         # distance from cur_node to source
         # Initially Set distance to infinity for all nodes
