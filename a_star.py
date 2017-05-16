@@ -1,5 +1,5 @@
 """
-https://www.youtube.com/watch?v=pVfj6mxhdMw
+https://www.youtube.com/watch?v=eSOJ3ARN5FM
 """
 
 import heapq
@@ -35,7 +35,10 @@ class GraphWithWeights:
     def cost(self, from_node, to_node):
         return self.edges.get((from_node, to_node))
 
-    def dijkistra_search(self, source, destination):
+    def heuristic(self, current, destination):
+        pass
+
+    def a_star_search(self, source, destination):
         frontier = PriorityQueue()
         frontier.put(source, 0)
         came_from = {}
@@ -114,4 +117,4 @@ if __name__ == '__main__':
     # }
     g_obj.neighbors()
     # print g_obj.dijkistra_search('a', 'e')
-    print g_obj.dijkistra_search(0, 5)
+    print g_obj.a_star_search(0, 5)
