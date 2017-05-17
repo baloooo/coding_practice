@@ -20,21 +20,16 @@ word = "ABCB", -> returns false.
 
 
 class Solution:
-    def __init__(self, word, grid):
-        self.word = word
-        self.grid = grid
 
     def dfs(self, cur_row, cur_col, word_index):
         if (cur_row < 0 or cur_row >= len(self.grid) or
-                cur_col < 0 or cur_col >= len(self.grid[0]) or
-                (cur_row, cur_col) in self.visited):
+                cur_col < 0 or cur_col >= len(self.grid[0])):
             return False
         if word_index == len(self.word):
+            import ipdb; ipdb.set_trace()
             return True
         if self.word[word_index] == self.grid[cur_row][cur_col]:
-            self.visited.add((cur_row, cur_col))
-            if len(self.visited) == len(self.word):
-                return True
+            self.path.append((cur_row, cur_col))
             return(
                 self.dfs(cur_row, cur_col+1, word_index+1) or
                 self.dfs(cur_row, cur_col-1, word_index+1) or
@@ -42,14 +37,19 @@ class Solution:
                 self.dfs(cur_row-1, cur_col, word_index+1))
         return False
 
-    def word_in_grid(self):
+    def word_in_grid(self, grid, word):
+        self.path = []
+        self.grid = [[char for char in each] for each in grid]
+        for row in self.grid:
+            print row
+        self.word = word
         if len(self.word) > len(self.grid)*len(self.grid[0]):
             return False
         for cur_row in xrange(len(self.grid)):
             for cur_col in xrange(len(self.grid[0])):
                 if self.grid[cur_row][cur_col] == self.word[0]:
-                    self.visited = set()
                     if self.dfs(cur_row, cur_col, 0):
+                        print self.path
                         return True
         return False
 
@@ -65,7 +65,8 @@ if __name__ == '__main__':
     #       ['S'],
     #       ['B']
     # ]
-    word, grid = "ABCESEEEFS", [
-        ["ABCE", "SFES", "ADEE"]
-    ]
-    print Solution(word, grid).word_in_grid()
+    # word, grid = "ABCESEEEFS", [
+    #     ["ABCE", "SFES", "ADEE"]
+    # ]
+    word, grid = "BCDCB", [ "FEDCBECD", "FABBGACG", "CDEDGAEC", "BFFEGGBA", "FCEEAFDA", "AGFADEAC", "ADGDCBAA", "EAABDDFF" ]
+    print Solution().word_in_grid(grid, word)
