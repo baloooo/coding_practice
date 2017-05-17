@@ -1,5 +1,6 @@
 """
 https://www.youtube.com/watch?v=eSOJ3ARN5FM
+http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
 """
 
 import heapq
@@ -36,6 +37,11 @@ class GraphWithWeights:
         return self.edges.get((from_node, to_node))
 
     def heuristic(self, current, destination):
+        """
+        These heuristics can be euclidean distance/manhattan distance etc
+        depending on the type of search space(grid/graph) or type of problem
+        in general terrain, forest, down hill in path ways.
+        """
         pass
 
     def a_star_search(self, source, destination):
@@ -57,14 +63,15 @@ class GraphWithWeights:
                 new_cost = cost_so_far[current] + self.cost(current, adjacent)
                 if new_cost < cost_so_far[adjacent]:
                     cost_so_far[adjacent] = new_cost
-                    priority = new_cost
+                    priority = new_cost + self.heuristic(destination, adjacent)
                     frontier.put(adjacent, priority)
                     came_from[adjacent] = current
         return came_from, cost_so_far
 
 if __name__ == '__main__':
+    # These examples don't run, these were copied from dijkstra example.
+    # use a grid and add heuristic logic to run
     g_obj = GraphWithWeights()
-    # graph url: http://www.geeksforgeeks.org/greedy-algorithms-set-6-dijkstras-shortest-path-algorithm/
     g_obj.edges = {
         (0, 1): 4,
         (0, 7): 8,
