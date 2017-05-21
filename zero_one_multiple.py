@@ -13,6 +13,7 @@ For N = 55, 110 is smallest multiple consisting of digits 0 and 1.
 For N = 2, 10 is the answer.
 
 Algo:
+
 You need to search for the smallest number to multiply N by.
 
 I would construct the number incrementally, starting from the least significant
@@ -59,7 +60,7 @@ class Solution:
         pass
 
     def all_zero_one(self, result):
-        for digit in str(result):
+        for digit in result:
             if digit not in ['0', '1']:
                 return False
         return True
@@ -68,28 +69,24 @@ class Solution:
         multiplier_list = ['']
         iteration_index = 1
         while multiplier_list:
-            print 'multiplier_list', multiplier_list
-            print 'iteration_index', iteration_index
             new_multiplier_list = []
             for num in multiplier_list:
-                for unit_place in xrange(10):
+                for unit_place in xrange(0, 10):
                     new_multiplier_list.append(
-                        int(str(unit_place) + str(num)))
+                        str(unit_place) + str(num))
             multiplier_list = new_multiplier_list
             new_multiplier_list = []
             for multiplier in multiplier_list:
-                result = multiplier * multiplicand
-                if result and self.all_zero_one(result):
-                    return str(result)
-                try:
-                    if result and str(result)[-iteration_index] in ['0', '1']:
-                        new_multiplier_list.append(multiplier)
-                except:
-                    import time
-                    time.sleep(200)
+                result = str(int(multiplier) * multiplicand)
+                if not int(result):
+                    continue
+                if self.all_zero_one(result):
+                    return result
+                if result[-iteration_index] in ['0', '1']:
+                    new_multiplier_list.append(multiplier)
             multiplier_list = new_multiplier_list
             iteration_index += 1
 
 if __name__ == '__main__':
     print Solution().zero_one_multiple(479)  # 100111
-    print Solution().zero_one_multiple(325)  # 100100
+    # print Solution().zero_one_multiple(325)  # 100100
