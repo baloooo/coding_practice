@@ -65,6 +65,14 @@ class Solution:
                 return False
         return True
 
+    def zero_one_multiple_new(self, multiplicand):
+        for k_size in xrange(1, 100):
+            candidate = '0'*k_size
+            for index in xrange(len(candidate)-1, -1, -1):
+                candidate[index] = 1
+                if int(candidate) % multiplicand == 0:
+                    return candidate
+
     def zero_one_multiple(self, multiplicand):
         multiplier_list = ['']
         iteration_index = 1
@@ -78,16 +86,25 @@ class Solution:
             new_multiplier_list = []
             for multiplier in multiplier_list:
                 result = str(int(multiplier) * multiplicand)
-                if not int(result):
-                    continue
-                if self.all_zero_one(result):
+                if int(result) and self.all_zero_one(result):
                     return result
-                if result[-iteration_index] in ['0', '1']:
+                try:
+                    if result[-iteration_index] in ['0', '1']:
+                        new_multiplier_list.append(multiplier)
+                        # print multiplier
+                except:
                     new_multiplier_list.append(multiplier)
+                    # print multiplier
             multiplier_list = new_multiplier_list
             iteration_index += 1
 
-if __name__ == '__main__':
-    # print Solution().zero_one_multiple(479)  # 100111
-    print Solution().zero_one_multiple(3456)  # 11011111110000000
-    # print Solution().zero_one_multiple(325)  # 100100
+n = int(raw_input())
+for _ in xrange(n):
+    m = int(raw_input())
+    print Solution().zero_one_multiple(m)
+
+#     print Solution().zero_one_multiple(3456)  # 11011111110000000
+# if __name__ == '__main__':
+#     # print Solution().zero_one_multiple(479)  # 100111
+#     print Solution().zero_one_multiple(3456)  # 11011111110000000
+#     # print Solution().zero_one_multiple(325)  # 100100
