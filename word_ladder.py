@@ -168,24 +168,27 @@ class Solution:
         You may assume beginWord and endWord are non-empty and are not the same
         """
         from string import ascii_lowercase
+        from collections import defaultdict
+        from Queue import Queue
+        """
+        BFS for constructing graph.(BFS ends up making neighbor_dict)
+        This graph is realized using neighbor_dict which is just a mapping
+        of a word to (:) all words that are in one edit distance of this
+        word.
+        neighbor_dict = {'cog': ['dog', 'log'],
+                     'dog': ['dot'],
+                     'dot': ['hot'],
+                     'hot': ['hit'],
+                     'log': ['lot'],
+                     'lot': ['hot']}
+        """
         word_set = set(word_list)
-        cur_word_list, visited_set = [source_word], set([source_word])
-        cur_distance = 0
-        while cur_word_list:
-            next_word_list = []
-            for cur_word in cur_word_list:
-                if cur_word == goal_word:
-                    return cur_distance + 1
-                for index in xrange(len(cur_word)):
-                    for ch in ascii_lowercase:
-                        candidate_word = cur_word[:index] + ch + cur_word[index+1:]  # noqa
-                        if (candidate_word in word_set and
-                                candidate_word not in visited_set):
-                            visited_set.add(candidate_word)
-                            next_word_list.append(candidate_word)
-            cur_word_list = next_word_list
-            cur_distance += 1
-        return cur_distance
+        neighbor_dict = defaultdict(list)
+        visited_values = set()
+        visited_keys.add(source_word)
+        while unvisited_keys:
+            
+
 
 if __name__ == '__main__':
     # source_word, goal_word, word_dict = "hit", "cog", ["hot", "dot", "dog",

@@ -1,4 +1,7 @@
 class ListNode(object):
+    def __str__(self):
+        return "linkedlist node_val is %s", self.val
+
     def __init__(self, val, next=None):
         self.val = val
         self.next = next
