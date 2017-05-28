@@ -13,51 +13,43 @@ For N = 55, 110 is smallest multiple consisting of digits 0 and 1.
 For N = 2, 10 is the answer.
 
 Algo:
-
-You need to search for the smallest number to multiply N by.
-
-I would construct the number incrementally, starting from the least significant
-digit.
-
-Supposing N=7. What are the possible least significant digits of the
-multiplying number? It will be a number which, when you multiply by 7, will
-have a result with the least significant digit of 0 or 1.
-If you try the numbers from 0-9, it can only be '0' or 3'.
-
-+-------+--------+------+
-| Digit | Result | Pass |
-+-------+--------+------+
-| 0     |  0     | Yes  |
-| 1     |  7     | No   |
-| 2     | 14     | No   |
-| 3     | 21     | Yes  |
-| 4     | 28     | No   |
-| 5     | 35     | No   |
-| 6     | 42     | No   |
-| 7     | 49     | No   |
-| 8     | 56     | No   |
-| 9     | 63     | No   |
-*-------*--------*------*
-
-Then you try the second least significant digit. You will now try 00, 10, 20,
-30, 40, 50, 60, 70, 80, 90 and 03,13,23,43,53,63,73,83,93.
-The successful candidates will be the ones when, multiplied by 7, produce a
-number in which the two least significant digits are 0 or 1.
-You are left with '43', '30', '00', and '01'.
-
-Repeat this process with the 3rd digit, finding the number which produces a
-multiple with 3 least significant digits meeting the qualities.
-
-During the process you will find a number in which ALL of the digits meet the
-qualities, and that's your answer. In the case of N=7, you've found it by the
-3rd digit. (7 * 143 == 1001).
-
 """
 
 
 class Solution:
     def __init__(self):
         pass
+
+    def zero_one_multiple_optimized(self, multiplicand):
+        # Time: O(m) where m is the number of mod states for multiplicand
+        # which is multiplicand itself. 0 to multiplicand - 1.
+        # Space: O(m) for storing multiplicands(visited_remainders)
+        # Check @Tuxdude solution only
+        # https://stackoverflow.com/questions/28268786/how-to-solve-zero-one-multiple-coding-solution
+        from Queue import Queue
+        bfs_q = Queue()
+        bfs_q.put(1)
+        visited_remainders = set()
+        # possible optimization is to use remainders instead of the numbers themselves.
+        # Thereby storing l_mod instead of left_child in bfs_q, only catch is that
+        # now you have to store original number or atleast part of it to reconstruct the
+        # original number. Can check spoj_zero_one.py for this attempt
+        while not bfs_q.empty():
+            cur_num = bfs_q.get()
+            left_child = cur_num * 10
+            right_child = left_child + 1
+            l_mod = left_child % multiplicand 
+            r_mod = l_mod + 1
+            if l_mod == 0:
+                return left_child
+            if r_mod == multiplicand:
+                return right_child
+            if l_mod not in visited_remainders:
+                visited_remainders.add(l_mod)
+                bfs_q.put(left_child)
+            if r_mod not in visited_remainders:
+                visited_remainders.add(r_mod)
+                bfs_q.put(right_child)
 
     def all_zero_one(self, result):
         for digit in result:
@@ -87,7 +79,9 @@ class Solution:
             multiplier_list = new_multiplier_list
             iteration_index += 1
 
+
 if __name__ == '__main__':
     # print Solution().zero_one_multiple(479)  # 100111
-    print Solution().zero_one_multiple(3456)  # 11011111110000000
+    # print Solution().zero_one_multiple(3456)  # 11011111110000000
+    print Solution().zero_one_multiple_optimized(3456)  # 11011111110000000
     # print Solution().zero_one_multiple(325)  # 100100

@@ -175,27 +175,85 @@ class Solution:
         This graph is realized using neighbor_dict which is just a mapping
         of a word to (:) all words that are in one edit distance of this
         word.
-        neighbor_dict = {'cog': ['dog', 'log'],
-                     'dog': ['dot'],
-                     'dot': ['hot'],
-                     'hot': ['hit'],
-                     'log': ['lot'],
-                     'lot': ['hot']}
+        neighbor_dict = {'dog': ['cog'],
+			 'dot': ['dog'],
+			 'hit': ['hot'],
+			 'hot': ['dot', 'lot'],
+			 'log': ['cog'],
+			 'lot': ['log']}
         """
         word_set = set(word_list)
         neighbor_dict = defaultdict(list)
-        visited_values = set()
-        visited_keys.add(source_word)
-        while unvisited_keys:
-            
+        # set to store nodes that have their neighbors explored for current node
+        visited = set()
+        bfs_q = Queue()
+        # set to store nodes that have not been explored for their neighbors
+        unvisited = set(word_list)
+        # since we will begin to explore with source_word
+        unvisited.discard(source_word)
+        bfs_q.put(source_word)
+        self.result = []
+        while not bfs_q.empty():
+            visited = set()
+            # traverse the whole level of the same ladder length
+            # run for current queue length, since we'll be adding
+            # new items to queue this would prevent us from processing
+            # all of them and only let us process queue items that
+            # are there on current level.
+            for _ in xrange(len(bfs_q.queue)):
+                cur_word = bfs_q.get()
+                for index in xrange(len(cur_word)):
+                    for ch in ascii_lowercase:
+                        candidate_word = cur_word[:index] + ch + cur_word[index+1:]
+                        if candidate_word == cur_word:
+                            continue
+                        if candidate_word in unvisited:
+                            # nodes which have not been dealt as keys for
+                            # neighbor_dict
+                            if candidate_word not in visited:
+                                # nodes which have not been marked as visited for
+                                # cur_node (key in neighbor_dict), just so that
+                                # we don't add a value multiple times to queue.
+                                bfs_q.put(candidate_word)
+                                visited.add(candidate_word)
+                            neighbor_dict[cur_word].append(candidate_word)
+                            # neighbor_dict[candidate_word].append(cur_word)
+                            # This can be neighbor_dict[candidate_word].append(cur_word)
+                            # but then dfs algo would change, as key: value mappings changed
+            unvisited -= visited
+        # DFS for each possible paths
+        # here we start from the goal word and try to reach source_word
+        # and record all shortest possible paths we can do it from.
+	print neighbor_dict
+        self.dfs(source_word, goal_word, neighbor_dict, [source_word])
+        return self.result
+
+    def dfs(self, cur_word, goal_word, neighbor_dict, goal_path):
+        if cur_word == goal_word:
+            self.result.append(goal_path)
+        else:
+            for candidate_word in neighbor_dict[cur_word]:
+                self.dfs(candidate_word, goal_word, neighbor_dict, goal_path + [candidate_word])
+
+    def backtrack(self, neighbor_dict, beginWord, word, result, path):
+	"""
+	To be used when dict is made like so neighbor_dict[candidate_word].append(cur_word)
+	"""
+        if beginWord == word:
+            result.append(path)
+        else:
+            for prev_node in neighbor_dict[word]:
+                self.backtrack(neighbor_dict, beginWord, prev_node, result,
+                               [prev_node] + path)
 
 
 if __name__ == '__main__':
-    # source_word, goal_word, word_dict = "hit", "cog", ["hot", "dot", "dog",
-    #                                                    "lot", "log", "cog"]
+    source_word, goal_word, word_dict = "hit", "cog", ["hot", "dot", "dog",
+                                                       "lot", "log", "cog"]
     # source_word, goal_word, word_dict = "a", "c", ["a", "b", "c"]
     # print Solution().word_ladder(word_dict, source_word, goal_word)
     # source_word, goal_word, word_dict = "a", "c", ["a", "b", "c"]
-    source_word, goal_word, word_dict = "hit", "cog", ["hot", "dot", "dog",
-                                                       "lot", "log"]
-    print Solution().word_ladder_optimized(word_dict, source_word, goal_word)
+    # source_word, goal_word, word_dict = "hit", "cog", ["hot", "dot", "dog",
+    #                                                    "lot", "log", "cog"]
+    # source_word, goal_word, word_dict = "red", "tax", ["ted","tex","red","tax","tad","den","rex","pee"]
+    print Solution().word_ladder_2(word_dict, source_word, goal_word)
