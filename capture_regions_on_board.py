@@ -39,6 +39,7 @@ class Solution:
 
         """
         # check borders
+        row_len = len(board)-1
         col_len = len(board[0])-1
         # North border
         for col, ch in enumerate(board[0]):
@@ -53,7 +54,7 @@ class Solution:
         for col, ch in enumerate(board[-1]):
             if ch == 'O':
                 # iteratively convert all 0 to 1 attached to this 0
-                self.bfs(board, col_len, col)
+                self.bfs(board, row_len, col)
         # West border
         for row_num, row in enumerate(board):
             if row[0] == 'O':
@@ -72,18 +73,16 @@ class Solution:
         for row in board:
             print row
         print 'expected'
-        res_board = ["XOXOXO","OXXXXX","XXXXXO","OXOXOX"]
+        res_board = ["XXXX", "XXXX", "XXXX", "XOXX"]
         for row in res_board:
             print row
 if __name__ == '__main__':
-    board = [['X', 'X', 'O', 'X'], ['X', 'O', 'O', 'X'], ['X', 'X', 'O', 'X'],
-             ['X', 'O', 'X', 'X']]
-    inp = ["XOXOXO","OXOXOX","XOXOXO","OXOXOX"]
+    # inp = ["XOXOXO", "OXOXOX", "XOXOXO", "OXOXOX"]
+    inp = ["XXXX", "XOOX", "XXOX", "XOXX"]
     board = [[ch for ch in row] for row in inp]
     # board = [ch for ch in row for row in inp]
     for row in board:
         print row
-
     test_cases = [
         (board, True),
     ]
