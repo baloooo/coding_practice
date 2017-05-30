@@ -1,5 +1,6 @@
 """
-Given a 2D board containing 'X' and 'O' (the letter O), capture all regions surrounded by 'X'.
+Given a 2D board containing 'X' and 'O' (the letter O), capture all regions
+surrounded by 'X'.
 
 A region is captured by flipping all 'O's into 'X's in that surrounded region.
 
@@ -91,6 +92,19 @@ class Solution:
         res_board = ["XXXX", "XXXX", "XXXX", "XOXX"]
         for row in res_board:
             print row
+
+    def solve_condensed(self, board):
+        if not any(board): return
+
+        m, n = len(board), len(board[0])
+        save = [ij for k in range(m+n) for ij in ((0, k), (m-1, k), (k, 0), (k, n-1))]
+        while save:
+            i, j = save.pop()
+            if 0 <= i < m and 0 <= j < n and board[i][j] == 'O':
+                board[i][j] = 'S'
+                save += (i, j-1), (i, j+1), (i-1, j), (i+1, j)
+
+    board[:] = [['XO'[c == 'S'] for c in row] for row in board] 
 if __name__ == '__main__':
     # inp = ["XOXOXO", "OXOXOX", "XOXOXO", "OXOXOX"]
     inp = ["XXXX", "XOOX", "XXOX", "XOXX"]
