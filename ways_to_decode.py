@@ -22,45 +22,41 @@ class Solution:
         self.encoded_text = ''
         self.text_len_to_num_ways_map = {}
 
-    def decode(self, encoded_text):
-        if not encoded_text:
-            return 0
-        self.encoded_text = encoded_text.strip('0')
-        return self.ways_to_decode(0)
+    def ways_to_decode(self, sequence):
+        self.count = 0
+        self.decode_ways(0, sequence)
+        return self.count
 
-    def ways_to_decode(self, text_end_delimeter):
-        if text_end_delimeter == len(self.encoded_text)-1:
-            return 1
-        if text_end_delimeter == len(self.encoded_text)-2:
-            if int(self.encoded_text[text_end_delimeter:]) <= 26:
-                return 2
-            else:
-                return 1
-        if self.text_len_to_num_ways_map.get(text_end_delimeter+1):
-            lh = self.text_len_to_num_ways_map[text_end_delimeter+1]
+    def decode_ways(self, cur_index, sequence):
+        if cur_index >= len(sequence)-1:
+            return True
+        if sequence[cur_index] == '0':
+            self.decode_ways(cur_index + 1, sequence)
         else:
-            lh = self.ways_to_decode(text_end_delimeter+1)
-            # memoization
-            self.text_len_to_num_ways_map[text_end_delimeter+1] = lh
-        if self.text_len_to_num_ways_map.get(text_end_delimeter+2):
-            rh = self.text_len_to_num_ways_map[text_end_delimeter+2]
-        else:
-            rh = self.ways_to_decode(text_end_delimeter+2)
-            self.text_len_to_num_ways_map[text_end_delimeter+2] = rh
-        return lh+rh
+            if self.decode_ways(cur_index + 1, sequence):
+                self.count += 1
+            if (cur_index + 2 <= len(sequence) and
+                    int(sequence[cur_index]+sequence[cur_index+1]) <= 26):
+                if self.decode_ways(cur_index + 2, sequence):
+                    self.count += 1
 
 if __name__ == '__main__':
-    test_cases = [('1234', 3),
-                  ('10', 1),
-                  ('101', 1),
-                  ('1102', 1),
-                  ('0', 0),
-                  ('01', 0),
-                  ('1100', 0),
-                  ('1002', 0),
-                  ('261155971756562', True)]
+    test_cases = [
+                    ('11', 2),
+                    ('1234', 3),
+                    ('10', 1),
+                    ('101', 1),
+                    ('1102', 1),
+                    ('0', 0),
+                    ('01', 0),
+                    ('1002', 0),
+                    ('1', 1),
+                    ('0', 0),
+                    # ('261155971756562', True)
+                    # ('1100', 0),
+                  ]
     for test_case in test_cases:
-        result = Solution().decode(test_case[0])
+        result = Solution().ways_to_decode(test_case[0])
         if result == test_case[1]:
             print "Test case: {0} Passed".format(test_case[0])
         else:
