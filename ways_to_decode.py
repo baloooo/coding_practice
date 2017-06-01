@@ -25,6 +25,7 @@ class Solution:
     def ways_to_decode(self, sequence):
         self.count = 0
         self.decode_ways(0, sequence)
+        self.decode_ways_recursive(sequence, len(sequence)-1)
         return self.count
 
     def decode_ways(self, cur_index, sequence):
