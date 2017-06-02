@@ -43,24 +43,27 @@ class MedianFinder:
         heappush(small, -heappushpop(large, num))
         if len(small) > len(large):
             heappush(large, -heappop(small))
-        print self.heaps
 
     def find_median(self):
-        pass
+        small, large = self.heaps
+        if len(large) > len(small):
+            return large[0]
+        else:
+            return (large[0] - small[0])/2.0
 
 if __name__ == '__main__':
     m_f_object = MedianFinder()
     m_f_object.add_num(10)
-    m_f_object.find_median()
+    print m_f_object.find_median()
     m_f_object.add_num(20)
-    m_f_object.find_median()
+    print m_f_object.find_median()
     m_f_object.add_num(30)
-    m_f_object.find_median()
+    print m_f_object.find_median()
     m_f_object.add_num(40)
-    m_f_object.find_median()
+    print m_f_object.find_median()
     m_f_object.add_num(5)
-    m_f_object.find_median()
+    print m_f_object.find_median()
     m_f_object.add_num(3)
-    m_f_object.find_median()
+    print m_f_object.find_median()
     m_f_object.add_num(1)
-    m_f_object.find_median()
+    print m_f_object.find_median()
