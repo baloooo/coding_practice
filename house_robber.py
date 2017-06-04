@@ -12,34 +12,19 @@ alerting the police.
 
 
 class Solution:
-    """
-    https://discuss.leetcode.com/topic/17199/python-solution-3-lines/2
-    https://discuss.leetcode.com/topic/11110/c-1ms-o-1-space-very-simple-solution
-    """
-    def __init__(self):
-        pass
 
     def rob(self, arr):
         """
         Idea:
-            f(0) = arr[0]
-            f(1) = max(arr[0], arr[1])
             f(n) = max(f(n-1), f(n-2) + arr[n])
         """
-        if not arr:
-            return 0
-        max_n_2 = arr[0]
-        if len(arr) == 1:
-            return max_n_2
-        max_n_1 = arr[1]
-        max_so_far = max(max_n_1, max_n_2)
-        for cur_index in xrange(2, len(arr)):
-            max_so_far = max(max_n_1, max_n_2+arr[cur_index])
-        return max_so_far
-        for num in arr:
-            last = now
-            now = max(num+last, now)
-        reutrn now
+        max_n_2, max_n_1 = 0, 0
+        for cur_num in arr:
+            cur_max = max(max_n_1, cur_num + max_n_2)
+            max_n_2 = max_n_1
+            max_n_1 = cur_max
+
+        return max_n_1
 
 if __name__ == '__main__':
     test_cases = [
