@@ -5,6 +5,21 @@ class Solution:
         # memoization map: {sum-denomination: #of ways}
         self.memo = {}
 
+    def count(self, coins, index, target_sum):
+        if index >= len(coins):
+            return 0
+        if target_sum == 0:
+            return 1
+        if target_sum < 0:
+            return 0
+        return min(self.count(coins, index+1, target_sum),
+                   1 + self.count(coins, index, target_sum-coins[index]))
+
+    def min_coin_change_recursive(self, coins, target_sum):
+        min_coins = self.count(coins, 0, target_sum)
+        print 'min coins are', min_coins
+        return min_coins if min_coins else -1
+
     def make_change(self, coins, amount):
         return self.total_ways_to_coin_change(coins, amount, 0)
 
@@ -57,10 +72,11 @@ class Solution:
         return dp[amount] if dp[amount] != MAX else -1
 
 if __name__ == '__main__':
-    coins, amount = [186, 419, 83, 408], 6249
+    # coins, amount = [186, 419, 83, 408], 6249
     # print Solution().min_coin_change(coins, amount)
-    # coins, amount = [1, 2, 3], 4
+    coins, amount = [1, 2, 3], 4
     # sol = Solution()
     # print sol.make_change(coins, amount)
     # print sol.memo
-    print Solution().min_coin_change(coins, amount)
+    # print Solution().min_coin_change(coins, amount)
+    print Solution().min_coin_change_recursive(coins, amount)

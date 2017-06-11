@@ -39,10 +39,18 @@ class Solution:
         for cur_coin in xrange(1, len(coins)+1):
             dp[cur_coin][0] = 1
             for cur_sum in xrange(1, total_sum+1):
+                for row in xrange(len(dp)):
+                    for col in xrange(len(dp[0])):
+                        print dp[row][col],
+                    print
+                print '-'*10
                 dp[cur_coin][cur_sum] = (
                     dp[cur_coin-1][cur_sum] +
                     (dp[cur_coin][cur_sum-coins[cur_coin-1]] if
                         cur_sum >= coins[cur_coin-1] else 0))
+            # notice 'cur_coin-1' here since indexes start from 1
+            # dp[cur_coin-1] means last row, but coins[cur_coin-1] means cur coin
+            # with indexing on an array which is zero based
         return dp[len(coins)][total_sum]
 
     def count_dp_optimized(self, coins, total_sum):
@@ -58,7 +66,7 @@ class Solution:
                 dp[cur_sum] += dp[cur_sum-cur_coin]
         return dp[-1]
 
-    def count(self, coins, index, total_sum):
+    def count_recursive(self, coins, index, total_sum):
         # no more coins left
         if index == len(coins):
             return 0
