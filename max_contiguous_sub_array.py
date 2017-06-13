@@ -26,6 +26,20 @@ class Solution:
             global_max = max(current_max, global_max)
         return global_max
 
+    def maxSubArray_with_indices(self, arr):
+        """
+        Kadane's algorithm
+        https://stackoverflow.com/questions/14180308/finding-the-start-and-end-index-for-a-max-sub-array
+        """
+        global_max = current_max = arr[0]
+        start = end = 0
+        for index in xrange(1, len(arr)):
+            if arr[index] > current_max+arr[index]:
+                start = end = index
+            current_max = max(arr[index], current_max+arr[index])
+            global_max = max(current_max, global_max)
+        return global_max, start, end
+
     def max_sub_array(self, arr):
         global_max = current_max = arr[0]
         i, j = 0, 0

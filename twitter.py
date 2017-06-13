@@ -1,31 +1,31 @@
 import collections
 from collections import defaultdict
 import heapq
-import itertools
+# import itertools
 from datetime import datetime
 
 
-class Twitter2(object):
+# class Twitter2(object):
 
-    def __init__(self):
-        self.timer = itertools.count(step=-1)
-        # {user_id: deque[tweet_id1, tweet_id2, ....]}
-        self.tweets = collections.defaultdict(collections.deque)
-        # {user_id1: set(user_id2, user_id3, ...}
-        self.followees = collections.defaultdict(set)
+#     def __init__(self):
+#         self.timer = itertools.count(step=-1)
+#         # {user_id: deque[tweet_id1, tweet_id2, ....]}
+#         self.tweets = collections.defaultdict(collections.deque)
+#         # {user_id1: set(user_id2, user_id3, ...}
+#         self.followees = collections.defaultdict(set)
 
-    def postTweet(self, userId, tweetId):
-        self.tweets[userId].appendleft((next(self.timer), tweetId))
-
-    def getNewsFeed(self, userId):
-        tweets = heapq.merge(*(self.tweets[u] for u in self.followees[userId] | {userId}))  # noqa
-        return [t for _, t in itertools.islice(tweets, 10)]
-
-    def follow(self, followerId, followeeId):
-        self.followees[followerId].add(followeeId)
-
-    def unfollow(self, followerId, followeeId):
-        self.followees[followerId].discard(followeeId)
+#     def postTweet(self, userId, tweetId):
+#         self.tweets[userId].appendleft((next(self.timer), tweetId))
+#
+#     def getNewsFeed(self, userId):
+#         tweets = heapq.merge(*(self.tweets[u] for u in self.followees[userId] | {userId}))  # noqa
+#         return [t for _, t in itertools.islice(tweets, 10)]
+#
+#     def follow(self, followerId, followeeId):
+#         self.followees[followerId].add(followeeId)
+#
+#     def unfollow(self, followerId, followeeId):
+#         self.followees[followerId].discard(followeeId)
 
 
 class Tweet(object):
@@ -112,22 +112,15 @@ class Twitter(TwitterUser):
 
 if __name__ == '__main__':
     # test
-    import time
     twitter_obj = Twitter()
     twitter_obj.add_user('anukul')
     twitter_obj.add_user('steve')
     twitter_obj.post_tweet('anukul', 'Anukul first tweet')
-    time.sleep(1)
     twitter_obj.post_tweet('anukul', 'Anukul second tweet')
-    time.sleep(1)
     twitter_obj.post_tweet('anukul', 'Anukul third tweet')
-    time.sleep(1)
     twitter_obj.post_tweet('steve', 'Steve first tweet')
-    time.sleep(1)
     twitter_obj.post_tweet('steve', 'Steve second tweet')
-    time.sleep(1)
     twitter_obj.post_tweet('steve', 'Steve third tweet')
-    time.sleep(1)
     print 'getting news feed for anukul'
     print twitter_obj.get_news_feed('anukul')
     twitter_obj.follow('anukul', 'steve')
