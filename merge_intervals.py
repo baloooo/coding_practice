@@ -17,6 +17,15 @@ Make sure the returned intervals are sorted.
 #         self.end = e
 
 class Solution:
+    def merge_intervals(self, intervals):
+        res = []
+        for cur_interval in sorted(intervals, key=lambda x: x.start):
+            if res and cur_interval.start<= res[-1].end:
+                res[-1].end = max(cur_interval.end, res[-1].end)
+            else:
+                res.append(cur_interval)
+        return res
+
     # @param intervals, a list of Intervals
     # @return a list of Interval
     def merge(self, intervals):
