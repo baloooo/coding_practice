@@ -14,6 +14,14 @@ GCD(m, n) : 3
  NOTE : DO NOT USE LIBRARY FUNCTIONS
 """
 
+def gcd_euclidean(a, b):
+    while a!=b:
+        if a>b:
+            a=a-b
+        else:
+            b=b-a
+    return a
+
 
 def gcd(a, b):
     if a == 0:
@@ -33,7 +41,7 @@ def gcd(a, b):
             b = remainder
 
 if __name__ == '__main__':
-    a, b = [10, 15]
-    a, b = [55, 34]
-    a, b = [121393, 75025]
-    print gcd(a, b)
+    test_cases = [[10, 15], [55, 34], [121393, 75025]]
+    for each in test_cases:
+        print gcd(*each)
+        print gcd_euclidean(*each)

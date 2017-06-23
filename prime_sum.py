@@ -3,12 +3,12 @@ class Solution:
         prime_numbers = []
         num_range = [False]*(A-1)
         for index, cur_num in enumerate(num_range, start=2):
-            if cur_num==False:
+            if cur_num is False:
                 prime_numbers.append(index+2)
-                i=2 
-                while(index*i<=A):
-                    num_range[index*i-2]=True
-                    i+=1
+                i = 2
+                while(index*i <= A):
+                    num_range[index*i-2] = True
+                    i += 1
         return prime_numbers
 
     # @param A : integer
