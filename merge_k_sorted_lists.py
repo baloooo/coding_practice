@@ -3,6 +3,29 @@ from linkedlistbase import (
     ListNode, print_linked_list)
 import heapq
 
+# https://leetcode.com/problems/merge-k-sorted-lists/#/description
+
+
+class Solution(object):
+    def mergeKLists(self, lists):
+        """
+        :type lists: List[ListNode]
+        :rtype: ListNode
+        """
+        from heapq import heappop, heapify, heapreplace
+        min_heap = [(node.val, node) for node in lists if node]
+        heapify(min_heap)
+        head = cur_node = ListNode(0)
+        while min_heap:
+            val, node = min_heap[0]
+            if node.next is None:
+                heappop(min_heap)
+            else:
+                heapreplace(min_heap, (node.next.val, node.next))
+            cur_node.next = node
+            cur_node = cur_node.next
+        return head.next
+
 # http://www.geeksforgeeks.org/merge-k-sorted-linked-lists/
 # time: O(nlogk)
 # space: O(1)
