@@ -39,6 +39,49 @@ def integer_to_roman(integer_num):
             integer_num -= num
     return roman_number
 
+def integer_to_roman2(num):
+    """
+    :type num: int
+    :rtype: str
+    This is better than above solution since this works better for large numbers as 
+    this doesn't linearly decrements number for example for 9964 it would straight
+    come down to 964 after first iteration instead of above solution which would take
+    9 iteration (in each subtracting 1000) which can easily increase processing time way
+    too much.
+    """
+    int_to_roman_map = {
+      1: 'I',
+      4: 'IV',
+      5: 'V',
+      9: 'IX',
+      10: 'X',
+      40: 'XL',
+      50: 'L',
+      90: 'XC',
+      100: 'C',
+      400: 'CD',
+      500: 'D',
+      900: 'CM',
+      1000: 'M'
+    }
+    num = str(num)
+    res = []
+    roman_map_keys = sorted(int_to_roman_map.keys(), reverse=True)
+    for index, digit in enumerate(num):
+        cur_digit = int(digit) * (10**(len(num)-1-index))
+        for roman_key in roman_map_keys:
+            if roman_key <= cur_digit:
+                if cur_digit % roman_key == 0:
+                    repetition = cur_digit / roman_key
+                    res.append(int_to_roman_map[roman_key]*repetition)
+                    break
+                else:
+                    res.append(int_to_roman_map[roman_key])
+                    cur_digit -= roman_key
+    return ''.join(map(str, res))
+
 if __name__ == '__main__':
     integer_num = 1954
-    print integer_to_roman(integer_num)
+    integer_num = 6
+    # print integer_to_roman(integer_num)
+    print integer_to_roman2(integer_num)
