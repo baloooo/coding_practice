@@ -55,13 +55,16 @@ class Solution:
             return start
         else:
             return -1
+
     # @param A : tuple of integers
     # @param B : integer
     # @return a list of integers
     def searchRange(self, A, B):
+        """
+        alternate soln = https://discuss.leetcode.com/topic/16486/9-11-lines-o-log-n
+        """
         lptr = self.first_occurrence(A, B)
-        if lptr == -1: 
+        if lptr == -1:
             return [-1, -1]
         rptr = self.last_occurrence(A, B)
         return [lptr, rptr]
-

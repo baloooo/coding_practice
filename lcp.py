@@ -25,7 +25,6 @@
     ans: a
 """
 
-
 class TrieNode(object):
     def __init__(self, char):
         self.child_map = {}
@@ -70,3 +69,25 @@ if __name__ == '__main__':
     str_list = ["geek", "gee", "geeks"]
     # print "result by word_by_word", word_by_word(str_list)
     print "result by lcp", lcp_by_trie(str_list)
+
+"""
+LCP for strings
+"""
+class Solution(object):
+    def lcp(self, str1, str2):
+        index = 0
+        for index in xrange(min(len(str1), len(str2))):
+            if str1[index] == str2[index]:
+                index += 1
+            else:
+                break
+        return str1[:index]
+    def longestCommonPrefix(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: str
+        """
+        if strs:
+            return reduce(self.lcp, strs)
+        else:
+            return ''

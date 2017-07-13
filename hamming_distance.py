@@ -22,6 +22,15 @@
 #       ↑   ↑
 #
 # The above arrows point to positions where the corresponding bits are different.
+class Solution(object):
+    def hammingDistance(self, x, y):
+        xor = x^y
+        count = 0
+        while xor:
+            if xor & 1:
+                count+=1
+            xor = xor >> 1
+        return count
 
 def hamming_distance(num1, num2):
     # integer to binary conversion http://stackoverflow.com/questions/16926130/python-convert-to-binary-and-keep-leading-zeros

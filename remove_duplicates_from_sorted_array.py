@@ -10,6 +10,26 @@ Do not allocate extra space for another array, you must do this in place with co
 Given input array A = [1,1,2],
 Your function should return length = 2, and A is now [1,2]. 
 """
+def remove_duplicates_optimized(arr):
+    """
+    Time: O(n)
+    Space: O(1)
+    """
+    def removeDuplicates(self, arr):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # two pointers: one for the unique elements, one for iterating over arr
+        if len(arr) < 2:
+            return len(arr)
+        k = 1
+        for i in xrange(1, len(arr)):
+            if arr[i] != arr[i-1]:
+                arr[k] = arr[i]
+                k += 1
+        return k
+
 def remove_duplicates(arr):
     n = len(arr)
     i = 0

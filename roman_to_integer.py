@@ -12,35 +12,16 @@ Example :
     Input : "XX"
     Output : 20
 """
-roman_to_int_map = {
-        'I': 1,
-        'V': 5,
-        'X': 10,
-        'L': 50,
-        'C': 100,
-        'D': 500,
-        'M': 1000
-        }
-
-def roman_to_integer(roman_number):
-    num_len = len(roman_number)
-    # for index, each in enumerate(roman_number):
-    index = integer_number = 0
-    while(index<num_len):
-        if index < (num_len-1) and (roman_to_int_map[roman_number[index]] < roman_to_int_map[roman_number[index+1]]):
-            integer_number += roman_to_int_map[roman_number[index+1]] - roman_to_int_map[roman_number[index]]
-            index+=2
+def roman_to_integer(s):
+    # https://discuss.leetcode.com/topic/17110/my-straightforward-python-solution/5
+    roman_map = {'M': 1000,'D': 500 ,'C': 100,'L': 50,'X': 10,'V': 5,'I': 1}
+    s_val = 0
+    for index in xrange(len(s)-1):
+        if roman_map[s[index]] < roman_map[s[index+1]]:
+            s_val -= roman_map[s[index]]
         else:
-            integer_number += roman_to_int_map[roman_number[index]]
-            index+=1
-    return integer_number
+            s_val += roman_map[s[index]]
+    return s_val + roman_map[s[-1]]
 
 if __name__ == '__main__':
-    roman_number = 'XX'
-    roman_number = 'XIV'
-    roman_number = 'MCMLIV'
-    roman_number = 'MCMXC'
-    roman_number = 'MMXIV'
-    roman_number = 'V'
-    roman_number = ''
-    print roman_to_integer(roman_number)
+    print roman_to_integer('MXL')
