@@ -12,6 +12,15 @@ def selection_sort(arr):
 
     print ''.join(map(str, arr))
 
+def largest_number(arr):
+    """
+    Idea is to concat strings and compare their ASCIIs to check which is smaller and bigger
+    """
+    nums = [str(x) for x in arr]
+    # https://docs.python.org/3/howto/sorting.html#the-old-way-using-the-cmp-parameter
+    nums.sort(cmp=lambda x,y: cmp(y+x, x+y))
+    return ''.join(nums).lstrip('0') or '0'
+
 if __name__ == '__main__':
     # arr = [54, 546, 548, 60]
     # arr = [12, 45, 92, 67]
@@ -19,4 +28,5 @@ if __name__ == '__main__':
     # arr = [0, 0, 0]
     arr = [0, 1, 2]
     print arr
-    selection_sort(arr)
+    # selection_sort(arr)
+    print 'result ', largest_number(arr)
