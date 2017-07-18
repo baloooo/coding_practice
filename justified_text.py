@@ -31,6 +31,26 @@ Return the formatted lines as:
 ]
 Note: Each word is guaranteed not to exceed L in length.
 """
+def justify_text2(words, max_width):
+    """
+    shorter and more precise version.
+    https://discuss.leetcode.com/topic/25970/concise-python-solution-10-lines
+    :type words: List[str]
+    :type maxWidth: int
+    :rtype: List[str]
+    """
+    res, num_of_letters, cur = [], 0, []
+    for w in words:
+        if num_of_letters + len(w) + len(cur) > max_width:
+            # Assign spaces in round robin fashion
+            for i in range(max_width - num_of_letters):
+                cur[i % (len(cur) -1 or 1)] += ' '
+            res.append(''.join(cur))
+            num_of_letters = 0
+            cur = []
+        cur += [w]
+        num_of_letters += len(w)
+    return res + [' '.join(cur).ljust(max_width)]
 
 
 def justify_text(word_list, line_width):
