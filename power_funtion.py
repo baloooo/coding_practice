@@ -63,6 +63,30 @@ def pow_mod_iterative(base, power, mod_no):
         base = (base * base) % mod_no
     return result
 
+class Solution(object):
+    """
+    https://leetcode.com/problems/powx-n/#/description
+    Idea: https://discuss.leetcode.com/topic/40546/iterative-log-n-solution-with-clear-explanation
+    """
+    def power_function(self, base, power):
+        """
+        :type x: float
+        :type n: int
+        :rtype: float
+        """
+        abs_power = abs(power)
+        res = 1
+        while abs_power >= 1:
+            if abs_power & 1:
+                res = res * base
+            abs_power >>= 1
+            base *= base
+        if power < 0:
+            return 1/res*1.0
+        else:
+            return res
+
+
 if __name__ == '__main__':
     # base, power, mod = 2, 5, 13
     # base, power, mod = -1, 1, 20

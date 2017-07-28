@@ -24,6 +24,10 @@ If S = [1,2,3], a solution is:
 
 
 def subset_duplicate_allowed(arr):
+    """
+    Not complete
+    [1, 4] and [4, 1] are same subset but current solution sees them as different
+    """
     res = [[]]
     uniq_set = set()
     for ele in arr:
@@ -37,15 +41,16 @@ def subset_duplicate_allowed(arr):
     return res
 
 
-def subset_iterative(arr):
+def subset_without_duplicates(arr):
     res = [[]]
     for ele in arr:
         res = res + [each+[ele] for each in res]
     return res
 
+
 if __name__ == "__main__":
     # inp_arr = [1, 2, 3]
-    inp_arr = [1]
+    # inp_arr = [1]
     # inp_arr = []
     # inp_arr = [1, 2, 3, 4]
     # inp_arr = [1, 1, 2]
@@ -54,5 +59,7 @@ if __name__ == "__main__":
     # inp_arr = [3, 2, 2, 1]
     # inp_arr = [4, 4, 3, 2]
     # inp_arr = [4, 3, 2, 1, 1]
-    # print subset_iterative(inp_arr)
-    print subset_duplicate_allowed(inp_arr)
+    # print subset_without_duplicates(inp_arr)
+    # print subset_duplicate_allowed(inp_arr)
+    inp_arr = [4, 4, 4, 1, 4]
+    print temp_subset(inp_arr)

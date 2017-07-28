@@ -1,6 +1,60 @@
 from linkedlistbase import Node, construct_linked_list_from_array, print_linked_list
 from time import sleep
 
+"""
+new implementation
+Idea: https://discuss.leetcode.com/topic/18100/java-merge-sort-solution
+Basically combination of:
+    a. Find mid
+    b. merge two sorted linked lists
+"""
+
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def merge(self, l1, l2):
+        new_head = cur_node = ListNode('-1')
+        while l1 and l2:
+            if l1.val < l2.val:
+                cur_node.next = l1
+                l1 = l1.next
+            else:
+                cur_node.next = l2
+                l2 = l2.next
+            cur_node = cur_node.next
+        if l1:
+            cur_node.next = l1
+        elif l2:
+            cur_node.next = l2
+        return new_head.next        
+            
+
+    def sortList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        # Base condition
+        if not head or not head.next:
+            return head
+        # find mid and split linked list in to two halves
+        slow = fast = head
+        prev = None
+        while fast and fast.next:
+            prev = slow
+            slow = slow.next
+            fast = fast.next.next
+        prev.next = None
+        l1 = self.sortList(head)
+        l2 = self.sortList(slow)
+        # merge two halves
+        return self.merge(l1, l2)
+
+
 def find_mid(head, last):
     tor = hare = head
     while(hare != last and hare.next is not None and hare.next.next is not None):
