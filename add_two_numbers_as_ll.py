@@ -1,50 +1,39 @@
-class Node(object):
-    def __init__(self, val, next=None):
-        self.val = val
-        self.next = next
+"""
+You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.
+
+You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
+Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
+Output: 7 -> 0 -> 8
+
+"""
 
 
-def construct_linked_list_from_array(inp_arr):
-    if not inp_arr:
-        return
-    head = Node(inp_arr[0])
-    prev = head
-    for each in inp_arr[1:]:
-        node = Node(each)
-        prev.next = node
-        prev = node
-    return head
-
-
-def print_linked_list(head):
-    while(head):
-        print head.val,
-        head = head.next
-
-
-def add_two_numbers(head1, head2):
-    original_head = head = Node(-1)
-    carry = 0
-    while(head1 is not None and head2 is not None):
-        digit_sum = head1.val + head2.val
-        if carry:
-            digit_sum += carry
-        if digit_sum > 9:
-            carry = digit_sum/10
-            digit_sum = digit_sum % 10
-        new_node = Node(digit_sum)
-        head.next = new_node
-        head = head.next
-    if carry:
-        new_node = Node(carry)
-        head.next = new_node
-        head = head.next
-    return original_head
-
+def add_two_numbers(l1, l2):
+    # https://discuss.leetcode.com/topic/799/is-this-algorithm-optimal-or-what
+    res = cur = ListNode(-1)
+    total_sum = 0
+    # Base your logic on sum rather than individual nodes lists l1 and l2, it's more straightforward
+    while l1 or l2:
+        if l1:
+            total_sum += l1.val
+            l1 = l1.next
+        if l2:
+            total_sum += l2.val
+            l2 = l2.next
+        new_node = ListNode(total_sum%10)
+        cur.next = new_node
+        cur = cur.next
+        total_sum /= 10
+    # if there is total sum remaining after both lists are done
+    if total_sum:
+        cur.next = ListNode(total_sum)
+    return res.next
 
 if __name__ == '__main__':
     lists = [[5, 8, 2], [4, 1, 5]]
     heads = []
+    from linkedlistnode import construct_linked_list_from_array, ListNode
     for each in lists:
         heads.append(construct_linked_list_from_array(each))
     print add_two_numbers(heads[0], heads[1])
