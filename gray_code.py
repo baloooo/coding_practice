@@ -33,12 +33,7 @@ class Solution:
         :type n: int
         :rtype: List[int]
         """
-        result = [0]
-        for i in xrange(n):
-            for n in reversed(result):
-                result.append(1 << i | n)
-        return result
-
+        return [(num >> 1) ^ num for num in xrange(2**n)]
 
 if __name__ == '__main__':
     sol = Solution()
