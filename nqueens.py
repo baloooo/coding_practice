@@ -24,6 +24,9 @@ There exist two distinct solutions to the 4-queens puzzle:
 
 
 class Solution():
+    """
+    T(n) = n-1(T(n-1)) + O(n) which is O(n^n), therefore exponential.
+    """
     def __init__(self):
         self.possible_arrangements = []
         self.cur_arrng = []

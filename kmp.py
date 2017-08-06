@@ -1,39 +1,47 @@
-def get_prefix_table(needle):
-    prefix_set = set()
-    n = len(needle)
-    prefix_table = [0]*n
-    delimeter = 1
-    while(delimeter<n):
-        prefix_set.add(needle[:delimeter])
-        j = 1
-        while(j<delimeter+1):
-            if needle[j:delimeter+1] in prefix_set:
-                prefix_table[delimeter] = delimeter - j + 1
-                break
-            j += 1
-        delimeter += 1
-    return prefix_table
+def generate_prefix_arr(needle):
+    """
+    Idea: https://www.youtube.com/watch?annotation_id=annotation_1246214919&feature=iv&src_vid=GTJr8OvyEVQ&v=KG44VoDtsAA
+    """
+    pre, cur = 0, 1
+    pre_arr = [0]*len(needle)
+    while cur < len(needle):
+        if needle[cur] == needle[pre]:
+            pre_arr[cur] = pre + 1
+            pre += 1
+            cur += 1
+        else:
+            if pre != 0:
+                pre = pre_arr[pre-1]
+            else:
+                pre_arr[cur] = 0
+                cur += 1
+    return pre_arr
+
 
 def strstr(haystack, needle):
-    # m: denoting the position within S where the prospective match for W begins
-    # i: denoting the index of the currently considered character in W.
+    """
+    Idea: https://www.youtube.com/watch?v=GTJr8OvyEVQ
+    https://stackoverflow.com/documentation/algorithm/7118/substring-search/27462/python-implementation-of-kmp-algorithm#t=201707100128223702031
+    """
+    # haystack_index: denoting the position within haystack where the prospective match for needle begins
+    # needle_index: denoting the index of the currently considered character in needle.
     haystack_len = len(haystack)
     needle_len = len(needle)
     if (needle_len > haystack_len) or (not haystack_len) or (not needle_len):
         return -1
-    prefix_table = get_prefix_table(needle)
-    m = i = 0
-    while((i<needle_len) and (m<haystack_len)):
-        if haystack[m] == needle[i]:
-            i += 1
-            m += 1
+    prefix_arr = generate_prefix_arr(needle)
+    haystack_index = needle_index = 0
+    while((needle_index<needle_len) and (haystack_index<haystack_len)):
+        if haystack[haystack_index] == needle[needle_index]:
+            needle_index += 1
+            haystack_index += 1
         else:
-            if i != 0:
-                i = prefix_table[i-1]
+            if needle_index != 0:
+                needle_index = prefix_arr[needle_index-1]
             else:
-                m += 1
-    if i==needle_len and haystack[m-1] == needle[i-1]:
-        return m - needle_len
+                haystack_index += 1
+    if needle_index==needle_len and haystack[haystack_index-1] == needle[needle_index-1]:
+        return haystack_index - needle_len
     else:
         return -1
 

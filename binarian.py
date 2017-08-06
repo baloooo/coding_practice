@@ -1,3 +1,4 @@
+# coding: utf-8
 """
 A non-empty zero-indexed array A consisting of N non-negative integers is given
 Its binarian is defined as:
@@ -38,8 +39,25 @@ Elements of input arrays can be modified.
 
 """
 
-
 def binarian(arr):
+    # Overall time: O(N) and Overall Space: O(N)
+    count_arr = [0]*10001
+    # Time: O(N)
+    for ele in arr:
+        count_arr[ele] += 1
+    # Time: O(len(count_arr))
+    for index in xrange(len(count_arr)):
+        while count_arr[index] > 1:
+            count_arr[index] -= 2
+            count_arr[index+1] += 1
+    resultant_count = 0
+    # Time: O(len(count_arr))
+    for cur_count in count_arr:
+        resultant_count += cur_count
+    return resultant_count
+    
+
+def binarian_wrong(arr):
     from math import log
     final_arr = []
     res = 1
@@ -53,4 +71,6 @@ def binarian(arr):
 
 if __name__ == '__main__':
     arr = [1, 0, 2, 0, 0, 2]
+    arr = [1, 5, 4]
+    arr = [10000, 1000, 1243, 353, 2533, 546, 235, 532, 235, 666, 666, 23, 26, 233, 2323, 23, 23]
     print binarian(arr)
