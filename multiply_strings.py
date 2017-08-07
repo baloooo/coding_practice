@@ -5,24 +5,20 @@ class Solution(object):
         :type num2: str
         :rtype: str
         """
-        total_res = []
-        # multiplication stage
-        for index, top_num in enumerate(num2):
-            carry, res = 0, []
-            for bot_num in num1:
-                mul = int(top_num) * int(bot_num) + carry
-                if len(str(mul)) > 1:
-                    carry = int(str(mul)[:-1])
-                import ipdb; ipdb.set_trace()
-                res.append(str(mul)[-1])
-            res = [res.append('0') for _ in xrange(index)]
-            total_res.append(res)
-        # Addition stage
-        import ipdb; ipdb.set_trace()
+        product = [0]*(len(num1)+len(num2))
+        for i in xrange(len(num1)-1, -1, -1):
+            for j in xrange(len(num2)-1, -1, -1):
+                product[i+j] += int(num1[i])*int(num2[j])
+                product[i+j-1] += product[i+j] / 10
+                product[i+j] %= 10
+        return ''.join([str(each) for each in product])
+
 
 if __name__ == '__main__':
     test_cases = [
-        (('22', '22'), '484'),
+        # (('22', '22'), '484'),
+        (('12', '12'), '144'),
+        (('99', '99'), '9801'),
     ]
     for test_case in test_cases:
         res = Solution().multiply(test_case[0][0], test_case[0][1])
