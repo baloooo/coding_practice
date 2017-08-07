@@ -1,3 +1,6 @@
+"""
+Idea: https://stackoverflow.com/documentation/algorithm/7118/substring-search#t=201708030729442252424
+"""
 def get_prefix_table(needle):
     prefix_set = set()
     n = len(needle)

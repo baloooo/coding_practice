@@ -12,23 +12,29 @@ Given [1,2],[3,5],[6,7],[8,10],[12,16], insert and merge [4,9] in as [1,2],[3,10
 This is because the new interval [4,9] overlaps with [3,5],[6,7],[8,10].
 """
 
+# Definition for an interval.
+# class Interval(object):
+#     def __init__(self, s=0, e=0):
+#         self.start = s
+#         self.end = e
 
-class Solution:
-    def __init__(self):
-        pass 
-
-    def my_func(self, arg):
-        pass
-
-if __name__ == '__main__':
-    test_cases = [
-        ('test1', 'sol1'),
-    ]
-    for test_case in test_cases:
-        res = Solution().my_func(test_case[0])
-        if res == test_case[1]:
-            print "Passed"
-        else:
-            print "Failed: Test case: {0} Got {1} Expected {2}".format(
-                test_case[0], res, test_case[1])
-
+class Solution(object):
+    def insert(self, intervals, newInterval):
+        """
+        :type intervals: List[Interval]
+        :type newInterval: Interval
+        :rtype: List[Interval]
+        """
+        # using the exact algo as merge interval
+        merged_intervals = []
+        intervals.append(newInterval)
+        intervals.sort(key=lambda interval: interval.start)
+        cur_max_end = intervals[0].end
+        merged_intervals = [[intervals[0].start]]
+        for interval in intervals[1:]:
+            if interval.start > cur_max_end:
+                merged_intervals[-1].append(cur_max_end)
+                merged_intervals.append([interval.start])
+            cur_max_end = max(cur_max_end, interval.end)
+        merged_intervals[-1].append(cur_max_end)
+        return merged_intervals

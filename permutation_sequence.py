@@ -1,5 +1,19 @@
 class Solution:
     def permutation_sequence(self, n, k):
+        """
+        Time: O(n^2) Space: O(n)
+        Idea: https://discuss.leetcode.com/topic/17348/explain-like-i-m-five-java-solution-in-o-n
+        """
+        from math import factorial
+        res, arr, k = [], range(1, n+1), k-1
+        for i in xrange(1, n+1):
+            cur_index = k/factorial(n-i)
+            k = k % factorial(n-i)
+            res.append(arr[cur_index])
+            del arr[cur_index]
+        return res
+
+    def permutation_sequence2(self, n, k):
         from math import factorial
         arr = range(1, n+1)
         # find arr arrangement, and remaining k
@@ -37,4 +51,5 @@ if __name__ == '__main__':
     # n, k = 3, 2
     # n, k = 2, 2
     # n, k = 1, 1
+    n, k = 4, 14
     print sol.permutation_sequence(n, k)
