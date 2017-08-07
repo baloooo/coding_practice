@@ -21,24 +21,41 @@ If S = [1,2,3], a solution is:
   [3],
 ]
 """
+class Solution(object):
+    def backtrack(self, nums, result, cur_subset, start):
+        result.append(cur_subset[::])
+        for index in xrange(start, len(nums)):
+            if index > start and nums[index] == nums[index-1]:
+                continue
+            cur_subset.append(nums[index])
+            self.backtrack(nums, result, cur_subset, index+1)
+            cur_subset.pop()
 
+    def subsetsWithDup(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        result, cur_subset = [], []
+        nums.sort()
+        self.backtrack(nums, result, cur_subset, 0)
+        return result
 
-def subset_duplicate_allowed(arr):
-    """
-    Not complete
-    [1, 4] and [4, 1] are same subset but current solution sees them as different
-    """
-    res = [[]]
-    uniq_set = set()
-    for ele in arr:
-        subsets = [each+[ele] for each in res]
-        for subset in subsets:
-            subset_tuple = tuple(subset)
-            if subset_tuple not in uniq_set:
-                uniq_set.add(subset_tuple)
-                res.append(subset)
-    res.sort()
-    return res
+class Solution2(object):
+    def backtrack(self, nums, result, cur_subset, start):
+        result.append(cur_subset[::])
+        for index in xrange(start, len(nums)):
+            cur_subset.append(nums[index])
+            self.backtrack(nums, result, cur_subset, index+1)
+            cur_subset.pop()
+    def subsets(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        result, cur_subset = [], []
+        self.backtrack(nums, result, cur_subset, 0)
+        return result
 
 
 def subset_without_duplicates(arr):

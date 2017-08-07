@@ -17,7 +17,6 @@ def generate_prefix_arr(needle):
                 cur += 1
     return pre_arr
 
-
 def strstr(haystack, needle):
     """
     Idea: https://www.youtube.com/watch?v=GTJr8OvyEVQ
