@@ -19,14 +19,28 @@ such as 'spar', formed from 'rasp'
 
 
 def group_anagrams(inp_list):
+    """
+    Time: O(nmlogm) #of strs is n and length of each str is m
+    """
     from collections import defaultdict
     anagram_map = defaultdict(list)
     for index, cur_str in enumerate(inp_list, start=1):
         anagram_map[''.join(sorted(cur_str))].append(index)
     return sorted(anagram_map.values(), key=lambda x: x[0])
 
+def group_anagrams2(strs):
+    import collections
+    ana_dict = collections.defaultdict(list)
+    for cur_str in strs:
+        counter = collections.Counter(cur_str)
+        cur_dict = counter.items()
+        # import ipdb; ipdb.set_trace()
+        cur_set = frozenset(cur_dict)
+        ana_dict[cur_set].append(cur_str)
+    return [each for each in ana_dict.values()]
+
 
 if __name__ == '__main__':
     inp_list = ['caa', 'tab', 'cca', 'bat']
     # inp_list = ['cat', 'dog', 'god', 'tca']
-    print group_anagrams(inp_list)
+    print group_anagrams2(inp_list)
