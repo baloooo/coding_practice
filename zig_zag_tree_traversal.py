@@ -21,29 +21,40 @@ return
 ]
 """
 
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
 
-class Solution:
-
-    def zig_zag(self, root):
-        cur_level = [root]
-        res = []
-        index = 0
+class Solution(object):
+    def zigzagLevelOrder(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[List[int]]
+	Idea: very similar to level order tree traversal
+        """
+        if root is None:
+            return []
+        cur_level, lvl_order_result, zig_zag = [root], [], False
         while cur_level:
-            next_level = []
             cur_level_nodes = []
+            next_level = []
             for node in cur_level:
                 cur_level_nodes.append(node.val)
-                if node.left is not None:
+                if node.left:
                     next_level.append(node.left)
-                if node.right is not None:
+                if node.right:
                     next_level.append(node.right)
-            if index % 2 == 0:
-                res.append(cur_level_nodes)
-            else:
-                res.append(cur_level_nodes[::-1])
-            index += 1
             cur_level = next_level
-        return res
+            if zig_zag:
+                lvl_order_result.append(cur_level_nodes[::-1])
+            else:
+                lvl_order_result.append(cur_level_nodes)
+            zig_zag = not zig_zag
+        return lvl_order_result
+        
 
 if __name__ == '__main__':
     from tree_base import level_order_array_to_tree

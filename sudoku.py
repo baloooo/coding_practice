@@ -1,43 +1,15 @@
 """
 [[53..7....], [6..195...], [.98....6.], [8...6...3], [4..8.3..1], [7...2...6], [.6....28.], [...419..5], [....8..79]]
 """
-# class Solution():
-#     def solve_sudoku(self, sudoku_board):
-#         def is_valid(row, col):
-#             # check row
-#             for cur_col in xrange(9):
-#                 if cur_col != col and sudoku_board[row][cur_col] == sudoku_board[row][col]:
-#                     return False
-#             # check col
-#             for cur_row in xrange(9):
-#                 if cur_row != row and sudoku_board[cur_row][col] == sudoku_board[row][col]:
-#                     return False
-#             # check 3*3 board
-#             sudoku_set = set()
-#             row_start = row - (row % 3)
-#             col_start = col - (col % 3)
-#             for cur_row in xrange(3):
-#                 for cur_col in xrange(3):
-#                     if sudoku_board[row_start + cur_row][col_start + cur_col] != '.' and sudoku_board[row_start + cur_row][col_start + cur_col] in sudoku_set:
-#                         return False
-#                     sudoku_set.add(sudoku_board[row_start + cur_row][col_start + cur_col])
-# 	    return True
-#         # main solver
-# 	def solver(sudoku_board):
-# 	    for row in xrange(9):
-# 		for col in xrange(9):
-# 		    if sudoku_board[row][col] == '.':
-# 			for new_val in xrange(1, 10):
-# 			    sudoku_board[row][col] = str(new_val)
-# 			    if is_valid(row, col) and solver(sudoku_board):
-# 				return True
-# 			    sudoku_board[row][col] = '.'
-#                         return False
-# 	    return True
-# 	solver(sudoku_board)
 
 
 class Solution(object):
+    """
+    Time: n^m where n is the number of possibilities for each square (i.e., 9 in classic Sudoku)
+    and m is the number of spaces that are blank.
+    Space: O(m) as can only go to 'm' level deep
+    https://stackoverflow.com/questions/15327376/algorithm-complexity-big-o-of-sudoku-solver
+    """
     def is_valid(self, board, cur_row, cur_col, cur_num):
         """
         Observation:
@@ -68,18 +40,6 @@ class Solution(object):
                                 board[cur_row][cur_col] = '.'
                     return False
         return True
-        # for i in xrange(len(board)):
-        #     for j in xrange(len(board[0])):
-        #         if board[i][j] == '.':
-        #             for c in '123456789':
-        #                 if self.is_valid(board, i, j, c):
-        #                     board[i][j] = c
-        #                     if self.solve_sudoku(board):
-        #                         return board
-        #                     else:
-        #                         board[i][j] = '.'
-        #             return False
-        # return True
 
     def solveSudoku(self, board):
         """
@@ -87,20 +47,8 @@ class Solution(object):
         :rtype: void Do not return anything, modify board in-place instead.
         Idea: https://discuss.leetcode.com/topic/11327/straight-forward-java-solution-using-backtracking/33
         """
-        # board = [int(ele) for row in board for ele in row if ele!= '.']
-        # res = []
-        # for row in board:
-        #     temp = []
-        #     for ele in row:
-        #         if ele != '.':
-        #             ele = int(ele)
-        #         temp.append(ele)
-        #     res.append(temp)
-        # board = res
-        # print board
         board = [list(row) for row in board]
         return self.solve_sudoku(board, 0, 0)
-        # return self.solve_sudoku(board)
 
 if __name__ == '__main__':
     sol = Solution()

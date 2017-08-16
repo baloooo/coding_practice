@@ -9,33 +9,48 @@ from tree_base import level_order_array_to_tree, Node
 
 
 class Solution:
+    """
+    Idea: https://discuss.leetcode.com/topic/6575/my-solutions-in-3-languages-with-stack/40
+    """
 
+# Definition for a  binary tree node
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class BSTIterator(object):
     def __init__(self, root):
+        """
+        :type root: TreeNode
+        """
         self.stack = []
-        self._populate_stack(root)
+        self.push_all(root)
+        
 
-    def _populate_stack(self, root):
-        if root is None:
-            return
-        if root.left:
-            if root.right:
-                self.stack.append(root.right)
-            self.stack.append(root.val)
-            self._populate_stack(root.left)
-        else:
-            self._populate_stack(root.right)
-            self.stack.append(root.val)
+    def hasNext(self):
+        """
+        :rtype: bool
+        """
+        return self.stack
 
     def next(self):
-        try:
-            min_val = self.stack.pop()
-        except IndexError:
-            return -1
-        if isinstance(min_val, Node):
-            self._populate_stack(min_val)
-            return self.stack.pop()
-        else:
-            return min_val
+        """
+        :rtype: int
+        """
+        next_node = self.stack.pop()
+        self.push_all(next_node.right)
+        return next_node.val
+    
+    def push_all(self, root):
+        while root is not None:
+            self.stack.append(root)
+            root = root.left
+
+# Your BSTIterator will be called like this:
+# i, v = BSTIterator(root), []
+# while i.hasNext(): v.append(i.next())
         
 
 if __name__ == '__main__':

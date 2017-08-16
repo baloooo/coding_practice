@@ -28,8 +28,19 @@ You can do similar inference for other people in the list.
 
 
 class Solution:
-    def __init__(self):
-        pass
+
+    def reconstructQueue(self, people):
+        """
+	from leetcode
+        :type people: List[List[int]]
+        :rtype: List[List[int]]
+        Idea: https://discuss.leetcode.com/topic/60981/explanation-of-the-neat-sort-insert-solution
+        Time: O(n^2) due to insert on lists
+        """
+        queue = []
+        for candidate in sorted(people, key=lambda (h,k): (-h,k)):
+            queue.insert(candidate[1], candidate)
+        return queue
 
     def construct_queue(self, heights, in_fronts):
         people = [[height, in_front] for height, in_front in zip(heights, in_fronts)]  # noqa

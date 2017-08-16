@@ -13,6 +13,31 @@ Given binary tree
 return [1,3,2].
 """
 
+def inorderTraversal(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+	Inorder using morris traversal
+	https://en.wikipedia.org/wiki/Tree_traversal#Morris_in-order_traversal_using_threading
+        """
+        inorder_repr = []
+        now = root
+        while now:
+            if now.left:
+                pre = now.left
+                while pre.right and pre.right != now:
+                    pre = pre.right
+                if pre.right != None:
+                    pre.right = None
+                    inorder_repr.append(now.val)
+                    now = now.right
+                else:
+                    pre.right = now
+                    now = now.left
+            else:
+                inorder_repr.append(now.val)
+                now = now.right
+        return inorder_repr
 
 def inorder_recursion(root):
     inorder_list = []

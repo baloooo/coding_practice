@@ -25,36 +25,7 @@ You can use extra memory, helper functions, and can modify the node struct but, 
 """
 from tree_base import level_order_array_to_tree
 
-
 class Solution:
-    def __init__(self):
-        self.path_val1 = []
-        self.path_val2 = []
-
-    def lowest_common_ancestor(self, root, val1, val2):
-        # Time: O(2*n) Space: O(n)
-        # Satisfying all conditions in problem statement.
-        lca = -1
-        self.dft_append(root, val1, self.path_val1)
-        self.dft_append(root, val2, self.path_val2)
-        for node in self.path_val1:
-            if node in self.path_val2:
-                lca = node
-        return lca
-
-    def dft_append(self, root, val, arr):
-        if root is None:
-            return
-        arr.append(root.val)
-        if root.val == val:
-            return True
-        if self.dft_append(root.left, val, arr):
-            return True
-        if self.dft_append(root.right, val, arr):
-            return True
-        arr.pop()
-
-class Solution2:
     
     def lowest_common_ancestor(self, root, val1, val2):
         # Time: O(n) Space: O(1)
@@ -71,6 +42,27 @@ class Solution2:
             return left_subtree
         if right_subtree:
             return right_subtree
+
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        """
+        :type root: TreeNode
+        :type p: TreeNode
+        :type q: TreeNode
+        :rtype: TreeNode
+        """
+	# Notice p and q are tree nodes here and not values
+        if root in [None, p, q]: return root
+        left = self.lowestCommonAncestor(root.left, p, q)
+        right = self.lowestCommonAncestor(root.right, p, q)
+        return root if left and right else left or right
 
 
 if __name__ == '__main__':

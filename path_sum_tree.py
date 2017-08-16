@@ -34,6 +34,27 @@ def tree_path_sum(root, target_sum):
         return True
     return False
 
+    def path_sum(self, root, target):
+        if root is None:
+            return
+        if root.left is None and root.right is None:
+            if target - root.val == 0:
+                self.paths.append(self.cur_path+[root.val])
+                return
+        self.cur_path.append(root.val)
+        self.path_sum(root.left, target-root.val)
+        self.path_sum(root.right, target-root.val)
+        self.cur_path.pop()
+    # @param root : root node of tree
+    # @param sum1 : integer
+    # @return a list of list of integers
+    def pathSum(self, root, target):
+	'''
+	Returns all paths sums
+	'''
+        self.cur_path, self.paths = [], []
+        self.path_sum(root, target)
+        return self.paths
 
 if __name__ == '__main__':
     target_sum, arr = 22, [5, 4, 8, 11, 13, 4, 7, 2, None, None, None, 1]

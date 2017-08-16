@@ -54,6 +54,34 @@ class Solution(object):
             if val is not None:
                 return val
 
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def preorder(self, root):
+        if root is None:
+            return
+        left = self.preorder(root.left)
+        if left is not None:
+            return left
+        if self.k == 1:
+            return root.val
+        self.k -= 1
+        return self.preorder(root.right)
+
+    def kthSmallest(self, root, k):
+        """
+        :type root: TreeNode
+        :type k: int
+        :rtype: int
+        """
+        self.k = k
+        return self.preorder(root)
+
 
 if __name__ == '__main__':
     from tree_base import level_order_array_to_tree

@@ -42,6 +42,29 @@ class Solution:
             inorder, postorder, left_in, target_index-1, self.post_index)
         return root
 
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def buildTree(self, inorder, postorder):
+        """
+        :type inorder: List[int]
+        :type postorder: List[int]
+        :rtype: TreeNode
+        """
+        if inorder:
+            root_index = inorder.index(postorder.pop())
+            root = TreeNode(inorder[root_index])
+            # Trick here is to reverse the order of right child population in postorder creation than preorder creation so as 
+            # to prevent Indexerrors
+            root.right = self.buildTree(inorder[root_index+1:], postorder)
+            root.left = self.buildTree(inorder[:root_index], postorder)
+            return root
+
 if __name__ == '__main__':
     inorder, postorder = [2, 1, 3], [2, 3, 1]
     inorder = [80, 40, 90, 20, 100, 50, 110, 10, 120, 60, 130, 30, 140, 70, 150]  # noqa

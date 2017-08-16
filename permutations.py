@@ -20,7 +20,7 @@ Example:
 
 # Time: O(n!)
 # Space: O(len(arr)) // In the form of stack frames.
-# Duplicates: Aallowed
+# Duplicates: allowed
 # Lexicographic sorted: Yes
 def permute_recursive_optimized(arr):
     pass
