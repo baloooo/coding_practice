@@ -24,32 +24,61 @@ findMedian() -> 2
 from heapq import heappush, heappop, heappushpop
 
 
-class MedianFinder:
+"""
+Heap snapshot for input:
+    ([], [10])
+    ([-10], [20])
+    ([-10], [20, 30])
+    ([-20, -10], [30, 40])
+    ([-10, -5], [20, 40, 30])
+    ([-10, -5, -3], [20, 40, 30])
+    ([-5, -1, -3], [10, 20, 30, 40])
+"""
+class MedianFinder(object):
     """
-    Heap snapshot for input:
-        ([], [10])
-        ([-10], [20])
-        ([-10], [20, 30])
-        ([-20, -10], [30, 40])
-        ([-10, -5], [20, 40, 30])
-        ([-10, -5, -3], [20, 40, 30])
-        ([-5, -1, -3], [10, 20, 30, 40])
+    Idea: https://discuss.leetcode.com/topic/27522/java-python-two-heap-solution-o-log-n-add-o-1-find
     """
     def __init__(self):
-        self.heaps = [], []
+        """
+        initialize your data structure here.
+        """
+        self.small_max_heap, self.large_min_heap = [], []
+        
 
-    def add_num(self, num):
-        small, large = self.heaps
-        heappush(small, -heappushpop(large, num))
-        if len(small) > len(large):
-            heappush(large, -heappop(small))
-
-    def find_median(self):
-        small, large = self.heaps
-        if len(large) > len(small):
-            return large[0]
+    def addNum(self, num):
+        """
+        :type num: int
+        :rtype: void
+        """
+        if len(self.small_max_heap) == len(self.large_min_heap):
+            # push in large
+            # negate element before putting in min_heap and since finally putting in to max heap, 
+            # so bring it back to original value
+            heapq.heappush(self.large_min_heap, -heapq.heappushpop(self.small_max_heap, -num))
         else:
-            return (large[0] - small[0])/2.0
+            # put actual number in as initially putting to min_heap which is auto-implemented in python
+            # but while putting in to max_heap negate the number so as to preserve overall max_heap property.
+            heapq.heappush(self.small_max_heap, -heapq.heappushpop(self.large_min_heap, num))
+        
+
+    def findMedian(self):
+        """
+        :rtype: float
+        """
+        if len(self.small_max_heap) == len(self.large_min_heap):
+            #return (self.small_max_heap[0] + self.large_min_heap[0])/2.0
+            # Since elements in self.large are negated so, negate them again to get a+b/2.0
+            return (self.large_min_heap[0] - self.small_max_heap[0])/2.0
+        else:
+            return self.large_min_heap[0]
+        
+
+
+# Your MedianFinder object will be instantiated and called as such:
+# obj = MedianFinder()
+# obj.addNum(num)
+# param_2 = obj.findMedian()
+
 
 if __name__ == '__main__':
     m_f_object = MedianFinder()
