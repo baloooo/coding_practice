@@ -44,6 +44,7 @@ class Solution1(object):
         node and kept track of. Notice we would progress the recursion
         exactly like we would for finding height of the tree since for
         each subtree we want to find the max height.
+        https://discuss.leetcode.com/topic/83456/java-solution-maxdepth/37
         """
         if root is None:
             return 0

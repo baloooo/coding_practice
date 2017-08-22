@@ -6,24 +6,30 @@ plane_attribute_map = {
     'size': {1: 'Large', 2: 'medium', 3: 'small'},
 }
 """
-Note:  The usual restrictions for pickling apply: picklable enums must be defined in the top level of a module, since unpickling requires them to be importable from that module.
-Note With pickle protocol version 4 it is possible to easily pickle enums nested in other classes.
+Note:  The usual restrictions for pickling apply: picklable enums must be
+       defined in the top level of a module, since unpickling requires them to
+       be importable from that module. Note With pickle protocol version 4 it
+       is possible to easily pickle enums nested in other classes.
 """
+
+
 class PlaneType(Enum):
     GOV = 1
     PASSENGER = 2
     CARGO = 3
     CHARTER = 4
 
+
 class PlaneSize(Enum):
     Large = 1
     Medium = 2
     Small = 3
 
+
 class ATC(object):
     """
     Todo:
-        * ATC for inflight airplanes
+        * ATC for currently in flight airplanes
         * ATC for landing/take-off permissions
     """
     def __init__(self):
@@ -35,14 +41,20 @@ class ATC(object):
         """
         self.queue.put(airplane)
 
+
 class Airplane(object):
     """
     Todo:
         * Check whether only __lt__ is ok for priority queue implementation
         * Use Enum wherever required for plane types/sizes etc.
-        * Use Queue with Threads: https://pymotw.com/2/Queue/
+        * Use Queue with Threads:
+            https://pymotw.com/2/Queue/
+            https://www.troyfawkes.com/learn-python-multithreading-queues-basics/
+            Put airplane objects to queues, and threads/processes should just
+            pick them and serve them accordingly.
 
-    Place to start: https://stackoverflow.com/questions/28465411/priority-queue-doesnt-recognize-cmp-function-in-python?rq=1
+    Place to start:
+        https://stackoverflow.com/questions/28465411/priority-queue-doesnt-recognize-cmp-function-in-python?rq=1
     https://stackoverflow.com/questions/28435104/queue-with-multi-field-sorting-on-priority-and-time
     """
     def __init__(self, plane_type, plane_size, arrival_time):
@@ -51,9 +63,11 @@ class Airplane(object):
         self.arrival_time = arrival_time
 
     def __lt__(self, other):
-        # Compare based on plane types
-        # if plane types are same comparison based on plane sizes
-        # Lastly the plane which comes first departs first, if everything else is same
+        """
+        Compare based on plane types, if plane types are same comparison based
+        on plane sizes. Lastly the plane which comes first departs first,
+        if everything else is same.
+        """
         if (self.type < other.type or self.size < other.size or
                 self.arrival_time < other.arrival_time):
             return True
@@ -87,7 +101,6 @@ if __name__ == '__main__':
     sizes: [3: small, 2: medium, 1: large]
     arrival_times: These are just time stamps
     """
-    # stream = [('cargo', 'small', 2), ('cargo', 'large', 1), ('cargo', 'small', 1)]
     stream = [(3, 3, 2), (3, 1, 1), (3, 3, 1), (1, 3, 10), (3, 3, 1)]
     for plane in stream:
         queue.put(Airplane(plane[0], plane[1], plane[2]))

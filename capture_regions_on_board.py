@@ -23,10 +23,14 @@ class Solution:
     :type board: List[List[str]]
     :rtype: void Do not return anything, modify board in-place instead.
     https://discuss.leetcode.com/topic/18706/9-lines-python-148-ms
-    """
+    Algo:
+        a) First, check the four border of the matrix.
+           If there is a 'O', alter it and all its neighbor
+           'O' elements to '1'.
+        b) Alter all the 'O' to 'X'
+        c) At last,alter all the '1' to 'O'
 
-    def __init__(self):
-        pass
+    """
 
     def bfs(self, board, row, col):
         from Queue import Queue
@@ -44,11 +48,39 @@ class Solution:
                 bfs_q.put((cur_row, cur_col+1))
                 bfs_q.put((cur_row, cur_col-1))
 
+    def solve2(self, board):
+        # check borders
+        row_len = len(board)-1
+        col_len = len(board[0])-1
+        # North  & south border
+        for col in xrange(len(board[0])):
+            if board[0][col] == 'O':
+                # iteratively convert all 0 to 1 attached to this 0
+                self.bfs(board, 0, col)
+            if board[row_len][col] == '0':
+                self.bfs(board, row_len, col)
+        # East & West border
+        for row in xrange(len(board)):
+            if board[row][0] == 'O':
+                self.bfs(board, row, 0)
+            if board[row][col_len] == 'O':
+                self.bfs(board, row, col_len)
+        # Alter all '0' to 'X'
+        for row in xrange(len(board)):
+            for col in xrange(len(board[0])):
+                if board[row][col] == 'O':
+                    board[row][col] = 'X'
+        # Revert back all '1' to '0'
+        for row in xrange(len(board)):
+            for col in xrange(len(board[0])):
+                if board[row][col] == '1':
+                    board[row][col] = 'O'
+
     def solve(self, board):
         """
         Algo:
             a) First, check the four border of the matrix.
-               If there is a element is 'O', alter it and all its neighbor
+               If there is a 'O', alter it and all its neighbor
                'O' elements to '1'.
             b) Alter all the 'O' to 'X'
             c) At last,alter all the '1' to 'O'
@@ -111,7 +143,7 @@ if __name__ == '__main__':
         (board, True),
     ]
     for test_case in test_cases:
-        res = Solution().solve(test_case[0])
+        res = Solution().solve2(test_case[0])
         if res == test_case[1]:
             print "Passed"
         else:
