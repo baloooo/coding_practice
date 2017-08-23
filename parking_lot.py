@@ -1,4 +1,5 @@
 from enum import Enum
+import abc
 """
 TODO:
     * Assign parking spaces based on their ticket duration type:
@@ -13,17 +14,48 @@ TODO:
 """
 
 
+class ParkingType(Enum):
+    Handicapped = 1
+    Large = 2
+    Regular = 3
+    Small = 4
+
+
+class ParkingSpace(object):
+    def __init__(self, type, level, spot_number):
+        self.vehicle_parked = None
+        self.type = type
+        self.spot_number = spot_number
+        self.level = level
+
+    @property
+    def is_available(self):
+        return self.vehicle_parked is None
+
+    def __lt__(self, other):
+        """
+        First preference to floor level, second to spot number within a level
+        """
+        if self.level < other.level:
+            return 1
+        if self.spot_number < other.spot_number:
+            return 1
+        return 0
+
+
 class ParkingLot(object):
     """
+    Idea: Not using Inheritance(IS-A),
+        http://www.python-course.eu/inheritance_example.php
+    but composition as it gives more flexibility (HAS-A).
+    https://en.wikipedia.org/wiki/Composition_over_inheritance
     Current implementation always hands over a parking spot that is closest
     to the entrance, therefore most convenient to park and unpark that matches
     your parking vehicle type.
     Spot number are assigned as distance from entrance/exit increases and
     up the levels, so can be used as priority in the priority queue
     Todo:
-        * Singleton
         * Add billing system(Assign tickets on entry and bill on exit)
-        * Add floors
     """
     def __init__(self):
         from Queue import PriorityQueue
@@ -31,16 +63,26 @@ class ParkingLot(object):
         # {vehicel_license_no: Vehicle object}
         self.vehicles_parked = {}
 
+    def add_parking_space(self, parking_type, floor_no, spot_no):
+        self.parking_space_queue.put(
+            ParkingSpace(parking_type, floor_no, spot_no))
+
     def park(self, vehicle):
         # Iterate over available parking spots available, and if parking
         # spot type == vehicle trying to park, park it
+        parking_spaces_push_back = []
         while not self.parking_space_queue.empty():
             candidate_parking_space = self.parking_space_queue.get()
-            if candidate_parking_space.type == vehicle.type:
+            if candidate_parking_space.type == vehicle.get_type():
                 candidate_parking_space.vehicle_parked = vehicle
                 vehicle.parking_spot = candidate_parking_space
                 self.vehicles_parked[vehicle.license_no] = vehicle
                 return True
+            parking_spaces_push_back.append(candidate_parking_space)
+        import ipdb; ipdb.set_trace()
+        # Puts back unused parking spaces
+        for parking_space in parking_spaces_push_back:
+            self.parking_space_queue.put(parking_space)
         print 'No parking space available for the current vehicle type'
         return False
 
@@ -62,37 +104,6 @@ class ParkingLot(object):
         return self.parking_space_queue.qsize()
 
 
-class ParkingType(Enum):
-    Handicapped = 1
-    Large = 2
-    Regular = 3
-    Small = 4
-
-
-class ParkingSpace(ParkingLot):
-    def __init__(self, type, level, spot_number):
-        self.vehicle_parked = None
-        self.type = type
-        self.spot_number = spot_number
-        self.level = level
-        super(ParkingSpace, self).__init__()
-        self.parking_space_queue.put(self)
-
-    @property
-    def is_available(self):
-        return self.vehicle_parked is None
-
-    def __lt__(self, other):
-        """
-        First preference to floor level, second to spot number within a level
-        """
-        if self.level < other.level:
-            return 1
-        if self.spot_number < other.number:
-            return 1
-        return 0
-
-
 class VehicleType(Enum):
     # vehicle_type: parking spots it require
     Small = 1
@@ -101,27 +112,67 @@ class VehicleType(Enum):
 
 
 class Vehicle(object):
-    def __init__(self, vehicle_type, license_no):
-        self.license_no = license_no
-        self.type = vehicle_type
-        self.parking_spot = None
+    __metaclass__ = abc.ABCMeta
+
+    # Factory(creational) design pattern
+    @classmethod
+    def factory(self, vehicle_type, license_no):
+        if vehicle_type == 'Small':
+            return Small(license_no)
+        elif vehicle_type == 'Regular':
+            return Regular(license_no)
+        elif vehicle_type == 'Large':
+            return Large(license_no)
+
+    # Forces derived classes to implement this
+    @abc.abstractmethod
+    def get_type(self):
+        raise NotImplementedError("You need to implement get_type")
 
 
-class Motorcycle(Vehicle):
+class Small(Vehicle):
     # Vehicle types further warrant a separate class since, we've to attach
     # other info with each vehicle type like number of spots it consumes or
     # whether it fits on to a ParkingSpot etc
-    def __init__(self):
-        pass
+    def __init__(self, license_no):
+        self.license_no = license_no
+        self.type = VehicleType.Small
+        self.parking_spot = None
+
+    def get_type(self):
+        return self.type
+
+
+class Regular(Vehicle):
+    # Vehicle types further warrant a separate class since, we've to attach
+    # other info with each vehicle type like number of spots it consumes or
+    # whether it fits on to a ParkingSpot etc
+    def __init__(self, license_no):
+        self.type = VehicleType.Regular
+        self.parking_spot = None
+
+    def get_type(self):
+        return self.type
+
+
+class Large(Vehicle):
+    # Vehicle types further warrant a separate class since, we've to attach
+    # other info with each vehicle type like number of spots it consumes or
+    # whether it fits on to a ParkingSpot etc
+    def __init__(self, license_no):
+        self.type = VehicleType.Large
+        self.parking_spot = None
+
+    def get_type(self):
+        return self.type
 
 if __name__ == '__main__':
     parking_lot_obj = ParkingLot()
     parking_spots = [('Regular', 1, 1), ('Regular', 1, 2)]
     for spot in parking_spots:
-        p = ParkingSpace(*spot)
+        parking_lot_obj.add_parking_space(*spot)
     incoming_vehicles = [
         ('Regular', 'TK1011'), ('Small', 'HA3511'),
         ('Large', 'HG2535')]
     for cur_vehicle in incoming_vehicles:
-        parking_lot_obj.park(Vehicle(*cur_vehicle))
-    import ipdb; ipdb.set_trace()
+        parking_lot_obj.park(Vehicle.factory(*cur_vehicle))
