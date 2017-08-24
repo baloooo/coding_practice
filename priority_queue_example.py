@@ -1,3 +1,13 @@
+"""
+Current implementation allows you to create airplane_objects from input stream
+(any source), feed these airplanes to ATC object which can then schedule
+takeoffs/ from the runway based on coded priorities.
+Todo:
+    * Add inflight support for airplanes
+    * Airplanes can enter in ATC's airspace and leave without landing therefore
+      allow them to trespass your airspace, preventing any collisions
+    * Allow interested airplanes to land/takeoff
+"""
 import Queue
 from enum import Enum
 

@@ -1,6 +1,15 @@
 from enum import Enum
 import abc
 """
+Current implementation creates a parking lot object and adds some parking
+spaces of certain types in it. Further some vehicles are created using a
+VehicleFactory class. Now parking lot object is used to park these vehicles,
+with the prime motivation of parking a vehicle as close to the entrance/exit so
+as to allow them to leave the parking lot asap. Notice that since parking
+spaces have different types (regular, handicapped) we still would park a car on
+a parking space that can fit the type of vehicle, iff the number of spots
+needed for parking are available.
+
 TODO:
     * Assign parking spaces based on their ticket duration type:
       Maintain a sorted list of parking spaces (using a LinkedList) based on
@@ -15,10 +24,8 @@ TODO:
 
 
 class ParkingType(Enum):
-    Handicapped = 1
-    Large = 2
-    Regular = 3
-    Small = 4
+    Handicapped = 'Handicap'
+    Regular = 'Regular'
 
 
 class ParkingSpace(object):
@@ -68,23 +75,38 @@ class ParkingLot(object):
             ParkingSpace(parking_type, floor_no, spot_no))
 
     def park(self, vehicle):
-        # Iterate over available parking spots available, and if parking
-        # spot type == vehicle trying to park, park it
+        """
+        Iterate over available parking spots available, and if parking
+        available for the vehicle type and number of spots are available
+        for vehicle to park, park it else return message
+        Handicaps can park in their spot or regular
+        """
         parking_spaces_push_back = []
         while not self.parking_space_queue.empty():
-            candidate_parking_space = self.parking_space_queue.get()
-            if candidate_parking_space.type == vehicle.get_type():
-                candidate_parking_space.vehicle_parked = vehicle
-                vehicle.parking_spot = candidate_parking_space
+            index = 0
+            cur_parking_spots = []
+            while (not self.parking_space_queue.empty() and
+                   index < vehicle.type.value):
+                candidate_parking_space = self.parking_space_queue.get()
+                if (vehicle.parking_type == 'Handicap' or
+                        candidate_parking_space.type == vehicle.parking_type):
+                    cur_parking_spots.append(candidate_parking_space)
+                    index += 1
+                else:
+                    # Place all unused parking spots back
+                    parking_spaces_push_back.extend(cur_parking_spots)
+                    parking_spaces_push_back.append(candidate_parking_space)
+                    break
+            else:
+                vehicle.parking_spot = cur_parking_spots
                 self.vehicles_parked[vehicle.license_no] = vehicle
-                return True
+                for parking_spot in cur_parking_spots:
+                    parking_spot.vehicle_parked = vehicle
             parking_spaces_push_back.append(candidate_parking_space)
-        import ipdb; ipdb.set_trace()
         # Puts back unused parking spaces
         for parking_space in parking_spaces_push_back:
             self.parking_space_queue.put(parking_space)
-        print 'No parking space available for the current vehicle type'
-        return False
+        return index == vehicle.type.value
 
     def unpark(self, vehicle_license_no):
         # unpark vehicle by: Generating it's bill, returning the spot back
@@ -108,21 +130,23 @@ class VehicleType(Enum):
     # vehicle_type: parking spots it require
     Small = 1
     Regular = 2
-    Large = 5
+    Large = 3
+
+
+class VehicleFactory(object):
+
+    # Factory(creational) design pattern
+    def get_vehicle(self, vehicle_type, license_no, *args, **kwargs):
+        if vehicle_type == 'Small':
+            return Small(license_no, *args, **kwargs)
+        elif vehicle_type == 'Regular':
+            return Regular(license_no, *args, **kwargs)
+        elif vehicle_type == 'Large':
+            return Large(license_no, *args, **kwargs)
 
 
 class Vehicle(object):
     __metaclass__ = abc.ABCMeta
-
-    # Factory(creational) design pattern
-    @classmethod
-    def factory(self, vehicle_type, license_no):
-        if vehicle_type == 'Small':
-            return Small(license_no)
-        elif vehicle_type == 'Regular':
-            return Regular(license_no)
-        elif vehicle_type == 'Large':
-            return Large(license_no)
 
     # Forces derived classes to implement this
     @abc.abstractmethod
@@ -131,48 +155,64 @@ class Vehicle(object):
 
 
 class Small(Vehicle):
+    def __str__(self):
+        return '''Vehicle: License_no: %s, type: %s, parking_spot: %s,
+            parking_type: %s''' % (self.license_no, self.type,
+                                   self.parking_spot, self.parking_type)
+
     # Vehicle types further warrant a separate class since, we've to attach
     # other info with each vehicle type like number of spots it consumes or
     # whether it fits on to a ParkingSpot etc
-    def __init__(self, license_no):
+    def __init__(self, license_no, parking_type='Regular'):
         self.license_no = license_no
         self.type = VehicleType.Small
         self.parking_spot = None
+        self.parking_type = parking_type
 
     def get_type(self):
-        return self.type
+        return self.type.name
 
 
 class Regular(Vehicle):
     # Vehicle types further warrant a separate class since, we've to attach
     # other info with each vehicle type like number of spots it consumes or
     # whether it fits on to a ParkingSpot etc
-    def __init__(self, license_no):
+    def __init__(self, license_no, parking_type='Regular'):
+        self.license_no = license_no
         self.type = VehicleType.Regular
         self.parking_spot = None
+        self.parking_type = parking_type
 
     def get_type(self):
-        return self.type
+        return self.type.name
 
 
 class Large(Vehicle):
     # Vehicle types further warrant a separate class since, we've to attach
     # other info with each vehicle type like number of spots it consumes or
     # whether it fits on to a ParkingSpot etc
-    def __init__(self, license_no):
+    def __init__(self, license_no, parking_type='Regular'):
+        self.license_no = license_no
         self.type = VehicleType.Large
         self.parking_spot = None
+        self.parking_type = parking_type
 
     def get_type(self):
-        return self.type
+        return self.type.name
 
 if __name__ == '__main__':
     parking_lot_obj = ParkingLot()
+    # Parking_spot (type, level/floor, spot_number)
     parking_spots = [('Regular', 1, 1), ('Regular', 1, 2)]
     for spot in parking_spots:
         parking_lot_obj.add_parking_space(*spot)
     incoming_vehicles = [
-        ('Regular', 'TK1011'), ('Small', 'HA3511'),
-        ('Large', 'HG2535')]
+        ('Regular', 'TK1011', 'Handicap'), ('Small', 'HA3511'),
+        ('Large', 'HG2535'), ('Regular', 'TK1011')]
     for cur_vehicle in incoming_vehicles:
-        parking_lot_obj.park(Vehicle.factory(*cur_vehicle))
+        vehicle_obj = VehicleFactory().get_vehicle(*cur_vehicle)
+        if parking_lot_obj.park(vehicle_obj):
+            print 'Vehicle parked %s' % vehicle_obj
+        else:
+            print '''No parking space available for the current vehicle %s
+                ''' % (vehicle_obj)
