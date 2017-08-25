@@ -6,6 +6,33 @@ class UndirectedGraphNode:
 
 
 class Solution:
+    def alternate_bfs(self, orig_root):
+        from Queue import Queue
+        import collections
+        """
+        only difference is usage of defaultdict, therefore less explicit
+        intializations.
+        """
+        if orig_root is None:
+            return
+        node_map = collections.defaultdict(lambda: UndirectedGraphNode(-1))
+        q = Queue()
+        q.put(orig_root)
+        while not q.empty():
+            cur = q.get()
+            node_map[cur].label = cur.label
+            for neighbor in cur.neighbors:
+                # if neighbor already exist, only add this as a neighbor to cur_node  # noqa
+                if neighbor in node_map:
+                    node_map[cur].neighbors.append(node_map[neighbor])
+                else:
+                    # else create this neighbor and add to node_map
+                    # add this as a neighbor to cur_node
+                    node_map[neighbor].label = neighbor.label
+                    node_map[cur].neighbors.append(node_map[neighbor])
+                    q.put(neighbor)
+        return node_map[orig_root]
+
     def bfs(self, orig_root):
         if orig_root is None:
             return None
@@ -30,7 +57,7 @@ class Solution:
     # @param node, a undirected graph node
     # @return a undirected graph node
     def cloneGraph(self, orig_root):
-        return self.bfs(orig_root)
+        return self.new_bfs(orig_root)
 
 if __name__ == '__main__':
     a = UndirectedGraphNode('a')

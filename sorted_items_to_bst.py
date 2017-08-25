@@ -55,6 +55,24 @@ class Solution(object):
             count += 1
         return count
 
+    def construct_bst2(self, start, end):
+        """
+        constructing bst using more intutive mid terminology
+        http://articles.leetcode.com/convert-sorted-list-to-balanced-binary
+        """
+        if start > end:
+            return None
+        # Note this division for mid (especially denom here)
+        mid = start + (end-start)/2
+        # sort of inorder
+        left = self.ll_to_bst(start, mid-1)
+        root = TreeNode(self.head.val)
+        self.head = self.head.next
+        right = self.ll_to_bst(mid+1, end)
+        root.left = left
+        root.right = right
+        return root
+
     def construct_bst(self, n):
         # Base case
         if n <= 0:
@@ -63,14 +81,13 @@ class Solution(object):
         left_node = self.construct_bst(n/2)
         # Allocate memory for root
         root_node = TreeNode(self.head.val)
-        # print 'n: {0}, root_node: {1}, left_node: {2}'.format(n, root_node, left_node)
         # Link above constructed left subtree with root
         root_node.left = left_node
         # Change head pointer of Linked List for parent recursive calls
         self.head = self.head.next
         # print 'new_head ', self.head
-        # Recursively construct the right subtree and link it with root 
-        # The number of nodes in right subtree  is total nodes - nodes in 
+        # Relursively construct the right subtree and link it with root
+        # The number of nodes in right subtree  is total nodes - nodes in
         # left subtree - 1 (for root) which is n-n/2-1*/
         root_node.right = self.construct_bst(n-n/2-1)
         # print 'root_node right', root_node.right
@@ -78,6 +95,8 @@ class Solution(object):
 
     def sorted_linkedlist_to_bst(self, head):
         """
+        Idea:
+            http://articles.leetcode.com/convert-sorted-list-to-balanced-binary
         Given a singly linked list where elements are sorted in ascending
         order, convert it to a height balanced BST.
         Definition for singly-linked list.
@@ -105,4 +124,3 @@ if __name__ == '__main__':
     head = construct_linked_list_from_array([10, 20, 30, 40, 50, 60])
     head = construct_linked_list_from_array([1])
     res = Solution().sorted_linkedlist_to_bst(head)
-    import ipdb; ipdb.set_trace()

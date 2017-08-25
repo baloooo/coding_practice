@@ -1,6 +1,6 @@
 """
 Find all bridges in a graph.
-Algo is similar to one used in articulation points i.e tarjan's algo.
+Algo is very similar to one used in articulation points i.e tarjan's algo.
 http://stackoverflow.com/questions/11218746/bridges-in-a-connected-graph
 """
 
@@ -24,8 +24,8 @@ class Graph:
 
     def find_bridges(self, node_map):
         """
-        This assumes graph is connected else we'll have to call find_bridges in a loop
-        unitll all non visited nodes are visited.
+        This assumes graph is connected else we'll have to call find_bridges in
+        a loop unitll all non visited nodes are visited.
         for node in node_map:
             if not node.visited:
                 self.dfs(node)
@@ -35,7 +35,7 @@ class Graph:
         return [(u.data, v.data) for u, v in self.bridges]
 
     def dfs(self, cur_node):
-        # It's just a regular DFS with a bit of book keeping, which helps us to find articulation points.  # noqa
+        # It's just a regular DFS with a bit of book keeping
         cur_node.visited_time = self.cur_time
         cur_node.low_time = self.cur_time
         self.cur_time += 1
