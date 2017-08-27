@@ -39,23 +39,25 @@ class Solution:
 
     def gas_station_route_possible_optimized(self, gas_arr, cost_arr):
         """
+        https://discuss.leetcode.com/topic/1344/share-some-of-my-ideas
         Idea:
         1. If car starts at A and can not reach B. Any station between A and B
            can not reach B.(B is the first station that A can not reach.)
         2. If the total number of gas is bigger than the total number of cost.
            There must be a solution.
         """
-        start, total, tank = 0, 0, 0
+        start, total_deficency, tank = 0, 0, 0
+        # total_deficency is the total amount of fuel we're short of when we reach the last stattion
         for i in xrange(len(gas_arr)):
             tank += gas_arr[i] - cost_arr[i]
             if tank < 0:
                 start = i + 1
                 # This accumulates all the deficiency in the gas till reset point  # noqa
-                total += tank
+                total_deficency += tank
                 tank = 0
         # Can total(deficiencies till last reset point) +
         # tank (existing gas in tank) be greater than equal to zero i.e possible to cover.  # noqa
-        return -1 if (total + tank) < 0 else start
+        return -1 if (total_deficency + tank) < 0 else start
 
     def gas_station_route_possible(self, gas_arr, cost_arr):
         # Time: O(n^2) Space: O(1)

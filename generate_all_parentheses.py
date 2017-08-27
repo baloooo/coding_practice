@@ -12,6 +12,39 @@ class Solution():
         self.cur_paran_combination = []
         self.balanced_paran = []
 
+   def gen_paran_latest(self, open_paran_count, close_paran_count):
+	"""
+        Idea: https://discuss.leetcode.com/topic/4485/concise-recursive-c-solution/33
+	open_paran_count: No. of remaining open paranthesis. '('
+	close_paran_count: No. of remaining closed paranthesis. ')'
+	"""
+        if open_paran_count == 0 and close_paran_count == 0:
+            self.parans.append(''.join(self.cur_paran))
+        else:
+            if open_paran_count > 0:
+                self.cur_paran.append('(')
+                self.gen_paran(open_paran_count-1, close_paran_count)
+                self.cur_paran.pop()
+            if open_paran_count < close_paran_count:
+		"""
+		Since a close paran will only come when there is already a open paran in place,
+		which would mean the count of remaining open parans should always be less than
+		closed parans so as to satisfy the condition that they are well formed parans.
+		"""
+                self.cur_paran.append(')')
+                self.gen_paran(open_paran_count, close_paran_count-1)
+                self.cur_paran.pop()
+
+    def generateParenthesis(self, n):
+        """
+        :type n: int
+        :rtype: List[str]
+        """
+        self.parans = []
+        self.cur_paran = []
+        self.gen_paran(n,n)
+        return self.parans 
+
     def gen_balanced_paran_simplified(self, n):
         if n<1:
             return []

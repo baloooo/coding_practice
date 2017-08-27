@@ -26,6 +26,8 @@ class Solution:
         count1, count2 = 0, 0
         for ele in nums:
             # this order of if-else matters
+	    # Always check for element equivalence first b'coz and candidate's count may go to zero and then come up back, but if 
+	    #   you check count first, whenever first time count gets to zero, candidate can be thrown out.
             if ele == cand1:
                 count1 += 1
             if ele == cand2:
@@ -73,13 +75,14 @@ class Solution:
 
 if __name__ == '__main__':
     test_cases = [
-        # ([3, 2, 3], 3),
+        # ([3, 2, 3], [3]),
         # ([1, 2], [1, 2]),
-        ([8, 8, 7, 7, 7], [8, 7]),
+        # ([8, 8, 7, 7, 7], [8, 7]),
+	([1,2,2,3,2,1,1,3], [1, 2]),
     ]
     for test_case in test_cases:
         # res = Solution().majority_element(test_case[0])
-        res = Solution().majority_element_one_third(test_case[0])
+        res = Solution().majority_element_one_third2(test_case[0])
         if res == test_case[1]:
             print "Passed"
         else:

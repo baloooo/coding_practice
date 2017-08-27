@@ -1,3 +1,11 @@
+"""
+1. Ask
+How many elevators are there?
+2. General optimal critiera
+provide even service to each floor
+minimize how long passengers wait for an elevator to arrive
+minimize how long passengers spend to get to their destination floor
+"""
 import ElevatorControllerFactory
 
 import heapq
@@ -25,14 +33,33 @@ class ElevatorController(ElevatorControllerFactory):
         """
         pass
 
-    def move_up(self):
-        self.current_floor += 1
-
-    def move_down(self):
-        self.current_floor -= 1
-
-    def get_elevator_direction(self):
+    def on_called(self, floor, direction):
+        """
+        floor: the floor that the elevator is being called to
+        direction: the direction the caller wants to go, up or down
+        """
         pass
 
-    def get_elevator_status(self):
+
+
+class Elevator:
+    def __init__(self, ele_id, cur_floor):
+        self.ele_id = ele_id
+        self.cur_floor = cur_floor
+        self.direction = 0  # 0: Idle, +1: Up, -1: Down
+
+    def on_floor_selected(self, floor):
+        """
+        floor: the floor that was requested from the elevator
+        """
+        pass
+
+    def open(self):
+        print "Doors opening on elevator %s for floor %s" % (self.ele_id, self.cur_floor)
+
+
+    def close(self):
+        print "Doors closing on elevator %s for floor %s" % (self.ele_id, self.cur_floor)
+
+    def move(self, from_floor, to_floor):
         pass
