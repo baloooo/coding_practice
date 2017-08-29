@@ -36,6 +36,9 @@ class Solution:
             # span didn't extend from last known location.
             if last_max_reach == cur_max_reach:
                 return -1
+            # if your current reach takes you to last index, you are done
+            if cur_max_reach == len(arr) - 1:
+                return jumps + 1
             # copy cur_max_reachable distance to last_max_reach and then
             # progress cur_index upto last_max_reach to find the max reachable
             # point.

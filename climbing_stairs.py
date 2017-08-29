@@ -17,6 +17,36 @@ class Solution:
     def __init__(self):
         self.ways_to_climb_map = {}
 
+    def climb_stairs2(self, n):
+        # Like Fibonacci https://discuss.leetcode.com/topic/5371/basically-it-s-a-fibonacci  # noqa
+        # Space: O(1)
+        if n <= 0:
+            return 0
+        if n == 1:
+            return 1
+        if n == 2:
+            return 2
+        dp_current, dp_second_last, dp_last = 0, 1, 2
+        for i in xrange(2, n):
+            dp_current = dp_last + dp_second_last
+            dp_last, dp_second_last = dp_current, dp_last
+        return dp_current
+
+    def climb_stairs(self, n):
+        # Like Fibonacci https://discuss.leetcode.com/topic/5371/basically-it-s-a-fibonacci  # noqa
+        # Space: O(n)
+        if n <= 0:
+            return 0
+        if n == 1:
+            return 1
+        if n == 2:
+            return 2
+        dp = [0]*(n)
+        dp[0], dp[1] = 1, 2
+        for i in xrange(2, n):
+            dp[i] = dp[i-1] + dp[i-2]
+        return dp[n-1]
+
     def ways_to_climb_stairs(self, num_of_stairs):
         # ways(n) = ways(n-1) + ways(n-2)
         if num_of_stairs == 1:
@@ -36,8 +66,8 @@ class Solution:
         return num_ways_one + num_ways_two
 
 if __name__ == '__main__':
-    num_of_stairs = 5
+    num_of_stairs = 4
     sol = Solution()
-    print sol.ways_to_climb_stairs(num_of_stairs)
-    import ipdb
-    ipdb.set_trace()
+    # print sol.ways_to_climb_stairs(num_of_stairs)
+    print sol.climb_stairs(num_of_stairs)
+    print sol.climb_stairs2(num_of_stairs)
