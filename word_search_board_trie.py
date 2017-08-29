@@ -19,19 +19,19 @@ class Solution(object):
             cur.is_word = True
 
     def dfs(self, board, i, j, cur_trie_node):
-        if not cur_trie_node.children.get(board[i][j]) or board[i][j] == '#':
+        if cur_trie_node.children.get(board[i][j]) is None or board[i][j] == '#':
             return
         cur_trie_node = cur_trie_node.children[board[i][j]]
         self.cur_word.append(board[i][j])
         if (cur_trie_node.is_word and
                 ''.join(self.cur_word) not in self.found_words):
             self.found_words.add(''.join(self.cur_word))
-            # return # Don't return here so as to catch words like pea and peas
+            # return # Here just for reminder: Don't return here so as to catch words like pea and peas
         board[i][j] = '#'
-        if i+1 < len(board): self.dfs(board, i+1, j, cur_trie_node.children[self.cur_word[-1]])
-        if i-1 >= 0: self.dfs(board, i-1, j, cur_trie_node.children[self.cur_word[-1]])
-        if j+1 < len(board): self.dfs(board, i, j+1, cur_trie_node.children[self.cur_word[-1]])
-        if j-1 >= 0: self.dfs(board, i, j-1, cur_trie_node.children[self.cur_word[-1]])
+        if i+1 < len(board): self.dfs(board, i+1, j, cur_trie_node)
+        if i-1 >= 0: self.dfs(board, i-1, j, cur_trie_node)
+        if j+1 < len(board): self.dfs(board, i, j+1, cur_trie_node)
+        if j-1 >= 0: self.dfs(board, i, j-1, cur_trie_node)
         board[i][j] = self.cur_word.pop()
 
     def findWords(self, board, words):
@@ -42,7 +42,6 @@ class Solution(object):
         """
         self.root = TrieNode()
         self.construct_trie(words)
-        import ipdb; ipdb.set_trace()
         self.found_words = set()
         self.cur_word = []
         for i in xrange(len(board)):
@@ -52,7 +51,7 @@ class Solution(object):
 
 if __name__ == '__main__':
     board, words = ["a"], ["a"]
-    board, words = ["oaan","etae","ihkr","iflv"], ["oath","pea","eat","rain"]
+    # board, words = ["oaan","etae","ihkr","iflv"], ["oath","pea","eat","rain"]
     board = [list(each) for each in board]
     words = [list(each) for each in words]
     print Solution().findWords(board, words)
