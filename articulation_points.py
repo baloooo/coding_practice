@@ -1,5 +1,12 @@
+# coding: utf-8
 """
 Find all articulation points in a graph.
+
+Implementation of Tarjan’s algorithm for finding articulation points
+
+Time Complexity: The above function is simple DFS with additional arrays.
+So time complexity is same as DFS which is O(V+E) for adjacency list
+representation of graph.
 """
 
 
@@ -27,7 +34,8 @@ class Graph:
         return [node.data for node in self.cut_vertices]
 
     def dfs(self, cur_node):
-        # It's just a regular DFS with a bit of book keeping, which helps us to find articulation points.  # noqa
+        # It's just a regular DFS with a bit of book keeping,
+        # which helps us to find articulation points.
         cur_node.visited = True
         cur_node.visited_time = self.cur_time
         cur_node.low_time = self.cur_time
@@ -76,6 +84,7 @@ if __name__ == '__main__':
         (5, [[1, 2], [0, 1], [0, 2], [0, 3], [3, 4]]),
         (4, [[0, 1], [1, 2], [2, 3]]),
         (7, [[0, 1], [1, 2], [2, 0], [1, 3], [1, 4], [1, 6], [3, 5], [4, 5]]),
+        (3, [[0, 1], [1, 0], [1, 2], [2, 1], [0, 2], [2, 0]]),
     ]
     for test_case in test_cases:
         n = test_case[0]
