@@ -92,14 +92,17 @@ class ElevatorLogic(object):
         # if elevator is idle move it
         # Todo: currently checks requests for moving up first, but can be made
         # based on timestamp of request
-        if self.callbacks.direction is None:
+        if self.callbacks.motor_direction is None:
             # calculate the direction of movement and move
-            if self.destinations[UP]:
+            if not self.destinations[UP].empty():
                 pass
-            else:
-                pass
+            elif not self.destinations[DOWN].empty():
+                if self.callbacks.current_floor > abs(self.destinations[DOWN].queue[0]):
+                    self.callbacks.motor_direction = DOWN
+                else:
+                    self.callbacks.motor_direction = UP
         # if there's any pending requests in the direction of current movement
-        if self.destination_floor > self.callbacks.current_floor:
-            self.callbacks.motor_direction = UP
-        elif self.destination_floor < self.callbacks.current_floor:
-            self.callbacks.motor_direction = DOWN
+        # if self.destination_floor > self.callbacks.current_floor:
+        #     self.callbacks.motor_direction = UP
+        # elif self.destination_floor < self.callbacks.current_floor:
+        #     self.callbacks.motor_direction = DOWN

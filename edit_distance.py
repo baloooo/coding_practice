@@ -86,8 +86,8 @@ class Solution2:
         Time: O(m*n)
         Space: O(m*n)
         http://www.geeksforgeeks.org/dynamic-programming-set-5-edit-distance/
-        https://discuss.leetcode.com/category/80/edit-distance
         https://discuss.leetcode.com/topic/17639/20ms-detailed-explained-c-solutions-o-n-space
+        https://www.youtube.com/watch?v=b6AGUjqIPsA
         """
         dp = [[0 for _ in xrange(len(str2)+1)] for _ in xrange(len(str1)+1)]
         for i in xrange(len(str1)+1):

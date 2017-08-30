@@ -68,4 +68,5 @@ if __name__ == '__main__':
     from elevator import ElevatorLogic
     e = Elevator(ElevatorLogic())
     e.call(5, DOWN)
-    e.run_until_stopped()
+    # e.run_until_stopped()
+    e.run_until_floor()
