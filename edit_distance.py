@@ -64,12 +64,17 @@ edit distance between
 class Solution2:
 
     def edit_distance_recursion(self, str1, str2, str1_index, str2_index):
+        """
+        Time: O(3^m)
+        Space: O(stack depth) which is O(max(len(str1), len(str2)))
+        """
         if str1_index == len(str1):
-            return str2_index
+            return len(str2)-str2_index
         if str2_index == len(str2):
-            return str1_index
+            return len(str1)-str1_index
         if str1[str1_index] == str2[str2_index]:
             return self.edit_distance(str1, str2, str1_index+1, str2_index+2)
+        # else:
         return 1+min(
             self.edit_distance(str1, str2, str1_index+1, str2_index),  # noqa Insert/Delete in str2
             self.edit_distance(str1, str2, str1_index, str2_index+1),  # noqa Insert/Delete in str1
@@ -78,6 +83,8 @@ class Solution2:
 
     def edit_distance_dp(self, str1, str2):
         """
+        Time: O(m*n)
+        Space: O(m*n)
         http://www.geeksforgeeks.org/dynamic-programming-set-5-edit-distance/
         https://discuss.leetcode.com/category/80/edit-distance
         https://discuss.leetcode.com/topic/17639/20ms-detailed-explained-c-solutions-o-n-space

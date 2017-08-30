@@ -97,7 +97,7 @@ class ElevatorLogic(object):
             if self.destinations[UP]:
                 pass
             else:
-                
+                pass
         # if there's any pending requests in the direction of current movement
         if self.destination_floor > self.callbacks.current_floor:
             self.callbacks.motor_direction = UP
