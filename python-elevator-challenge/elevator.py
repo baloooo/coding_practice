@@ -59,6 +59,7 @@ class ElevatorLogic(object):
 
     def on_floor_selected(self, floor):
         """
+        -> called from select_floor
         This is called when somebody on the elevator chooses a floor.
         This could happen at any time, whether or not the elevator is moving.
         Any floor could be requested at any time.
@@ -66,9 +67,9 @@ class ElevatorLogic(object):
         floor: the floor that was requested
         """
         # Request is in the same direction as current movement
-        if (self.direction*floor <= self.direction*self.callbacks.current_floor or  # noqa
-            self.direction*floor >= self.direction*self.callbacks.current_floor):  # noqa
-                return
+        # if (self.direction*floor <= self.direction*self.callbacks.current_floor or  # noqa
+        #     self.direction*floor >= self.direction*self.callbacks.current_floor):  # noqa
+        #         return
         # If request is for a floor to come ahead
         if self.direction*self.callbacks.current_floor < self.direction*floor:
             self.destinations[self.direction].put(self.direction*floor)
@@ -92,15 +93,51 @@ class ElevatorLogic(object):
         # if elevator is idle move it
         # Todo: currently checks requests for moving up first, but can be made
         # based on timestamp of request
+        # import ipdb; ipdb.set_trace()
+        self.destination_floor = None
         if self.callbacks.motor_direction is None:
-            # calculate the direction of movement and move
+            """
+            if the elevator is idle
+                See if there are any pending requests for going up(first)
+                    Yes: service them
+                    NO: See if there are any requests for going down
+                        Yes: service them
+                        NO: set motor_direction and direction to NONE
+            """
             if not self.destinations[UP].empty():
                 pass
             elif not self.destinations[DOWN].empty():
-                if self.callbacks.current_floor > abs(self.destinations[DOWN].queue[0]):
-                    self.callbacks.motor_direction = DOWN
+                self.destination_floor = self.destinations[DOWN].get()
+                self.direction = (
+                    UP if self.destination_floor > self.callbacks.current_floor
+                    else DOWN)
+                self.destination_floor = abs(self.destination_floor)
+                self.callbacks.motor_direction = (
+                    UP if self.destination_floor > self.callbacks.current_floor
+                    else DOWN)
+            else:
+                self.callbacks.motor_direction = self.direction = None
+        elif self.callbacks.motor_direction == UP:
+            """
+            If the elevator is going up:
+                See if there are any pending requests ahead
+                    if yes: service them
+                    no: check if going down has some requests to be serviced
+                        yes: service them
+                        no: set motor direction and direction to None
+            """
+            if not self.destinations[UP].empty():
+                pass
+            else:
+                # No more pending requests in upward direction
+                if not self.destinations[DOWN].empty():
+                    self.callbacks.motor_direction = self.direction = None
                 else:
-                    self.callbacks.motor_direction = UP
+                    self.callbacks.motor_direction = DOWN
+                    self.destination_floor = abs(self.destinations[DOWN].get())
+        else:
+            # Elevator going down
+            print 'wants go down, add logic for it.'
         # if there's any pending requests in the direction of current movement
         # if self.destination_floor > self.callbacks.current_floor:
         #     self.callbacks.motor_direction = UP

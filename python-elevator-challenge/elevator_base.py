@@ -67,6 +67,19 @@ class Elevator(Elevator):
 if __name__ == '__main__':
     from elevator import ElevatorLogic
     e = Elevator(ElevatorLogic())
-    e.call(5, DOWN)
+    # Test case 1
+    # this means someone pushed a down button on 5th floor
+    # e.call(5, DOWN)
     # e.run_until_stopped()
-    e.run_until_floor()
+    # print 'stopped'
+    # e.select_floor(1)
+    # e.call(3, DOWN)
+    # e.run_until_stopped()
+    # print 'stopped'
+    # e.run_until_stopped()
+    # print 'stopped'
+    # Test case 2
+    e.call(2, DOWN)
+    e.select_floor(5)
+    e.run_until_stopped()
+    e.run_until_stopped()

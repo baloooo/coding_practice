@@ -60,8 +60,9 @@ class Trie(object):
     #         return
     #     # All children smaller than root
     #     # self._inorder(root.left)
-    #     sorted_keys = 
-    #     for child in [left_child for child in sorted(root.children) if child < root.val]:
+    #     sorted_keys =
+    #     for child in [
+#         left_child for child in sorted(root.children) if child < root.val]:
     #         self._inorder(child)
     #     print root.val
     #     # All children greater than root
@@ -70,8 +71,84 @@ class Trie(object):
     # def sorted_values(self):
     #     self._inorder(self.root)
 
+
+class CompactTrieNode(object):
+    def __init__(self):
+        self.word = None
+        self.children = {}
+        self.is_word = False
+
+
+class CompactTrie(object):
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.cur = None
+        self.root = CompactTrieNode()
+
+    def insert(self, word):
+        """
+        Inserts a word into the trie.
+        :type word: str
+        :rtype: void
+        """
+        cur = self.root
+        cur[word[0]] = ?
+        for index, ch in enumerate(word):
+            if cur.children.get(ch):
+                cur = cur.children[ch]
+            else:
+                cur.word = word[index:]
+        cur.is_word = True
+
+    def search(self, word):
+        """
+        Returns if the word is in the trie.
+        :type word: str
+        :rtype: bool
+        """
+        cur = self.root
+        for ch in word:
+            cur = cur.children.get(ch)
+            if cur is None:
+                return False
+        return cur.is_word
+
+    def startsWith(self, prefix):
+        """
+        Returns if there is any word in the trie with the given prefix.
+        :type prefix: str
+        :rtype: bool
+        """
+        cur = self.root
+        for letter in prefix:
+            cur = cur.children.get(letter)
+            if cur is None:
+                return False
+        return True
+
+    def all_prefixes(self, prefix):
+        """
+        returns all strings in datastructure that have this prefix
+        """
+        pass
+
+
 # Your Trie object will be instantiated and called as such:
 # obj = Trie()
-# obj.insert(word)
-# param_2 = obj.search(word)
-# param_3 = obj.startsWith(prefix)
+# words = ['romane', 'romanus', 'romulus', 'rubens', 'ruber', 'rubicon',
+#          'rubicundus']
+# for word in words:
+#     obj.insert(word)
+# param_2 = obj.search('rubicon')
+# param_3 = obj.startsWith('rubi')
+obj = CompactTrie()
+words = ['romane', 'romanus', 'romulus', 'rubens', 'ruber', 'rubicon',
+         'rubicundus']
+for word in words:
+    obj.insert(word)
+param_2 = obj.search('rubicon')
+param_3 = obj.startsWith('rubi')
+import ipdb; ipdb.set_trace()
