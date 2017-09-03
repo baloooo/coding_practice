@@ -1,6 +1,7 @@
 from enum import Enum
 import abc
 """
+* Good video source: https://www.youtube.com/watch?v=DSGsa0pu8-k
 Current implementation creates a parking lot object and adds some parking
 spaces of certain types in it. Further some vehicles are created using a
 VehicleFactory class. Now parking lot object is used to park these vehicles,
@@ -63,6 +64,9 @@ class ParkingLot(object):
     up the levels, so can be used as priority in the priority queue
     Todo:
         * Add billing system(Assign tickets on entry and bill on exit)
+        * Also it might be a good idea to have separate priority queues for each type
+          of parking spaces instead of popping and putting back loops also this would
+          break it to constant time task as number of parking types is very small constant.
     """
     def __init__(self):
         from Queue import PriorityQueue
