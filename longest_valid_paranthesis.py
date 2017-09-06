@@ -13,14 +13,10 @@ Another example is ")()())", where the longest valid parentheses substring is
 # Time: O(n)
 # Space: O(n) (in the form of stack)
 class Solution:
-    def longest_valid_paranthesis_optimized(self, inp_str):
-        # Time: O(n)
-        # Space: O(1)
-        pass
-
     """
     Algo:
-    1) Create an empty stack and push -1 to it. The first element
+    1) Create an empty stack and use last to track base for longest valid paran
+        # Alternatively  push -1 to it. The first element
        of stack is used to provide base for next valid string.
 
     2) Initialize result as 0.

@@ -11,23 +11,62 @@ How many possible unique paths are there?
 
 
 class Solution(object):
+
+    def find_unique_paths_bruteforce_main(self, x, y, m, n):
+        """
+        Time: O((m+n)!/m!n!)
+        https://stackoverflow.com/questions/17207266/robot-moving-in-a-grid-algorithm-possible-paths-and-time-complexity
+        https://stackoverflow.com/questions/11607376/which-function-grows-faster-exponential-or-factorial
+        Space: O(max(m, n))
+        """
+        if x > m or y > n:
+            return 0
+        if x == m-1 and y == n-1:
+            return 1
+        return(self.find_unique_paths(x+1, y, m, n) +
+               self.find_unique_paths(x, y+1, m, n))
+
+    def unique_paths_bruteforce(self, m, n):
+        self.unique_paths_bruteforce = 0
+        self.find_unique_paths_bruteforce_main(0, 0, m, n)
+        return self.unique_paths_bruteforce
+
     def unique_paths(self, m, n):
         """
-        :type m: int
-        :type n: int
-        :rtype: int
+        Time: O(m*n)
+        Space: O(m*n)
         """
-        path_map = [[0 for col in xrange(n)] for row in xrange(m)]
-        # preprocess path_map
-        for col in xrange(n):
-            path_map[0][col] = 1
-        for row in xrange(m):
-            path_map[row][0] = 1
-        for cur_row in xrange(1, m):
-            for cur_col in xrange(1, n):
-                # Starts from (1,1)
-                path_map[cur_row][cur_col] = path_map[cur_row-1][cur_col] + path_map[cur_row][cur_col-1]  # noqa
-        return path_map[m-1][n-1]
+        dp = [[0 for _ in xrange(n)] for _ in xrange(m)]
+        for i in xrange(m):
+            for j in xrange(n):
+                if i == 0:
+                    dp[i][j] = 1
+                elif j == 0:
+                    dp[i][j] = 1
+                else:
+                    dp[i][j] = dp[i-1][j]+dp[i][j-1]
+        return dp[m-1][n-1]
+
+    def unique_paths_dp(self, obstacle_grid):
+        """
+        Time: O(m*n)
+        Space: O(m*n)
+        """
+        col = len(obstacle_grid[0])
+        row = len(obstacle_grid)
+        dp = [[0 for _ in xrange(col+1)] for _ in xrange(row+1)]
+        """
+        Not sure completely: This is just a trick:
+        We've included an extra row and col. So what we're essentially trying
+        to acheive here is that we want to start the count since all values
+        are initialized to zero this one will kick start the count.
+        """
+        dp[0][1] = 1
+        for i in xrange(1, row+1):
+            for j in xrange(1, col+1):
+                if obstacle_grid[i-1][j-1] != 1:
+                    dp[i][j] = dp[i-1][j] + dp[i][j-1]
+        return dp[row][col]
 
     def unique_paths2(self, obstacle_grid):
         """

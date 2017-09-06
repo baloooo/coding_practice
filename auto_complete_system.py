@@ -2,10 +2,27 @@ from collections import defaultdict
 from bisect import bisect_left, insort
 
 """
+https://leetcode.com/articles/design-search-autocomplete-system/
+Performance Analysis
+
+AutocompleteSystem() takes O(k*l)O(k∗l) time. We need to iterate over ll sentences each of average length kk, to create the trie for the given set of sentencessentences.
+
+p = number of nodes up untill here i.e len(cur_prefix)
+q = total nodes in the subtree with cur_root as the root node, where cur_root
+is the end of cur_prefix
+m is the total_words in this subtree of q nodes(i.e nodes which have is_word = True)
+
+input() takes O\big(p+q+mlog(m)\big)O(p+q+mlog(m)) time. Here, pp refers to the length of the sentence formed till now, cur_sencur
+​s
+​​ en. qq refers to the number of nodes in the trie considering the sentence formed till now as the root node. Again, we need to sort the listlist of length mm indicating the options available for the hot sentences, which takes O\big(mlog(m)\big)O(mlog(m)) time.
+
 Current:
     Searching working fine.
     You can add new elements by appending '#' at the end of string.
 Todo:
+    1. Trying to implement dynamic population of top hits at the end of cur_prefix.
+    Is this being followed:
+    From this point onwards, we traverse all the branches possible in the Trie, put the sentences/words formed by these branches to a listlist along with their corresponding number of occurences, and find the best 3 out of them similar to the last approach.
     Also if there are duplicates in warm up data consolidate them
     Bumping existing elements freq by searching for them (not working)
 """
@@ -19,6 +36,8 @@ class TrieNode:
         # Sorted array to store all words in this
         # (w/ current node as root) subtree.
         self.top_hits = []
+        # Can be used by strategy when you search for top hits on the fly.
+        self.freq = 0
 
 
 class Sentence(object):
@@ -57,6 +76,7 @@ class AutoComplete(object):
 
     def populate_trie(self, sentences, times):
         for sentence, time in zip(sentences, times):
+            # Prevents adding same sentence again.
             if self.existing_sentences.get(sentence):
                 cur_sentence = self.existing_sentences[sentence]
             else:
@@ -68,6 +88,46 @@ class AutoComplete(object):
                 cur_root = cur_root.children[char]
             self._add_to_top_hits(cur_root, cur_sentence)
             cur_root.is_word = True
+            cur_root.freq = time
+
+    def bfs(self, cur_node, edit_distance):
+        from Queue import Queue
+        q = Queue()
+        q.put(cur_node)
+        """
+        Todo: Add a strategy to cache words from cur_node to min1 index
+        for each min and return that.
+        we can use constant elements right now, but this can be extended
+        for arbitrary k by usin a min heap and for bfs and running pop k times
+        in the end.
+        """
+        # (sentence_obj, freq)
+        min1 = Sentence('dummy', 0)
+        min2 = Sentence('dummy', 0)
+        min3 = Sentence('dummy', 0)
+        while not q.empty() and edit_distance != 0:
+            if edit_distance is not None:
+                edit_distance -= 1
+            cur = q.get()
+            if cur.is_word:
+                if cur.freq < min1:
+                    min3 = min2
+                    min2 = min1
+                    min1 = cur
+                elif cur.freq < min2[1]:
+                    min3 = min2
+                    min2 = cur
+                elif cur.freq < min3[1]:
+                    min3 = cur
+            for each in cur.children.values():
+                q.put(each)
+        import ipdb; ipdb.set_trace()
+        return [min1, min2, min3]
+
+    def get_top_hits(self, cur_node, edit_distance=None):
+        # edit distance would govern,till how much can the top hit be different
+        # from our prefix
+        return self.bfs(cur_node, edit_distance)
 
     def search(self):
         cur = self.root
@@ -82,7 +142,11 @@ class AutoComplete(object):
                 cur = cur.children.get(char)
             else:
                 return []
-        return cur.top_hits[-3:][::-1]
+        # use this when you want to search for top hits on the fly using end
+        # of cur_prefix as the root node.
+        return self.get_top_hits(cur)
+        # use this when you want to store results on each intermediate node
+        # return cur.top_hits[-3:][::-1]
 
 if __name__ == '__main__':
     sentences, times = ([
