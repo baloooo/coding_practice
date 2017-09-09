@@ -20,9 +20,7 @@ Current:
     Searching working fine.
     You can add new elements by appending '#' at the end of string.
 Todo:
-    1. Trying to implement dynamic population of top hits at the end of cur_prefix.
-    Is this being followed:
-    From this point onwards, we traverse all the branches possible in the Trie, put the sentences/words formed by these branches to a listlist along with their corresponding number of occurences, and find the best 3 out of them similar to the last approach.
+    Trying to implement dynamic population of top hits at the end of cur_prefix.
     Also if there are duplicates in warm up data consolidate them
     Bumping existing elements freq by searching for them (not working)
 """
