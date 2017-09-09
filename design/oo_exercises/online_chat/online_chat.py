@@ -1,4 +1,5 @@
 from abc import ABCMeta
+# https://code.facebook.com/posts/820258981365363/building-mobile-first-infrastructure-for-messenger/
 
 
 class UserService(object):
@@ -38,6 +39,12 @@ class Chat(metaclass=ABCMeta):
     def __init__(self, chat_id):
         self.chat_id = chat_id
         self.users = []
+        '''
+        This will be a ordered queue
+        we can have two pointers within here, one points to the point untill
+        where messages have been synced to DB and the other till where user
+        has seen messages.
+        '''
         self.messages = []
 
 
