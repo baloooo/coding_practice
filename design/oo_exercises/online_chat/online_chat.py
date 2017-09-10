@@ -1,5 +1,35 @@
 from abc import ABCMeta
 # https://code.facebook.com/posts/820258981365363/building-mobile-first-infrastructure-for-messenger/
+"""
+Possibly use observer pattern to notify users in GroupChats about messages sent.
+Supplementary material:
+cassandra vs hbase: https://stackoverflow.com/questions/14950728/why-hbase-is-a-better-choice-than-cassandra-with-hadoop
+https://github.com/miguelalba-old/hfdp-python/blob/master/factory/pizzas.py
+https://github.com/miguelalba-old/hfdp-python/blob/master/singleton/chocolateboiler.py
+http://highscalability.com/blog/2014/2/26/the-whatsapp-architecture-facebook-bought-for-19-billion.html
+
+"""
+
+class Messenger(object):
+    '''
+    Messenger is a singleton class
+    One possible strategy could be to have sort of mailboxes for each users on the server, and when one
+    user sends some message directly to other it can sit in users mailbox along with other messages for 
+    group chat and others. When user opens up the mobile application and asks for the delta of messages
+    since the last syn from the server they can push the mailbox down to user mobile and then mobile app
+    can sort the messages in to one-one messages and group messages and render them in app for reading.
+    https://www.safaribooksonline.com/library/view/designing-data-intensive-applications/9781491903063/ch01.html
+    '''
+    _instance = None
+    _lock = thread.allocate_lock()
+
+    def __new__(cls):
+        cls._lock_acquire()
+        if cls._instance is None:
+            cls._instance = object.__new__(cls)
+        cls._lock_release()
+        return cls.__instance
+
 
 
 class UserService(object):
@@ -32,13 +62,22 @@ class User(object):
     def receive_friend_request(self, friend_id):  # ...
     def approve_friend_request(self, friend_id):  # ...
     def reject_friend_request(self, friend_id):  # ...
+    def fetch_recent_mesages(self):
+        # Messenger will be a singleton class, which creates an instance of the backend
+        # Messenger class which has UserService and other classes
+        messenger = Messenger()
+        # last_synced_timestamp would help messenger backend to only send the messages we have
+        # not received since last sync and prevent unnecessary bandwidth usage
+        new_messages = messenger.get_recent_messages(user_id, self.last_synced_timestamp)
+        # this method would distribute these new messages to each of the chats
+        self.serve_messages(new_messages)
 
 
 class Chat(metaclass=ABCMeta):
 
-    def __init__(self, chat_id):
+    def __init__(self, chat_id, users):
         self.chat_id = chat_id
-        self.users = []
+        self.users = users
         '''
         This will be a ordered queue
         we can have two pointers within here, one points to the point untill
@@ -46,6 +85,24 @@ class Chat(metaclass=ABCMeta):
         has seen messages.
         '''
         self.messages = []
+
+    @abstractmethod
+    def registerObserver(self, observer):
+        '''
+        Registers observer/chat participants
+        '''
+        pass
+
+    @abstractmethod
+    def removeObserver(self, observer):
+        pass
+
+    @abstractmethod
+    def notifyObserver(self):
+        '''
+        Notify observers/chat participants a message was dropped.
+        '''
+        pass
 
 
 class PrivateChat(Chat):
@@ -57,6 +114,28 @@ class PrivateChat(Chat):
 
 
 class GroupChat(Chat):
+    def __init__(self, chat_id, users):
+        super(GroupChat, self).__init__(chat_id, users)
+
+    def drop_message(self, user, message_text):
+        # gets unique message id from a service
+        message_id = self.get_message_id()
+        message = Message(message_id, message_text, user)
+        # stored in message history of group
+        self.messages.append(message)
+        self.notifyObserver(message)
+
+    def registerObserver(self, user):
+        '''
+        add_user and registerObserver can be same
+        '''
+        pass
+
+    def notifyObserver(self, message):
+        for user in self.users:
+            if user != message.user:
+                # don't send notification to user who generated the message
+                user.receive_message(message)
 
     def add_user(self, user):  # ...
     def remove_user(self, user):  # ... 
@@ -64,10 +143,12 @@ class GroupChat(Chat):
 
 class Message(object):
 
-    def __init__(self, message_id, message, timestamp):
+    def __init__(self, message_id, message, user):
+        # user who generated the message
+        self.user = user
         self.message_id = message_id
         self.message = message
-        self.timestamp = timestamp
+        self.timestamp = datetime.now()
 
 
 class AddRequest(object):

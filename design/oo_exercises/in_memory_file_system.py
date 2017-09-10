@@ -1,4 +1,32 @@
 """
+Ex:
+    ipdb> fs
+    <__main__.FileSystem instance at 0x107a213f8>
+    ipdb> fs.ls('/')
+    []
+    ipdb> fs.mkdir('/a/b/c')
+    ipdb> fs.ls('/a/')
+    ['b']
+    ipdb> fs.ls('/a/b')
+    ['c']
+    ipdb> fs.ls('/'))
+    *** SyntaxError: invalid syntax (<stdin>, line 1)
+    ipdb> fs.ls('/')
+    ['a']
+    ipdb> fs.cd('/a')
+    <__main__.Dir object at 0x108d42550>
+    ipdb> x=fs.cd('/a')
+    ipdb> x
+    <__main__.Dir object at 0x108d42550>
+    ipdb> print x
+    Dir name a
+    ipdb> x.parent
+    <__main__.Dir object at 0x107a16790>
+    ipdb> print x.parent
+    Dir name root
+    ipdb> print x.parent.parent
+    root
+
 check: https://leetcode.com/articles/design-in-memory-file-system/ for performance analysis
 
 * Additional operations that can be implemented:
@@ -31,21 +59,27 @@ class Entry(object):
 
 
 class File(Entry):
-    def __init__(self, cur_root, file_name, contents):
+    def __str__(self):
+        return 'File name %s' % self.name
+
+    def __init__(self, parent_dir, file_name, contents):
         self.contents = contents
-        super(File, self).__init__(cur_root, file_name)
+        super(File, self).__init__(parent_dir, file_name)
 
 
-class Dir:
-    def __init__(self, cur_root, dir_name):
+class Dir(Entry):
+    def __str__(self):
+        return 'Dir name %s' % self.name
+
+    def __init__(self, parent_dir, dir_name):
         # These children can be files or dirs
         self.children = OrderedDict()
-        super(File, self).__init__(cur_root, dir_name)
+        super(Dir, self).__init__(parent_dir, dir_name)
 
 
 class FileSystem:
     def __init__(self):
-        self.root = Dir()
+        self.root = Dir('root', 'root')
 
     def cd(self, path, root=None):
         """
@@ -90,7 +124,7 @@ class FileSystem:
             if subdir == '':
                 continue
             if not root.children.get(subdir):
-                root.children[subdir] = Dir()
+                root.children[subdir] = Dir(root, subdir)
             root = root.children[subdir]
 
 if __name__ == '__main__':
@@ -99,5 +133,6 @@ if __name__ == '__main__':
     args = [
         ["/"], ["/a/b/c"], ["/a/b/c/d", "hello"], ["/"], ["/a/b/c/d"]]
     fs = FileSystem()
+    import ipdb; ipdb.set_trace()
     for command, arg in zip(commands, args):
         print getattr(fs, command)(*arg)

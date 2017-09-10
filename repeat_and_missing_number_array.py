@@ -15,6 +15,7 @@ A='533 389 299 65 518 361 103 342 406 24 79 192 181 178 205 38 298 218 143 446 3
 """
 Idea: https://stackoverflow.com/a/5767648/2795050
 """
+# method 2
 A = [int(x) for x in A.split(' ')]
 n=len(A)
 xor_inp_arr = 0
@@ -43,9 +44,10 @@ for ele in xrange(1, n+1):
 
 
 print "Missing element is %d and repeating element is %d" % (set_b, set_a)
-# method 1
 
-# method 2
+# method 1
+#succeptible to stack overflows, so should be avoided
+# https://stackoverflow.com/a/5767111/2795050
 # sum_of_array = sum(A)
 # sum_of_n = sum(range(n+1))
 # product_of_array = 1
