@@ -40,33 +40,29 @@ https://stackoverflow.com/questions/17562089/how-to-count-number-of-requests-in-
 
 
 class HitCounter(object):
+    # https://discuss.leetcode.com/topic/48758/super-easy-design-o-1-hit-o-s-gethits-no-fancy-data-structure-is-needed/19
 
     def __init__(self):
         """
         Initialize your data structure here.
         """
-        self.hit_arr = [(0, 0) for _ in xrange(300)]
-        # from collections import deque
-        # self.num_of_hits = 0
-        # self.time_hits = deque()
+        # q is the hit array
+        # each slot in this q/arr is for one second in the 5 minute window
+        self.q = [(0, 0) for _ in xrange(300)]
 
-    def hit(self, cur_timestamp):
+    def hit(self, timestamp):
         """
         Record a hit.
         @param timestamp - The current timestamp (in seconds granularity).
         :type timestamp: int
         :rtype: void
         """
-        cur_val, stored_timestamp = self.hit_arr[cur_timestamp % 300]
-        if cur_timestamp - stored_timestamp > 300:
-            self.hit_arr[cur_timestamp % 300] = (1, cur_timestamp)
+        idx = timestamp % 300
+        time, hit = self.q[idx]
+        if time != timestamp:
+            self.q[idx] = timestamp, 1
         else:
-            self.hit_arr[cur_timestamp % 300] += 1
-        # if not self.time_hits or self.time_hits[-1][0] != timestamp:
-        #     self.time_hits.append([timestamp, 1])
-        # else:
-        #     self.time_hits[-1][1] += 1
-        # self.num_of_hits += 1
+            self.q[idx] = time, hit + 1
 
     def getHits(self, timestamp):
         """
@@ -75,7 +71,33 @@ class HitCounter(object):
         :type timestamp: int
         :rtype: int
         """
-        pass
-        # while self.time_hits and self.time_hits[0][0] <= timestamp - 300:
-        #     self.num_of_hits -= self.time_hits.popleft()[1]
-        # return self.num_of_hits
+        no_of_hits = 0
+        for i in xrange(len(self.q)):
+            time, hit = self.q[i]
+            if timestamp - time < 300:
+                no_of_hits += hit
+        return no_of_hits
+
+if __name__ == '__main__':
+    counter = HitCounter()
+
+    # hit at timestamp 1.
+    counter.hit(1)
+
+    # // hit at timestamp 2.
+    counter.hit(2)
+
+    # // hit at timestamp 3.
+    counter.hit(3)
+
+    # // get hits at timestamp 4, should return 3.
+    print counter.getHits(4)
+
+    # // hit at timestamp 300.
+    counter.hit(300)
+
+    # // get hits at timestamp 300, should return 4.
+    print counter.getHits(300)
+
+    # // get hits at timestamp 301, should return 3.
+    print counter.getHits(301)

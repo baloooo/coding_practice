@@ -64,40 +64,40 @@ class Solution:
         self.dfs(root, prefix)
         return self.prefixes
 
+    def build(self, square):
+        if len(square) >= self.n:
+            # since once length of square gets equal to n we can't get a match
+            # so fold and go home, we've found a match since we were returning only
+            # matching prefixes
+            self.squares.append(square)
+            return
+        cur_prefix = [each[len(square)] for each in square]
+        for word in self.search_prefix(self.root, cur_prefix):
+            self.build(square + [word])
+
     def find_word_square(self, word_list):
         """
         https://discuss.leetcode.com/topic/63428/short-python-c-solution
         https://discuss.leetcode.com/topic/63516/explained-my-java-solution-using-trie-126ms-16-16
         """
-        root = self.create_trie(word_list)
+        self.n = len(word_list)
+        self.root = self.create_trie(word_list)
         # Iterate over words and search for matching prefix
-        final_word_lists = []
-        for cur_index in xrange(len(word_list)):
-            word_list[cur_index], word_list[0] = word_list[0], word_list[cur_index]  # noqa
-            possible_word_arrngmnt = [word_list[0]]
-            # this assumes atleast 2 char
-            cur_prefix = [word_list[0][1]]
-            for index in xrange(1, len(word_list[0])):
-                next_word = self.search_prefix(root, cur_prefix)
-                if not next_word:
-                    break
-                # Todo: currently assuming there would be only one prefix
-                possible_word_arrngmnt.append(''.join(next_word[0]))
-                if len(possible_word_arrngmnt) != len(word_list[0]):
-                    cur_prefix = [each[len(possible_word_arrngmnt)] for each in possible_word_arrngmnt]
-            else:
-                final_word_lists.append(possible_word_arrngmnt[:])
-            word_list[cur_index], word_list[0] = word_list[0], word_list[cur_index]  # noqa
-        return final_word_lists
+        self.squares = []
+        for word in word_list:
+            self.build([list(word)])
+        return self.squares
 
 if __name__ == '__main__':
     test_cases = [
+        # (["area", "lead", "wall", "lady"], 'sol1'),
         # (["area", "lead", "wall", "lady", "ball"], 'sol1'),
-        (["abat","baba","atan","atal"] , 'sol1'),
+        (["abat", "baba", "atan", "atal"], 'sol1'),
         # (["aaa", "aaa", "aaa", "aaa", "aaa"], 'sol1'),
     ]
     for test_case in test_cases:
         res = Solution().find_word_square(test_case[0])
+        print 'Result ', res
         if res == test_case[1]:
             print "Passed"
         else:
