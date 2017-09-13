@@ -1,7 +1,15 @@
+'''
+Whether you can attend all meetings if intervals are given use
+
+https://discuss.leetcode.com/topic/20959/ac-clean-java-solution
+'''
+
 """
 Given an array of meeting time intervals consisting of start and end times
 [[s1,e1],[s2,e2],...] find the minimum number of conference rooms required.
 """
+
+
 class Interval:
     def __init__(self, start, end):
         self.start = start
