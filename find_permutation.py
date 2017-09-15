@@ -36,7 +36,7 @@ def sol_rev(pattern):
         i = j
         while j < len(pattern) and pattern[j] == 'D':
             j += 1
-        reverse(arr, i, j)
+        reverse(arr, i-1, j)
         j += 1
     return arr
 

@@ -35,6 +35,7 @@ class Solution:
         matrix.reverse()
         for row in xrange(len(matrix)):
             for col in xrange(row):
+                # Notice: loop only runs for half the matrix
                 matrix[row][col], matrix[col][row] = matrix[col][row], matrix[row][col]
         return matrix
 
