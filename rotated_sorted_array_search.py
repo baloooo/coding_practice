@@ -12,35 +12,46 @@ Input : [4 5 6 7 0 1 2] and target = 4
 Output : 0
 
 NOTE : Think about the case when there are duplicates. Does your current solution work? How does the time complexity change?*
-https://github.com/kamyu104/LeetCode/blob/master/Python/search-in-rotated-sorted-array.py
 """
-def r_bs(arr, lo, hi, x):
-    while(lo<=hi):
-        if lo+1==hi:
-            if arr[lo] == x:
-                return lo
-            elif arr[hi] == x:
-                return hi
-            else:
-                return -1
+def search(nums, target):
+    '''
+    Idea: https://discuss.leetcode.com/topic/16580/java-ac-solution-using-once-binary-search
+    '''
+    lo, hi = 0, len(nums)-1
+    while lo <= hi:
+        # equal sign to accomodate when array len is 1
         mid = lo + (hi-lo)/2
-        if arr[mid] == x:
+        if nums[mid] == target:
             return mid
-        # print 'lo: %d mid: %d hi: %d' % (lo, mid, hi)
-        # print 'lo: %d mid: %d hi: %d' % (arr[lo], arr[mid], arr[hi])
-        if (arr[lo]<=arr[mid] and (arr[lo]<=x<arr[mid])) or (arr[lo]>arr[mid] and not (arr[mid]<x<=arr[hi])):
-            # go left
-            hi = mid - 1
-            # print 'going left new hi %d' % hi
+        # if lo to mid is sorted and target is in b/w lo to mid OR lo to mid has rotation and target not in mid to hi range.
+        # Note: take care of < and <= and for opposite sign
+        if ((nums[lo] <= nums[mid] and nums[lo] <= target < nums[mid])
+            or (nums[lo] > nums[mid] and not(nums[mid] < target <= nums[hi]))):
+                hi = mid - 1 # go left
         else:
-            # go right
-            lo = mid + 1
-            # print 'going right new lo %d' % lo
+            lo = mid + 1  # go right
     return -1
+
+def search_w_repetitions(nums, target):
+    # Idea: https://discuss.leetcode.com/topic/19116/easy-c-solution-based-on-version-i-of-the-problem
+    l, r = 0, len(nums)-1
+    while l <= r:
+	# same as above w only difference of these two lines to remove duplicates
+	while l < r and nums[l] == nums[l+1]: l+=1
+	while r > l and nums[r] == nums[r-1]: r-=1
+	mid = l + (r-l)/2
+	if nums[mid] == target: return True
+	if ((nums[l] <= nums[mid] and nums[l] <= target < nums[mid])
+	    or (nums[l] > nums[mid] and not(nums[mid]<target<=nums[r]))):
+		r = mid - 1
+	else:
+	    l = mid + 1
+    return False
+
 
 if __name__ == '__main__':
     arr = [4, 5, 6, 7, 0, 1, 2]
-    inp = '180 181 182 183 184 187 188 189 191 192 193 194 195 196 201 202 203 204 3 4 5 6 7 8 9 10 14 16 17 18 19 23 26 27 28 29 32 33 36 37 38 39 41 42 43 45 48 51 52 53 54 56 62 63 64 67 69 72 73 75 77 78 79 83 85 87 90 91 92 93 96 98 99 101 102 104 105 106 107 108 109 111 113 115 116 118 119 120 122 123 124 126 127 129 130 135 137 138 139 143 144 145 147 149 152 155 156 160 162 163 164 166 168 169 170 171 172 173 174 175 176 177'
-    arr = [int(x) for x in inp.split(' ')]
+    # arr = [int(x) for x in inp.split(' ')]
+    arr = [3, 1]
     n = len(arr) - 1
-    print r_bs(arr, 0, n, 42)
+    print search(arr, 2)

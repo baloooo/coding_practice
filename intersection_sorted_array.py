@@ -24,6 +24,10 @@ included multiple times in the final outp
 
 
 def get_intersection(arr1, arr2):
+    '''
+    can also be done using dict in O(n) time and space :https://discuss.leetcode.com/topic/46822/a-dictionary-based-solution-in-python
+    time: O(nlogn)
+    '''
     common_elements = []
     i = j = 0
     while(i < len(arr1) and j < len(arr2)):

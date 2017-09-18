@@ -7,25 +7,19 @@ Find the minimum element.
 
 """
 def min_element(arr):
-    n = len(arr)
-    low = 0
-    high = n-1
-    while(low<=high):
-        # case 1: sorted array/subarray
-        if arr[low]<=arr[high]:
-            return arr[low]
-        mid = low + (high-low)/2
-        # case 2: check if mid is PIVOT
-        prev_pos = (mid+n-1)%n
-        next_pos = (mid+1)%n
-        if arr[mid]<=arr[prev_pos] and arr[mid]<=arr[next_pos]:
-            return arr[mid]
-        # case 3: partition and throw off one half of the array
-        if arr[mid] > arr[high]:
-            low = mid+1
-        else:
-            high = mid-1
-
+    # https://discuss.leetcode.com/topic/4100/compact-and-clean-c-solution   broadly defines rotation problems in general too.
+    l, r = 0, len(nums)-1
+    while l < r:
+	# if there is no rotation
+	if nums[l] <= nums[r]:
+	    return nums[l]
+	mid = l + (r-l)/2
+	# given that there is rotation, where is rotation
+	if nums[mid] >= nums[l]:
+	    l = mid + 1
+	else:
+	    r = mid
+    return nums[l]
 
 if __name__ == '__main__':
     # arr = [4, 5, 6, 7, 0, 1, 2]

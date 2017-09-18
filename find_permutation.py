@@ -17,12 +17,8 @@ def sol_stack(pattern):
 
 
 def reverse(arr, i, j):
-    print i, j
     while i <= j:
-        try:
-            arr[i], arr[j] = arr[j], arr[i]
-        except:
-            import ipdb; ipdb.set_trace()
+        arr[i], arr[j] = arr[j], arr[i]
         i += 1
         j -= 1
     return arr
@@ -32,11 +28,11 @@ def sol_rev(pattern):
     # Time: O(n) Space: O(1)
     arr = range(1, len(pattern)+2)
     i = j = 0
-    while i < len(pattern):
+    while j < len(pattern):
         i = j
         while j < len(pattern) and pattern[j] == 'D':
             j += 1
-        reverse(arr, i-1, j)
+        reverse(arr, i, j)
         j += 1
     return arr
 

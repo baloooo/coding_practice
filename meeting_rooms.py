@@ -17,6 +17,10 @@ class Interval:
 
 
 class Solution:
+    def can_attend(self, arrive, depart):
+        # https://discuss.leetcode.com/topic/20959/ac-clean-java-solution
+        pass
+
     def meeting_rooms(self, intervals):
         # list of sorted start intervals
         starts = []
@@ -28,16 +32,18 @@ class Solution:
         ends.sort()
         # s and e are pointers for starts and ends list respectively
         s = e = 0
-        num_rooms, available = 0
-        while s < len(intervals):
+        num_rooms = available = 0
+        while s < len(starts) and e < len(ends):
             if starts[s] < ends[e]:
                 if available == 0:
                     num_rooms += 1
                 else:
                     available -= 1
+                # Increase the pointer as we've accomodated the current request
                 s += 1
             else:
                 available += 1
+                # as one meeting has completed succesfullly
                 e += 1
         return num_rooms
 
@@ -47,8 +53,8 @@ class Solution:
         """
         starts, ends = [], []
         for interval in intervals:
-            start.append(interval.start)
-            end.append(interval.end)
+            starts.append(interval.start)
+            ends.append(interval.end)
         starts.sort()
         ends.sort()
         rooms = ends_iterator = 0, 0
@@ -76,25 +82,41 @@ class Solution:
         """
         from heapq import heappush, heapreplace
         intervals.sort(key=lambda interval: interval.start)
+        for interval in intervals:
+            print 'start: %s end: %s' % (interval.start, interval.end)
         end_times = [intervals[0]]
         for interval in intervals[1:]:
+            # if this meeting starts before the earliest meeting(meeting depicted by top of min heap) ends
             if interval.start < end_times[0].end:
-                heappush(end_times, (interval.end, interval))
+                # we need another room for this meeting
+                # heappush(end_times, (interval.end, interval))
+                heappush(end_times, interval)
             else:
                 # Extend the min interval (Top of heap)
-                heapreplace(end_times(interval.end, interval))
+                # heapreplace(end_times(interval.end, interval))
+                heapreplace(end_times, interval)
         return len(end_times)
 
 if __name__ == '__main__':
-    # intervals = [[8, 9], [7, 10]], 2
+    intervals = [[8, 9], [7, 10]] # 2
     # intervals = [[10,30],[20,50],[5,60]] # 3
-    intervals = [[1, 9], [2,8], [3, 7]] # 3
-    intervals = [Interval(start, end) for start, end in intervals]
+    # intervals = [[1, 9], [2,8], [3, 7]] # 3
+    arrive = [9, 47, 17, 39, 35, 35, 20, 18, 15, 34, 11, 2, 45, 46, 15, 33, 47, 47, 10, 11, 27]
+    depart = [32, 82, 39, 86, 81, 58, 64, 53, 40, 76, 40, 46, 63, 88, 56, 52, 50, 72, 22, 19, 38 ]
+    intervals = [Interval(start, end) for start, end in zip(arrive, depart)]
+    # intervals = [Interval(start, end) for start, end in intervals]
     test_cases = [
         (intervals, 3),
     ]
     for test_case in test_cases:
-        res = Solution().meeting_rooms_min_heap(test_case[0])
+        '''
+        currently only working sol seems to be first one 'meeting_rooms' method.
+        and Easiest to wrap your head around
+        '''
+        res1 = Solution().meeting_rooms_min_heap(test_case[0])
+        res2 = Solution().meeting_rooms(test_case[0])
+        print 'res1: %d, res2: %d' %(res1, res2)
+        break
         if res == test_case[1]:
             print "Passed"
         else:

@@ -15,6 +15,12 @@ GCD(m, n) : 3
 """
 
 def gcd_euclidean(a, b):
+    '''
+    # https://leetcode.com/problems/water-and-jug-problem/description/
+    is a nice example w/ sol here https://discuss.leetcode.com/topic/49238/math-solution-java-solution/31
+    '''
+    if a == 0: return b
+    if b == 0: return a
     while a!=b:
         if a>b:
             a=a-b
