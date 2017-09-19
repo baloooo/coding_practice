@@ -1,6 +1,20 @@
 
 
 class Solution:
+
+    def findMaxConsecutiveOnes(self, nums):
+        """
+        Idea: https://discuss.leetcode.com/topic/75437/java-4-lines-concise-solution-with-explanation
+        """
+        max_here, max_ones = 0, 0
+        for index, num in enumerate(nums):
+            if num != 1:
+                max_here = 0
+            else:
+                max_here += 1
+                max_ones = max(max_ones, max_here)
+        return max_ones
+
     def maxone(self, arr, flips_remaining):
         cur_wl = cur_wr = best_l = best_r = 0
         while cur_wr < len(arr):
