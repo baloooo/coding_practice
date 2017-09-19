@@ -1,6 +1,9 @@
 class Solution(object):
     def fourSum(self, arr, target):
         """
+        The core is to implement a fast 2-pointer to solve 2-sum, and recursion to reduce the N-sum to 2-sum.
+        Some optimization was be made knowing the list is sorted.
+
         Idea: https://discuss.leetcode.com/topic/22705/python-140ms-beats-100-and-works-for-n-sum-n-2/16
         """
         def find_four_sum(arr, target, n, results, cur):

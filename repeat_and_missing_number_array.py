@@ -46,14 +46,5 @@ for ele in xrange(1, n+1):
 print "Missing element is %d and repeating element is %d" % (set_b, set_a)
 
 # method 1
-#succeptible to stack overflows, so should be avoided
-# https://stackoverflow.com/a/5767111/2795050
-# sum_of_array = sum(A)
-# sum_of_n = sum(range(n+1))
-# product_of_array = 1
-# product_of_n = 1
-# for i in xrange(1,n+1):
-#     product_of_array*=A[i-1]
-#     product_of_n*=i
-# repeating_num = math.ceil((sum_of_n - sum_of_array)/((product_of_n/float(product_of_array))-1))
-# missing_num = sum_of_n - sum_of_array + repeating_num
+# succeptible to stack overflows, so should be avoided
+# https://stackoverflow.com/a/5767117/2795050

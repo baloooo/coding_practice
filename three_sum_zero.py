@@ -23,6 +23,9 @@ def get_three_sum_zero(arr):
     triplet_set = set()
     n = len(arr)
     for a in xrange(0, n-2):
+        # This prevents TLE from long list of zeros
+        if a > 0 and nums[a] == nums[a-1]:
+            continue
         b = a+1
         c = n-1
         while(b < c):

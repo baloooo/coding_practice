@@ -15,10 +15,24 @@ Example :
 
 
 class Solution:
+    '''
+    There are 3 variations to this problem:
+	max diff b/w the indexes of elements where arr[i] <= arr[j]
+		http://www.geeksforgeeks.org/given-an-array-arr-find-the-maximum-j-i-such-that-arrj-arri/
+	max diff b/w two elements where only cond'n is first should be smaller
+		http://www.geeksforgeeks.org/maximum-difference-between-two-elements/
+	this says max diff b/w consecutive elements only
+		https://leetcode.com/problems/maximum-gap/description/
+    '''
     def __init__(self):
         pass
+    def max_gap(self, nums):
+        # https://leetcode.com/problems/maximum-gap/description/
+	# https://discuss.leetcode.com/topic/5999/bucket-sort-java-solution-with-explanation-o-n-time-and-space
+	pass
 
     def max_distance(self, arr):
+        # http://www.geeksforgeeks.org/given-an-array-arr-find-the-maximum-j-i-such-that-arrj-arri/
         cur_min = arr[0]
         lmin = [arr[0]]
         for index in xrange(1, len(arr)):
@@ -29,7 +43,7 @@ class Solution:
         for index in xrange(len(arr)-2, -1, -1):
             cur_max = max(cur_max, arr[index])
             rmax.append(cur_max)
-        rmax = rmax[::-1]
+        rmax.reverse()
         lindex = rindex = 0
         max_distance = 0
         print 'arr: ', arr
@@ -46,6 +60,7 @@ class Solution:
 
 if __name__ == '__main__':
     test_cases = [
+	([1, 3, 100], 97),
         ([3, 5, 4, 2], 2),
         ([34, 8, 10, 3, 2, 80, 30, 33, 1], 6),
         ([9, 2, 3, 4, 5, 6, 7, 8, 18, 0], 8),
@@ -53,7 +68,8 @@ if __name__ == '__main__':
         ([6, 5, 4, 3, 2, 1], -1),
     ]
     for test_case in test_cases:
-        res = Solution().max_distance(test_case[0])
+        # res = Solution().max_distance(test_case[0])
+        res = Solution().max_gap(test_case[0])
         if res == test_case[1]:
             print "Passed"
         else:

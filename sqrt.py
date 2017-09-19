@@ -11,7 +11,21 @@ Input : 11
 Output : 3
 DO NOT USE SQRT FUNCTION FROM STANDARD LIBRARY
 """
+def sqrt_optimized(self, x):
+    if x == 0:
+	return 0
+    low = 1
+    high = x
+    while low+1 < high:
+	mid = low + (high-low)/2
+	if mid*mid > x:
+	    high=mid
+	else:
+	    low=mid
+    return low
+
 def sqrt(x):
+    # 
     low = 1
     high = x
     if x == 0:

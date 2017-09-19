@@ -27,8 +27,13 @@ class Solution(object):
             # since loop breaks when they go over limit, so bringing them back in limit
             dvs >>= 1
             quotient >>= 1
+
             dvd -= dvs
-            res += quotient
             dvs = orig_dvs
+
+            res += quotient
         res = -res if sign else res
+        # return cond'n for overflow can be subsituted by
+        #if (!divisor || (dividend == INT_MIN && divisor == -1))
+        #            return INT_MAX;
         return min(max(-2147483648, res), 2147483647)
