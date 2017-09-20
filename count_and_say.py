@@ -3,6 +3,9 @@
 class Solution:
 
     def count_and_say(self, n):
+        """
+        Idea: https://discuss.leetcode.com/topic/28084/simple-python-solution
+        """
         arr = [1]
         for _ in xrange(n-1):
             res = []

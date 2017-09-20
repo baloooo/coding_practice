@@ -31,63 +31,81 @@ class TrieNode(object):
         self.end_of_word = False
 
 
-def lcp_by_trie(str_list):
-    main_root = root = TrieNode()
-    # add strings to trie
-    for cur_str in str_list:
-        for cur_char in cur_str:
-            if cur_char not in root.child_map:
-                node = TrieNode()
-                root.child_map[cur_char] = node
-        root.end_of_worda = True
-        root = main_root
-    # find lcp in trie
-    # print trie_obj.trie
+class TrieSolution():
+    def lcp_by_trie(str_list):
+        main_root = root = TrieNode()
+        # add strings to trie
+        for cur_str in str_list:
+            for cur_char in cur_str:
+                if cur_char not in root.child_map:
+                    node = TrieNode()
+                    root.child_map[cur_char] = node
+            root.end_of_worda = True
+            root = main_root
+        # find lcp in trie
+        # print trie_obj.trie
 
+class OtherSolution():
+    def word_by_word(str_list):
+        """
+        n = #f strings
+        m = length of smallest string
+        O(n*m)
+        """
+        min_len_string = str_list[0]
+        min_len_string_len = len(str_list[0])
+        for string in str_list[1:]:
+            if len(string) < min_len_string_len:
+                min_len_string = string
+                min_len_string_len = len(string)
+        for string in str_list:
+            for index, char in enumerate(min_len_string):
+                if char != string[index]:
+                    min_len_string = string[:index]
+                    break
+        return min_len_string
 
-def word_by_word(str_list):
-    """
-    n = #f strings
-    m = length of smallest string
-    O(n*m)
-    """
-    min_len_string = str_list[0]
-    min_len_string_len = len(str_list[0])
-    for string in str_list[1:]:
-        if len(string) < min_len_string_len:
-            min_len_string = string
-            min_len_string_len = len(string)
-    for string in str_list:
-        for index, char in enumerate(min_len_string):
-            if char != string[index]:
-                min_len_string = string[:index]
-                break
-    return min_len_string
-
-if __name__ == '__main__':
-    # str_list = ["abcdefgh", "aefghijk", "abcefgh"]
-    str_list = ["geek", "gee", "geeks"]
-    # print "result by word_by_word", word_by_word(str_list)
-    print "result by lcp", lcp_by_trie(str_list)
 
 """
 LCP for strings
 """
+
+
 class Solution(object):
     def lcp(self, str1, str2):
-        index = 0
-        for index in xrange(min(len(str1), len(str2))):
-            if str1[index] == str2[index]:
-                index += 1
-            else:
-                break
-        return str1[:index]
+        for i in xrange(min(len(str1), len(str2))):
+            if str1[i] != str2[i]:
+                return str1[:i]
+        # Execution reached here would suggest both strings are equal untill the length of min. string.
+        if len(str1) < len(str2):
+              return str1
+        else:
+              return str2
+
     def longestCommonPrefix(self, strs):
         """
         :type strs: List[str]
         :rtype: str
         """
+        #if any([not (len(s)) for s in strs]):
+        #    return ''
         if strs:
-            return reduce(self.lcp, strs)
+            res = reduce(self.lcp, strs)
+            # since if empty string array is passed reduce returns None
+            if res is None: return ''
+            else: return res
         else:
             return ''
+        
+
+if __name__ == '__main__':
+    strs = ["a", "a", "b"]
+    strs = ["a", "c", "b"]
+    strs = ["", "", ""]
+    strs = ["a"]
+    strs = [""]
+    print Solution().longestCommonPrefix(strs)
+    # str_list = ["abcdefgh", "aefghijk", "abcefgh"]
+    # str_list = ["geek", "gee", "geeks"]
+    # print "result by word_by_word", word_by_word(str_list)
+    # print "result by lcp", lcp_by_trie(str_list)

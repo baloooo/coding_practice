@@ -1,14 +1,16 @@
-import re
-
-regex = re.compile('[^a-zA-Z0-9]')
-inp_str = "A man, a plan, a canal: Panama"
-inp_str = ''
-final_str = regex.sub('', inp_str)
-final_str = final_str.lower()
-n = len(final_str)
-for index in xrange(n):
-    if final_str[index] != final_str[-(index+1)]:
-        print "not a palindrome"
-        break
-else:
-    print "palindrome"
+def is_palindrome(self, s):
+    '''
+    Idea: https://discuss.leetcode.com/topic/22479/python-in-place-two-pointer-solution/8
+    '''
+    s = s.lower()
+    l, r = 0, len(s)-1
+    while l < r:
+        while l < r and not s[l].isalphanum():
+            l += 1
+        while l < r and not s[r].isalphanum():
+            r -= 1
+        if s[l] != s[r]:
+            return False
+        l += 1
+        r -= 1
+    return True

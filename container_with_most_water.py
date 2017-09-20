@@ -24,6 +24,17 @@ So total area = 3 * 2 = 6
 
 
 def max_container_area(arr):
+    '''
+    Idea:https://discuss.leetcode.com/topic/25004/easy-concise-java-o-n-solution-with-proof-and-explanation
+    Also https://leetcode.com/articles/container-most-water/
+    Crux of the idea is that we've to find the area which depends on x-distance and y-distance
+    b/w two walls of the container in 2D plane. Now x-distance is governed by the distance
+    b/w walls of the container and y-distance is governed by the minimum height b/w two walls.
+    So the whole idea is to use two pointer tech. to have two pointers and scan thru the 
+    arr to see how width*height value changes and since we want difference b/w heights of the
+    wall to be as min as possible always move the wall with less height. Meanwhile keep
+    recording the max_area seen so far.
+    '''
     start, end = 0, len(arr)-1
     max_area = 0
     while(start < end):

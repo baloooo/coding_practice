@@ -21,6 +21,19 @@ Problem statement:
 """
 
 
+class Solution(object):
+    def lengthOfLastWord_optimized(self, s):
+        """
+        Idea: https://discuss.leetcode.com/topic/17312/7-lines-4ms-c-solution/6
+        """
+        word_len, tail = 0, len(s)-1
+        while tail >= 0 and s[tail] == ' ': tail -= 1
+        while tail >= 0 and s[tail] != ' ':
+            tail -= 1
+            word_len += 1
+        return word_len
+
+
 def length_of_last_word(target_str):
     length_of_target_str = len(target_str)
     rstrip = False
