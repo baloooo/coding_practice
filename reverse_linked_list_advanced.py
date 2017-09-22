@@ -12,31 +12,13 @@ from linkedlistbase import (
     print_linked_list)
 
 
-class Solution:
-    def __init__(self):
-        self.new_head = None
-
-    def reverse_linked_list_recursion(self, A):
-        cur_node = A
-        def reverse(cur_node):
-            if cur_node.next is None:
-                self.new_head = cur_node
-                return cur_node
-            next_node = reverse(cur_node.next)
-            next_node.next = cur_node
-            return cur_node
-        last_node = reverse(cur_node)
-        last_node.next = None
-        return self.new_head
-
-
-def reverse_linked_list_with_params(A, m, n):
-    cur = A
+def reverse_linked_list_with_params(head, m, n):
+    cur = head
     last_unswapped_node = original_head = Node(-1)
     diff = n-m+1
     last_unswapped_node.next = cur
     # traverse till m
-    while cur and m>1:
+    while cur and m > 1:
         cur = cur.next
         last_unswapped_node = cur
         m -= 1
@@ -65,6 +47,27 @@ def reverse_linked_list_optimized(A):
         last = cur
         cur = nxt
     return last
+
+class Solution:
+    def __init__(self):
+        self.new_head = None
+
+def reverse_linked_list_recursion(self, A):
+    '''
+    As recursion takes log(n) space so not space efficient.
+    '''
+    cur_node = A
+    def reverse(cur_node):
+        if cur_node.next is None:
+            self.new_head = cur_node
+            return cur_node
+        next_node = reverse(cur_node.next)
+        next_node.next = cur_node
+        return cur_node
+    last_node = reverse(cur_node)
+    last_node.next = None
+    return self.new_head
+
 
 
 def reverse_linked_list(head):

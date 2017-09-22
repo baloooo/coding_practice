@@ -4,15 +4,30 @@ class Solution(object):
         :type num1: str
         :type num2: str
         :rtype: str
+        Idea: https://discuss.leetcode.com/topic/20883/simple-python-solution-18-lines/8
         """
+        def reverse(strs):
+            '''
+            so reverse is not called multiple times
+            '''
+            return ''.join([strs[i] for i in xrange(len(strs)-1, -1, -1)])
         product = [0]*(len(num1)+len(num2))
-        for i in xrange(len(num1)-1, -1, -1):
-            for j in xrange(len(num2)-1, -1, -1):
-                product[i+j] += int(num1[i])*int(num2[j])
-                product[i+j-1] += product[i+j] / 10
-                product[i+j] %= 10
-        return ''.join([str(each) for each in product])
-
+        pos = len(product) - 1
+        num1, num2 = reverse(num1), reverse(num2)
+        for n1 in num1:
+            cur_pos = pos
+            for n2 in num2:
+                product[cur_pos] += int(n1) * int(n2)
+                product[cur_pos-1] += (product[cur_pos]/10)
+                product[cur_pos] %= 10
+                cur_pos -= 1
+            pos -= 1
+        # Remove leading zeros.
+        cur_pos = 0
+        while cur_pos < len(product) and product[cur_pos] == 0:
+            cur_pos += 1
+        print product, cur_pos
+        return ''.join(map(str, product[cur_pos:])) or '0'
 
 if __name__ == '__main__':
     test_cases = [

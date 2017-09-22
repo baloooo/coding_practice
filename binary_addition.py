@@ -27,6 +27,7 @@ def binary_add(x, y):
     y_len = len(y)
     max_len = x_len
     if x_len != y_len:
+        # Match lengths so we don't have to any extra vodoo
         if x_len > y_len:
             y = '0'*(x_len-y_len) + y
         else:
