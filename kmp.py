@@ -3,6 +3,13 @@ def generate_prefix_arr(needle):
     Idea: https://www.youtube.com/watch?annotation_id=annotation_1246214919&feature=iv&src_vid=GTJr8OvyEVQ&v=KG44VoDtsAA
     """
     pre, cur = 0, 1
+    '''
+    This array will tell us that in this needle at every index, what is the longest prefix that is also a suffix up untill
+    this index. Which means for an array ending at this index what is the longest prefix that is also the suffix in this
+    'subarray' ending at this index.
+    Therefore when a mismatch occurs b/w needle and haystack we can look up this array to know
+    how many indices to move back so as to preseve the matched chars.
+    '''
     pre_arr = [0]*len(needle)
     while cur < len(needle):
         if needle[cur] == needle[pre]:
@@ -11,8 +18,12 @@ def generate_prefix_arr(needle):
             cur += 1
         else:
             if pre != 0:
+                # we do this b'coz this gives us the index in needle where prev longest suffix = prefix resides can be
+                # found from pre_arr at index 'pre-1'
                 pre = pre_arr[pre-1]
             else:
+                # But if pre == 0 which means there are no last know prefix=suffix combinations just add zero to pre_arr
+                # signalling that no suffix=prefix combinations at this index of needle if mismatch occurs w/ haystack.
                 pre_arr[cur] = 0
                 cur += 1
     return pre_arr

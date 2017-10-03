@@ -2,6 +2,19 @@
 https://leetcode.com/problems/zigzag-conversion/#/description
 """
 class Solution(object):
+    def convert_optimized(self, s, num_rows):
+        # Idea: https://discuss.leetcode.com/topic/34573/python-o-n-solution-in-96ms-99-43/16
+	zig_zag = [[] for _ in xrange(num_rows)]
+        step = (num_rows == 1) - 1
+        idx = 0
+        for c in s:
+            zig_zag[idx].append(c)
+	    # Helpls change direction when idx is at first or last index (only after first element has been placed)
+            if idx == num_rows-1 or idx == 0:
+                step = -step
+            idx += step
+        return ''.join([''.join(each) for each in zig_zag])
+
     def convert(self, given_string, num_rows):
         """
         :type s: str
