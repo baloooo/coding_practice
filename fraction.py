@@ -15,6 +15,10 @@ Given numerator = 2, denominator = 3, return "0.(6)"
 
 def fraction_as_string(num, denom):
     from collections import OrderedDict
+    '''
+    Idea: https://discuss.leetcode.com/topic/17071/0ms-c-solution-with-detailed-explanations
+    '''
+    # Step 1: Check num and denom signs and finalize sign for the end result.
     positive_sign = True
     if num<0:
         positive_sign = not positive_sign
@@ -22,6 +26,7 @@ def fraction_as_string(num, denom):
     if denom<0:
         positive_sign = not positive_sign
         denom = abs(denom)
+    # step 2 Fill the frac_map and break where recurring remainder encountered
     quot = str(num / denom)
     rem = num % denom
     # {remainder: quotient}
@@ -34,6 +39,7 @@ def fraction_as_string(num, denom):
         return quot
     count = 0
     quot += '.'
+    # step 3: Add the recurring part with appropriate '('
     for cur_rem, cur_q in frac_map.items():
         if cur_rem!= rem:
             count += 1

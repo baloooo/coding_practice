@@ -11,7 +11,7 @@ Output: 7 -> 0 -> 8
 
 def add_two_numbers(l1, l2):
     # https://discuss.leetcode.com/topic/799/is-this-algorithm-optimal-or-what
-    res = cur = ListNode(-1)
+    dummy = cur = ListNode('dummy')
     total_sum = 0
     # Base your logic on sum rather than individual nodes lists l1 and l2, it's more straightforward
     while l1 or l2:
@@ -28,7 +28,7 @@ def add_two_numbers(l1, l2):
     # if there is total sum remaining after both lists are done
     if total_sum:
         cur.next = ListNode(total_sum)
-    return res.next
+    return dummy.next
 
 if __name__ == '__main__':
     lists = [[5, 8, 2], [4, 1, 5]]

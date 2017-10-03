@@ -13,27 +13,28 @@ from linkedlistbase import (
 
 
 def reverse_linked_list_with_params(head, m, n):
-    cur = head
-    last_unswapped_node = original_head = Node(-1)
-    diff = n-m+1
-    last_unswapped_node.next = cur
+    i = 1
+    last_unswapped_node = orig_head = ListNode('dummy')
+    orig_head.next = head
     # traverse till m
-    while cur and m > 1:
-        cur = cur.next
-        last_unswapped_node = cur
-        m -= 1
-    prev = last_unswapped_node
+    while i < m:
+        last_unswapped_node = head
+        head = head.next
+        i += 1
+    prev, cur, next = None, head, None
+    # Note: Do use this node explicitly and don't try to derive this from last_unswapped_node
     first_swapped_node = cur
     # swap from m to n
-    while(cur and diff>1):
+    while i <= n:
+        next = cur.next
         cur.next = prev
         prev = cur
-        cur = cur.next
-        diff -= 1
+        cur = next
+        i += 1
     # link back nodes from n to end
     last_unswapped_node.next = prev
     first_swapped_node.next = cur
-    return original_head.next
+    return orig_head.next
 
 
 def reverse_linked_list_optimized(A):

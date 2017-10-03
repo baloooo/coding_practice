@@ -12,7 +12,7 @@ Note that all the operations have to be constant time operations.
 import sys
 
 # Time:  O(n)
-# Space: O(1)
+# Space: O(n) for values + O(1) for bookeeping
 
 
 class MinStackOptimized:
@@ -77,7 +77,7 @@ class MinStackOptimized:
 
 
 # Time:  O(n)
-# Space: O(n)
+# Space: O(n) for actual values and O(n) for bookkeeping.
 
 
 class MinStack:

@@ -13,6 +13,34 @@ def construct_linked_list_from_array(inp_arr):
         prev = node
     return head
 
+def reverse(self, head, orig_last):
+    last, cur, next = None, head, head.next
+    while cur is not orig_last:
+        next = cur.next
+        cur.next = last
+        last = cur
+        cur = next
+    return last
+
+
+def find_mid(self, head):
+    slow, fast = head, head.next
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+    return slow
+
+def is_palindrome_optimized(self, head):
+    # This kind of approach is better for understanding.
+    mid = self.find_mid(head)
+    self.reverse(head, mid)
+    cur = mid
+    while head != mid or cur is not None:
+        if head.val != cur.val:
+            return False
+        head = head.next
+        cur = cur.next
+    return True
 
 def is_palindrome(head):
     """
@@ -61,31 +89,3 @@ if __name__ == '__main__':
         else:
             print "Failed: Test case: {0} Got {1} Expected {2}".format(
                 test_case[0], res, test_case[1])
-
-def reverse(self, head, orig_last):
-    last, cur, next = None, head, head.next
-    while cur is not orig_last:
-        next = cur.next
-        cur.next = last
-        last = cur
-        cur = next
-    return last
-
-
-def find_mid(self, head):
-    slow, fast = head, head.next
-    while fast and fast.next:
-        slow = slow.next
-        fast = fast.next.next
-    return slow
-
-def func(self, head):
-    mid = self.find_mid(head)
-    self.reverse(head, mid)
-    cur = mid
-    while head != mid or cur is not None:
-        if head.val != cur.val:
-            return False
-        head = head.next
-        cur = cur.next
-    return True

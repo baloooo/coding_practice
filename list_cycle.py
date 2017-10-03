@@ -39,6 +39,7 @@ def print_linked_list(head):
 
 
 def get_head_node_for_cycle(head):
+    # Note: fast and slow both start at head not ahead of each other
     fast = slow = head
     while(fast and fast.next):
         slow, fast = slow.next, fast.next.next

@@ -3,14 +3,17 @@ from linkedlistbase import (
     ListNode, print_linked_list)
 import heapq
 
-# https://leetcode.com/problems/merge-k-sorted-lists/#/description
-
 
 class Solution(object):
     def mergeKLists(self, lists):
         """
+        https://leetcode.com/problems/merge-k-sorted-lists/#/description
         :type lists: List[ListNode]
         :rtype: ListNode
+        if there are k lists each with n elements. Total elements:nk
+        Time: klogk (create min_heap) + (nk-k)2*logk (for popping and pushing elements)
+        total: nklogk
+        Space: O(k) for min_heap
         """
         from heapq import heappop, heapify, heapreplace
         min_heap = [(node.val, node) for node in lists if node]
@@ -26,12 +29,13 @@ class Solution(object):
             cur_node = cur_node.next
         return head.next
 
-# http://www.geeksforgeeks.org/merge-k-sorted-linked-lists/
-# time: O(nlogk)
-# space: O(1)
-
 
 def merge_k_sorted_lists_optimized(sorted_ll_lists):
+    # http://www.geeksforgeeks.org/merge-k-sorted-linked-lists/
+    # Notice that this tech. destroys the existing lists though which might
+    # not be an acceptable strategy in some cases.
+    # time: O(nlogk)
+    # space: O(1)
     def merge_two_linklist(head1, head2):
         # alternate approach if no Node method is available
         # if head1 is None or head2 is None:
@@ -57,6 +61,7 @@ def merge_k_sorted_lists_optimized(sorted_ll_lists):
             cur = cur.next
         cur.next = head1 or head2
         return original.next
+
     if not sorted_ll_lists:
         return None
     left = 0

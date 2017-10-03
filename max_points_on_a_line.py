@@ -1,56 +1,57 @@
+import collections
+import numpy as np
+
+# Definition for a point.
+class Point(object):
+    def __init__(self, a=0, b=0):
+        self.x = a
+        self.y = b
+
 class Solution:
-    # @param A : list of integers
-    # @param B : list of integers
-    # @return an integer
-    def maxPoints(self, A, B):
-        arr_x = A
-        arr_y = B
-        #print A
-        #print B
-        if len(arr_x) == 0:
-            return 0
-        if len(arr_x) == 1:
-            return 1
-        if len(arr_y) == 2:
-            return 2
-        import sys
-        # {(point, slope): count}
-        slope_count_map = {}
-        total_pairs = []
-        max_slope_count = 0
-        # get total number of points
-        for index in range(len(arr_x)-1):
-            cur_x, cur_y = arr_x[index], arr_y[index]
-            for (x,y) in zip(arr_x[index+1:], arr_y[index+1:]):
-                total_pairs.append(((cur_x, cur_y), (x, y)))
-        for cur_pair in total_pairs:
-            first_point = cur_pair[0] # (x1, y1)
-            second_point = cur_pair[1]# (x2, y2)
-            # handle points on vertical line, therefore undefined slope.
-            if (second_point[0] - first_point[0]) == 0:
-                cur_slope = sys.maxsize
-            else:
-                cur_slope = (second_point[1] - first_point[1]) / (second_point[0] - first_point[0])*1.0
-            slope_count_map[cur_slope] = 2
-            orig_pair_traversed = False
-            count = 0
-            for (x,y) in zip(arr_x, arr_y):
-                temp_slope = sys.maxint
-                if (first_point[0] - x) != 0:
-                    temp_slope = abs((first_point[1] - y) / (first_point[0] - x))*1.0
-                if (x,y) in cur_pair:
-                    if not orig_pair_traversed:
-                        if count == 0:
-                            count += 1
-                        else:
-                            orig_pair_traversed = True
-                        continue
-                if abs(cur_slope) == temp_slope:
-                    # print 'Adding cur_pair %s and new_pair %s' % (cur_pair, (x,y))
-                    slope_count_map[cur_slope] += 1
-            cur_max_slope_count = max(slope_count_map.values())
-            if cur_max_slope_count > max_slope_count:
-                max_slope_count = cur_max_slope_count
-            # print slope_count_map
-            slope_count_map =  {}
-        return max_slope_count
+    def max_points(self, points):
+        '''
+        Idea: https://discuss.leetcode.com/topic/18447/16ms-28ms-c-solutions-with-explanations/7
+        https://discuss.leetcode.com/topic/21896/python-68-ms-code/6
+        Time: O(n^2)
+        Calculate slopes of each point with every other point
+        '''
+        slopes = collections.defaultdict(int)
+        maxp = 0
+        for i in xrange(len(points)):
+            slopes.clear()
+            duplicate = 1
+            for j in xrange(i+1, len(points)):
+                if points[i].x == points[j].x and points[i].y == points[j].y:
+                    duplicate += 1
+                else:
+                    if points[i].x == points[j].x:
+                        slope = float('inf')
+                    else:
+                        '''
+                        np is used as representation of floating point numbers can be inaccurate
+                        therefore rounding off can result in different slopes, so just increasing
+                        the purview of slope
+                        '''
+                        num = ((points[j].y - points[i].y)*np.longdouble(1))
+                        denom = (points[j].x - points[i].x)
+                        slope = num / denom
+                    slopes[slope] += 1
+            # max #f points can be point i itself due to large number of duplciates of i
+            maxp = max(maxp, duplicate)
+            for slope_count in slopes.values():
+                # Note: do not forget to add duplicates to slope count at each slope key.
+                maxp = max(maxp, slope_count + duplicate)
+        return maxp
+
+if __name__ == '__main__':
+    test_cases = [
+        ([[84,250],[0,0],[1,0],[0,-70],[0,-70],[1,-1],[21,10],[42,90],[-42,-230]], 6)
+    ]
+    for test_case in test_cases:
+        points = [Point(point[0], point[1]) for point in test_case[0]]
+        res = Solution().max_points(points)
+        if res == test_case[1]:
+            print "Passed"
+        else:
+            print "Failed: Test case: {0} Got {1} Expected {2}".format(
+                test_case[0], res, test_case[1])

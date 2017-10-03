@@ -36,10 +36,23 @@ class Solution:
                 the nearest smaller value to x is the top element of S
             push x onto S
         https://stackoverflow.com/questions/9493853/given-an-array-find-out-the-next-smaller-element-for-each-element
+        Ex:
+            The broad idea is to keep popping from the stack untill you get an element
+            less than cur_ele as TOS or an empty stack, and then after using the TOS 
+            you can append your element
+                Input:  arr[] = {1, 6, 4, 10, 2, 5}
+                Output:         {_, 1, 1,  4, 1, 2}
+                []
+                [1]
+                [1, 6]
+                [1, 4]
+                [1, 4, 10]
+                [1, 2]
         """
         stack = []
         res_arr = []
         for ele in arr:
+            print stack
             if stack:
                 while stack and ele <= stack[-1]:
                     stack.pop()
@@ -57,7 +70,8 @@ if __name__ == '__main__':
         ([34, 35, 27, 42, 5, 28, 39, 20, 28], [-1, 34, -1, 27, -1, 5, 28, 5, 20])
     ]
     for test_case in test_cases:
-        res = Solution().prev_smaller(test_case[0])
+        # res = Solution().prev_smaller(test_case[0])
+        res = Solution().prev_smaller([1, 6, 4, 10, 2, 5])
         if res == test_case[1]:
             print "Passed"
         else:

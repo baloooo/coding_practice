@@ -17,41 +17,44 @@ Basically combination of:
 
 class Solution(object):
     def merge(self, l1, l2):
-        new_head = cur_node = ListNode('-1')
+        dummy = cur = ListNode('dummy')
         while l1 and l2:
             if l1.val < l2.val:
-                cur_node.next = l1
+                cur.next = l1
                 l1 = l1.next
             else:
-                cur_node.next = l2
+                cur.next = l2
                 l2 = l2.next
-            cur_node = cur_node.next
+            cur = cur.next
         if l1:
-            cur_node.next = l1
+            cur.next = l1
         elif l2:
-            cur_node.next = l2
-        return new_head.next        
-            
+            cur.next = l2
+        return dummy.next
 
+    def get_mid(self, head):
+        slow = fast = first_half_tail = head
+        while fast and fast.next:
+            first_half_tail = slow
+            slow = slow.next
+            fast = fast.next.next
+        # split LL in two halves.
+        first_half_tail.next = None
+        return slow
+        
     def sortList(self, head):
         """
         :type head: ListNode
         :rtype: ListNode
+        Idea: MergeSort
         """
-        # Base condition
-        if not head or not head.next:
+        # Base condition (No two nodes swapping in LL)
+        if head is None or head.next is None:
             return head
-        # find mid and split linked list in to two halves
-        slow = fast = head
-        prev = None
-        while fast and fast.next:
-            prev = slow
-            slow = slow.next
-            fast = fast.next.next
-        prev.next = None
+        # gets mid also splits LL in two halves
+        mid = self.get_mid(head)
         l1 = self.sortList(head)
-        l2 = self.sortList(slow)
-        # merge two halves
+        l2 = self.sortList(mid)
         return self.merge(l1, l2)
 
 
