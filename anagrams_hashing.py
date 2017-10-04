@@ -16,7 +16,23 @@ such as 'spar', formed from 'rasp'
 
    Ordering of the result : You should not change
 """
+import collections
 
+class Solution(object):
+    def groupAnagrams(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: List[List[str]]
+	Idea: https://leetcode.com/articles/group-anagrams/
+	Time: O(n*k) (Most efficient of all)
+        """
+        str_map = collections.defaultdict(list)
+        for cur_str in strs:
+	    str_signature = [0]*26
+            for ch in cur_str:
+                str_signature[ord(ch)-ord('a')] += 1
+            str_map[tuple(str_signature)].append(cur_str)
+        return str_map.values()
 
 def group_anagrams(inp_list):
     """
@@ -29,7 +45,6 @@ def group_anagrams(inp_list):
     return sorted(anagram_map.values(), key=lambda x: x[0])
 
 def group_anagrams2(strs):
-    import collections
     ana_dict = collections.defaultdict(list)
     for cur_str in strs:
         counter = collections.Counter(cur_str)
@@ -43,4 +58,6 @@ def group_anagrams2(strs):
 if __name__ == '__main__':
     inp_list = ['caa', 'tab', 'cca', 'bat']
     # inp_list = ['cat', 'dog', 'god', 'tca']
-    print group_anagrams2(inp_list)
+    # print group_anagrams2(inp_list)
+    inp_list = ["eat","tea","tan","ate","nat","bat"]
+    print Solution().groupAnagrams(inp_list)

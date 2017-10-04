@@ -11,6 +11,9 @@ Example:
 """
 
 def longest_substring_without_rep(s):
+    '''
+    Idea: https://leetcode.com/problems/longest-substring-without-repeating-characters/solution/
+    '''
     char_to_index_map, start, max_window_size = {}, 0, 0
     for (index, char) in enumerate(s):
 	if char in char_to_index_map:
