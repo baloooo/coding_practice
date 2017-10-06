@@ -28,6 +28,7 @@ from tree_base import level_order_array_to_tree
 
 
 def is_balance_binary_tree(root):
+    # https://discuss.leetcode.com/topic/7798/the-bottom-up-o-n-solution-would-be-better/46
     def height(root, cur_height):
         if root == None:
             return 0
@@ -49,8 +50,7 @@ if __name__ == '__main__':
     # arr = [1, 2, 3]
     # arr = [3, 2, 4, 1, 3, None, None, 5]
     # arr = [50, 57, None, 55, 80]
-    arr_str = '50 57 -1 55 80 20 64 96 38 61 68 22 95 1 34 45 13 37 -1 46 19 -1 -1 -1 31 -1 -1 39 47 29 79 -1 81 -1 -1 -1 -1 -1 -1 -1 -1 36 89 11 26 63 83 76 69 84 67 6 -1 -1 -1 48 93 -1 -1 24 62 5 59 -1 78 58 35 -1 -1 16 -1 -1 -1 -1 30 49 -1 66 32 -1 15 -1 53 9 54 -1 -1 8 51 2 98 -1 -1 -1 -1 60 14 4 -1 92 65 25 77 -1 -1 23 56 40 91 17 52 -1 90 18 -1 94 7 -1 -1 -1 71 -1 -1 3 -1 73 -1 -1 -1 -1 -1 33 28 -1 99 -1 97 -1 12 -1 -1 -1 -1 72 -1 85 86 -1 -1 -1 -1 43 -1 44 70 -1 42 -1 88 -1 -1 -1 -1 -1 27 75 82 -1 21 -1 -1 -1 74 -1 -1 -1 -1 -1 -1 87 10 -1 -1 41 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1'
-    arr = [None if x=='-1' else int(x) for x in arr_str.split(' ')]
+    # arr = [None if x=='-1' else int(x) for x in arr_str.split(' ')]
     # root = level_order_array_to_tree(arr)
     arr = [-1, 0, 1, 2]
     root = array_to_tree(arr)

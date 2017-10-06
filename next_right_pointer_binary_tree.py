@@ -34,18 +34,22 @@ After calling your function, the tree should look like:
 
 
 def next_right_pointer_optimized(root):
-    # Space: O(1) Time: O(n)
     """
-	    1           -------------- Level 0
-          /    \
-        2       3       -------------- Level 1
-       / \     /  \
-      4   5   6    7    -------------- Level 2
-     / \          / \
-    8   9       10   11 -------------- Level 3
-
+    Space: O(1) Time: O(n)
+    Explanation: @mmozum https://discuss.leetcode.com/topic/1106/o-1-space-o-n-complexity-iterative-solution/37
     """
-    pass
+    while root:
+        needle = nxt_lvl_head = TreeLinkNode(-1)
+        while root:
+            if root.left:
+                needle.next = root.left
+                needle = needle.next
+            if root.right:
+                needle.next = root.right
+                needle = needle.next
+            root = root.next
+        # cur level is over, which also means sewing of next level is completed.
+        root = nxt_lvl_head.next
 
 def next_right_pointer(root):
     # Space: O(width of binary tree) Time: O(n)

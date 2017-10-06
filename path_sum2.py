@@ -8,26 +8,29 @@
 #         self.right = None
 
 class Solution(object):
-    def has_sum(self, root, target_sum):
-        if not root:
-            return False
-        self.cur_sum.append(root.val)
+    def path_sum_helper(self, root, target_sum, cur, path_sums):
+        if root is None: return
+        #self.cur.append(root.val)
+        cur.append(root)
         if root.left is None and root.right is None:
-            if sum(self.cur_sum) == target_sum:
-                self.results.append(self.cur_sum[::])
-                self.cur_sum.pop()
-                return
-        self.has_sum(root.left, target_sum)
-        self.has_sum(root.right, target_sum)
-        self.cur_sum.pop()
+            if target_sum - root.val == 0:
+                # list(cur) or cur[::] was not working
+                path_sums.append([node.val for node in cur])
+        else:
+            self.path_sum_helper(root.left, target_sum-root.val, cur, path_sums)
+            self.path_sum_helper(root.right, target_sum-root.val, cur, path_sums)
+        cur.pop()
 
-    def pathSum(self, root, sum):
+    def pathSum(self, root, target_sum):
         """
         :type root: TreeNode
         :type sum: int
         :rtype: List[List[int]]
+        Idea: Key take aways is how temp. lists like cur and result list should
+        be passed and dealt with. One shouldn't be setting these attributes on 
+        the class itself which would make it accessible across all methods of the
+        class and it's subclasses.
         """
-        self.results = []
-        self.cur_sum = []
-        self.has_sum(root, sum)
-        return self.results
+        path_sums = []
+        self.path_sum_helper(root, target_sum, [], path_sums)
+        return path_sums

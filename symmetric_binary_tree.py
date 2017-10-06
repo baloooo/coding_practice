@@ -34,4 +34,6 @@ class Solution(object):
         :type root: TreeNode
         :rtype: bool
         """
-        return self.check(root, root)
+        if root is None: return True
+        # As root is always symmetric bisect from start
+        return self.check(root.left, root.right)

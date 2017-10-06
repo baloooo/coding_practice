@@ -41,6 +41,40 @@ Return: 0
 #         self.right = None
 
 class Solution(object):
+    def findTarget(self, root, k):
+        """
+        :type root: TreeNode
+        :type k: int
+        :rtype: bool
+        Time: O(n) Space: O(n)
+        Idea: similar to array two sum
+        """
+        vals = set() # set is suffice rather than dict here since we only need to return boolean and not the actual nodes.
+        nodes = [root]
+        index = 0
+        # it's not safe to use for loop here:
+        # https://stackoverflow.com/questions/3752618/python-adding-element-to-list-while-iterating
+        while index < len(nodes):
+            cur = nodes[index]
+            if k - cur.val in vals:
+                return True
+            vals.add(cur.val)
+            if cur.left:
+                nodes.append(cur.left)
+            if cur.right:
+                nodes.append(cur.right)
+            index += 1
+        return  False
+            
+
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
     def push_all_min(self, root):
         while root is not None:
             self.min_stack.append(root)
@@ -67,6 +101,8 @@ class Solution(object):
         :type root: TreeNode
         :type k: int
         :rtype: bool
+        Time: O(n) Space: O(h)
+        If you have a space constraint, use this one rather than the above one
         """
         self.custom_init(root)
         cur_min = self.next_min()
@@ -80,11 +116,3 @@ class Solution(object):
             else:
                 cur_max = self.next_max()
         return False
-
-
-if __name__ == '__main__':
-    from tree_base import level_order_array_to_tree, Node
-    arr = [100, 50, 150, 25, 75, 125, 175]
-    root = level_order_array_to_tree(arr) 
-    sol = Solution(root)
-    print sol.two_sum_exists(1)

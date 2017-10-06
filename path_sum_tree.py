@@ -19,6 +19,21 @@ Return 0 / 1 ( 0 for false, 1 for true ) for this problem
 """
 from tree_base import level_order_array_to_tree
 
+class Solution(object):
+    def hasPathSum(self, root, sum):
+        """
+        :type root: TreeNode
+        :type sum: int
+        :rtype: bool
+        """
+        if not root: return False
+        if root.left is None and root.right is None:
+            if sum - root.val == 0:
+                return True
+            else:
+                return False
+        return self.hasPathSum(root.left, sum-root.val) or self.hasPathSum(root.right, sum-root.val)
+
 
 def tree_path_sum(root, target_sum):
     if root is None:
