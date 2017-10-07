@@ -24,7 +24,6 @@ All windows of size window_size are
 So, we return an array [2, 3, 3, 2].
 """
 
-
 def distinct_number_in_window(inp_arr, window_size):
     from collections import defaultdict
     # {number: number_count}
@@ -48,6 +47,7 @@ def distinct_number_in_window(inp_arr, window_size):
 
 if __name__ == '__main__':
     inp_arr = [1, 2, 1, 3, 4, 3]
-    inp_arr = [1, 1, 3, 4, 5]
+    # inp_arr = [1, 1, 3, 4, 5]
     window_size = 3
-    print distinct_number_in_window(inp_arr, window_size)
+    # print distinct_number_in_window(inp_arr, window_size)
+    print distinct_number_in_window_set(inp_arr, window_size)

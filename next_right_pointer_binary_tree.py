@@ -49,20 +49,18 @@ def next_right_pointer_optimized(root):
 
 def next_right_pointer(root):
     # Space: O(width of binary tree) Time: O(n)
-    if root is None:
-        return
-    cur_level = [root]
-    while cur_level:
-        next_level = []
-        for node in cur_level:
-            if node.left is not None:
-                next_level.append(node.left)
-            if node.right is not None:
-                next_level.append(node.right)
-        cur_level = next_level
-        for index, node in enumerate(next_level):
-            if index+1 != len(next_level):
-                node.next = next_level[index+1]
+    if not root: return
+        cur_lvl = [root]
+    while cur_lvl:
+        nxt_lvl = []
+        for index, node in enumerate(cur_lvl):
+            if node.left:
+                nxt_lvl.append(node.left)
+            if node.right:
+                nxt_lvl.append(node.right)
+            if index < len(cur_lvl)-1:
+                cur_lvl[index].next = cur_lvl[index+1]
+        cur_lvl = nxt_lvl
 
 
 if __name__ == '__main__':

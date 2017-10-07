@@ -41,9 +41,11 @@ def justify_text2(words, max_width):
     """
     res, num_of_letters, cur = [], 0, []
     for w in words:
+        # add len(cur) as this would ensure we can have atleast spaces equal to words within max_width
         if num_of_letters + len(w) + len(cur) > max_width:
             # Assign spaces in round robin fashion
             for i in range(max_width - num_of_letters):
+                # (len(cur)-1) or 1 ensures spaces are never assigned in zeroth spot
                 cur[i % (len(cur) -1 or 1)] += ' '
             res.append(''.join(cur))
             num_of_letters = 0

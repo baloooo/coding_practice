@@ -28,7 +28,16 @@ Input :
          get(10)       returns -1
          set(6, 14)    this pushes out key = 5 as LRU is full.
          get(5)        returns -1
+Idea:
 
+Make a Doubly LL where each node will store the value corresponding to a key.
+This key: Node(val) mapping will be stored in a dictionary.
+When a Get is issued for an existing key move it to end, else append new node at end
+Gotchas:
+Add node when no node present.
+Add node when capacity is already full(pop node from head first)
+Its always a good idea to modularize code as much as possible so when code base grows
+its still manaegable, also you can get the zist of the logic just from method names.
 """
 
 
@@ -75,6 +84,9 @@ class DoublyLinkList:
 
 
 class LRUCache:
+    '''
+    Have tried lot of combinations for modularizing code, this is the best I could find right now.
+    '''
     def __init__(self, capacity):
         # {key: node_object}
         self.capacity = capacity
@@ -82,49 +94,44 @@ class LRUCache:
         self.cache = {}
 
     def get(self, key):
-        # move this node to end
-        try:
-            val_node = self.cache[key]
-        except KeyError:
-            # todo: change it to int
+        if self.cache.get(key):
+            node = self.cache[key]
+            self.list.move_to_end(node)
+            return node.val
+        else:
             return -1
-        self.list.move_to_end(val_node)
-        return self.cache[key].val
 
     def set(self, key, value):
         if self.cache.get(key):
-            self.cache[key].val = value
+            # Just update the value on existing node
             val_node = self.cache[key]
+            val_node.val = value
         else:
-            if self.capacity == 0:
-                # Delete LRU (head node)
-                del self.cache[self.list.head.key]
-                self.list.head = self.list.head.next
+            if self.capacity != 0:
+                self.capacity -= 1
+            else:
+                del self.cache[self.list.head.key]  # Delete head node from cache
+                self.list.head = self.list.head.next  # map head to next head
                 if self.list.head:
                     self.list.head.prev = None
                 else:
                     self.list.last = None
-            else:
-                self.capacity -= 1
-            # val_node = self.list.insert(key, value)
             val_node = DoublyLinkListNode(key, value)
             self.cache[key] = val_node
-        # udpate node order based on access time.
+        # Gotcha: udpate node order based on access time.
         if self.list.last:
             self.list.move_to_end(val_node)
         else:
             self.list.head = self.list.last = val_node
 
 if __name__ == '__main__':
-    # capacity, inp = 11, 'S 1 1 G 11 G 11 S 3 10 G 10 S 3 12 S 1 15 S 4 12 G 15 S 8 6 S 5 3 G 2 G 12 G 10 S 11 5 G 7 S 5 1 S 15 5 G 2 S 13 8 G 3 S 14 2 S 12 11 S 7 10 S 5 4 G 9 G 2 S 13 5 S 10 14 S 9 11 G 5 S 13 11 S 8 12 G 10 S 5 12 G 8 G 11 G 8 S 9 11 S 10 6 S 7 12 S 1 7 G 10 G 9 G 15 G 15 G 3 S 15 4 G 10 G 14 G 10 G 12 G 12 S 14 7 G 11 S 9 10 S 6 12 S 14 11 G 3 S 7 5 S 1 14 S 2 8 S 11 12 S 8 4 G 3 S 13 15 S 1 4 S 5 3 G 3 G 9 G 14 G 9 S 13 10 G 14 S 3 9 G 8 S 3 5 S 6 4 S 10 3 S 11 13 G 8 G 4 S 2 11 G 2 G 9 S 15 1 G 9 S 7 8 S 4 3 G 3 G 1 S 8 4 G 13 S 1 2 G 3'  # noqa
-    # capacity, inp = 2, 'S 2 1 S 1 1 S 2 3 S 4 1 G 1 G 2'
-    capacity, inp = 11, 'S 1 1 G 11 G 11 S 3 10 G 10 S 3 12 S 1 15 S 4 12 G 15 S 8 6 S 5 3 G 2 G 12 G 10 S 11 5 G 7 S 5 1 S 15 5 G 2 S 13 8 G 3 S 14 2 S 12 11 S 7 10 S 5 4 G 9 G 2 S 13 5 S 10 14 S 9 11 G 5 S 13 11 S 8 12 G 10 S 5 12 G 8 G 11 G 8 S 9 11 S 10 6 S 7 12 S 1 7 G 10 G 9 G 15 G 15 G 3 S 15 4 G 10 G 14 G 10 G 12 G 12 S 14 7 G 11 S 9 10 S 6 12 S 14 11 G 3 S 7 5 S 1 14 S 2 8 S 11 12 S 8 4 G 3 S 13 15 S 1 4 S 5 3 G 3 G 9 G 14 G 9 S 13 10 G 14 S 3 9 G 8 S 3 5 S 6 4 S 10 3 S 11 13 G 8 G 4 S 2 11 G 2 G 9 S 15 1 G 9 S 7 8 S 4 3 G 3 G 1 S 8 4 G 13 S 1 2 G 3'  # noqa
-    cache = LRUCache(capacity)
-    index = 0
-    inp_arr = inp.split(' ')
-    out = '-1 -1 -1 -1 -1 -1 -1 -1 -1 12 -1 -1 4 14 12 5 12 6 11 -1 -1 12 6 -1 6 11 11 5 12 12 12 10 11 10 11 4 4 -1 11 10 10 5 -1 -1 5'.split(' ')  # noqa
-    out_index = 0
-    while index < len(inp_arr):
+   capacity, inp = 2, 'S 2 1 S 1 1 S 2 3 S 4 1 G 1 G 2'
+   cache = LRUCache(capacity)
+   index = 0
+   inp_arr = inp.split(' ')
+   out = '-1 -1 -1 -1 -1 -1 -1 -1 -1 12 -1 -1 4 14 12 5 12 6 11 -1 -1 12 6 -1 6 11 11 5 12 12 12 10 11 10 11 4 4 -1 11 10 10 5 -1 -1 5'.split(' ')  # noqa
+   out_index = 0
+   while index < len(inp_arr):
         # print cache.cache
         op = inp_arr[index]
         if op == 'S':
@@ -140,3 +147,45 @@ if __name__ == '__main__':
                     out[out_index], cache.get(inp_arr[index+1]))
             index += 2
             out_index += 1
+
+# 188ms LCode: Alternate implementation
+import collections
+class LRUCache(object):
+
+    def __init__(self, capacity):
+        """
+        :type capacity: int
+        """
+        self.d = dict()
+        self.dq = collections.deque()
+        self.capacity = capacity
+
+    def get(self, key):
+        """
+        :type key: int
+        :rtype: int
+        """
+        if not key in self.d: return -1
+        self.dq.append(key)
+        self.d[key][1] += 1
+        return self.d[key][0]
+    
+    def put(self, key, value):
+        """
+        :type key: int
+        :type value: int
+        :rtype: void
+        """
+        self.dq.append(key)
+        if not key in self.d:
+            self.d[key] = [value,1]
+        else:
+            self.d[key][0] = value
+            self.d[key][1] += 1
+        if len(self.d) > self.capacity:
+            while True:            
+                k = self.dq.popleft()
+                self.d[k][1] -= 1
+                if self.d[k][1] == 0:
+                    del self.d[k]
+                    return

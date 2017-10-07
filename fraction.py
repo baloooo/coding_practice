@@ -26,7 +26,6 @@ class Solution(object):
             num = abs(num)
             denom = abs(denom)
             decimal.append('-')
-
         # This quot now contains the entire quotient before decimal part
         # use divmod as this is faster than doing divide and mod since on assembly level division does return mod
         quot, rem = divmod(num, denom)
@@ -82,6 +81,38 @@ class Solution(object):
             # proper fraction
             decimal.extend(frac_map.values())
             return ''.join(decimal)
+
+def fraction_as_string(num, denom):
+    from collections import OrderedDict
+    '''
+    Idea: https://discuss.leetcode.com/topic/17071/0ms-c-solution-with-detailed-explanations
+    '''
+    # Step 1: Check num and denom signs and finalize sign for the end result.
+    positive_sign = True
+    if num<0:
+        positive_sign = not positive_sign
+        num = abs(num)
+    if denom<0:
+        positive_sign = not positive_sign
+        denom = abs(denom)
+    # step 2 Fill the frac_map and break where recurring remainder encountered
+    quot = str(num / denom)
+    rem = num % denom
+    # {remainder: quotient}
+    frac_map = OrderedDict()
+    while (rem not in frac_map and rem != 0):
+        cur_quot = str((rem*10) / denom)
+        frac_map[rem] = cur_quot
+        rem = (rem*10) % denom
+    if rem == 0 and not frac_map:
+        return quot
+    count = 0
+    quot += '.'
+    # step 3: Add the recurring part with appropriate '('
+    for cur_rem, cur_q in frac_map.items():
+        if cur_rem!= rem:
+            count += 1
+            quot += cur_q
         else:
             opening_brace = False
             for cur_rem, cur_q in frac_map.items():

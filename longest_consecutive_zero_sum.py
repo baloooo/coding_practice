@@ -18,6 +18,11 @@ Output: 1
 class Solution:
     """
     Idea: http://www.geeksforgeeks.org/find-the-largest-subarray-with-0-sum/
+    The idea is to have a running total of sum until now and keep storing that
+    sum in hash map against the index it was acheived at. The moment you see running sum
+    as zero or a sum that you have already seen before (in hash map) you got your zero sum
+    sub array which can be further extracted from cur_index and the index of cur_sum's index
+    in hash map.
     """
     def my_func(self, arr):
         cur_sum, max_len, start = 0, 0, 0

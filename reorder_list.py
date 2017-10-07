@@ -13,25 +13,28 @@ from linkedlistbase import construct_linked_list_from_array, compare_two_linked_
 
 class Solution:
     def reorder_list2(self, head):
-	if not head:
-	    return
-	# find the mid point
-	slow = fast = head 
-	while fast and fast.next:
-	    slow = slow.next
-	    fast = fast.next.next
-
-	# reverse the second half in-place
-	pre, node = None, slow
-	while node:
-	    import ipdb; ipdb.set_trace()	
-	    pre, node.next, node = node, pre, node.next
-	# Merge in-place; Note : the last node of "first" and "second" are the same
-	first, second = head, pre
-	while second.next:
-	    first.next, first = second, first.next
-	    second.next, second = first, second.next
-	return 
+        if not head or not head.next:
+                return
+        # find mid
+        orig_head = fast = slow = head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        # reverse all nodes from mid to len
+        # reverse the second half in-place
+        prev, cur, next = None, slow, None
+        while cur:
+            next = cur.next
+            cur.next = prev
+            prev = cur
+            cur = next
+        # prev has the last node now
+        # Merge in-place; Note : the last node of second is None now since we reverted the second half.
+        first, second = orig_head, prev
+        while second.next:
+            first.next, first = second, first.next
+            second.next, second = first, second.next 
+        return
 
     def reorder_list(self, head):
         """

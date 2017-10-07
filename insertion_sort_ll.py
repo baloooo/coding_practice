@@ -10,18 +10,18 @@ class Solution(object):
         :type head: ListNode
         :rtype: ListNode
         """
-        dummy = pre = ListNode(-1)
-        cur = dummy.next = head
-        while cur and cur.next:
-            if cur.val <= cur.next.val:
-                cur = cur.next
+        dummy = start = ListNode('dummy')
+        dummy.next = head
+        while head and head.next:
+            if head.val <= head.next.val:
+                head = head.next
             else:
-                while pre.next.val < cur.next.val:
-                    pre = pre.next
-                our_node = cur.next
-                cur.next = our_node.next
-                temp = pre.next
-                pre.next = our_node
-                our_node.next = temp
-            pre = dummy
+                while start.next.val < head.next.val:
+                    start = start.next
+                # Linking head.next(target) to start.next (approporiate location) and so on.
+                # using one liner to alleviate the need of temp. variables
+                # move
+                start.next, head.next.next, head.next = head.next, start.next, head.next.next
+            # since we cannot move backwards in LL, always have a pointer at the beginning.
+            start = dummy
         return dummy.next

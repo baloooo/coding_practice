@@ -15,10 +15,10 @@ For k = 2, you should return: 2->1->4->3->5
 For k = 3, you should return: 3->2->1->4->5
 """
 # Definition for singly-linked list.
-# class ListNode(object):
-#     def __init__(self, x):
-#         self.val = x
-#         self.next = None
+class ListNode(object):
+    def __init__(self, x):
+        self.val = x
+        self.next = None
 
 class Solution(object):
     def reverseKGroup(self, head, k):
@@ -30,9 +30,9 @@ class Solution(object):
         # verify if k nodes exist.
         # reverse k nodes
         # link head of this group to next group and tail of this group to head of prev group
-        cur_node = jump = ListNode('-1')
+        prev_tail = dummy = ListNode('dummy')
         # l and r are the limits in which nodes need to be reversed
-        cur_node.next = l = r = head
+        prev_tail.next = l = r = head
         count = 0
         while True:
             # Move r one step over, so as to land it on the next node of k group nodes which then can be used to connect prev grp
@@ -49,9 +49,18 @@ class Solution(object):
                     pre = cur
                     cur = next
                     count -= 1
-                # set cur_node.next to pre which is joining prev tail to currently reversed group head
-                # set cur_node to l to point it now at the previous goups tail( notice l points to tail now since this group is now reversed)
-                # set r to l this will be the pre or head of prev reversed group which willl be set to next groups tail in (1)
-                cur_node.next, cur_node, l = pre, l, r
+            #set prev_tail.next to pre which is joining prev tail to currently reversed group head
+            #set prev_tail to l to point it now at the previous goups tail
+            #(notice l points to tail now since this group is now reversed)
+            #set r to l this will be the pre or head of prev reversed group which will
+            #be set to next groups tail in (1)
+            # This is the most imp. part of the exercise
+                prev_tail.next, prev_tail, l = pre, l, r
             else:
-                return jump.next
+                return dummy.next
+
+if __name__ == '__main__':
+    from linkedlistbase import construct_linked_list_from_array
+    arr = [1, 2, 3, 4, 5, 6, 7, 8]
+    head, k = construct_linked_list_from_array(arr), 3
+    Solution().reverseKGroup(head, k)

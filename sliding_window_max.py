@@ -24,6 +24,10 @@ def sliding_window_max(arr, k):
     :type k: int
     :rtype: List[int]
     Idea: http://www.geeksforgeeks.org/maximum-of-all-subarrays-of-size-k/
+    Create a Double Ended Queue, Qi that will store indexes of array elements
+    The queue will store indexes of useful elements in every window and it will
+    maintain decreasing order of values from front to rear in Qi, i.e., 
+    arr[Qi.front[]] to arr[Qi.rear()] are sorted in decreasing order
     """
     from collections import deque
     if not arr:
@@ -32,6 +36,7 @@ def sliding_window_max(arr, k):
     res = []
     # Parse starting window size elements
     for index in range(k):
+        # For very element, the previous smaller elements are useless so remove them from Qi
         while len(q) and arr[index] > arr[q[-1]]:
             q.pop()
         q.append(index)
@@ -48,7 +53,7 @@ def sliding_window_max(arr, k):
         Remove all elements smaller than the currently
         being added element (remove useless elements)
         """
-        while len(q) and arr[index] >= arr[q[-1]]:
+        while len(q) and arr[index] > arr[q[-1]]:
             q.pop()
         # Add current element to the rear
         q.append(index)
