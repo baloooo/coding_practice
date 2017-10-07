@@ -1,20 +1,8 @@
 """
-Given a binary search tree, write a function to find the kth smallest element
-in the tree.
-
-Example :
-
-Input :
-  2
- / \
-1   3
-
-and k = 2
-
-Return : 2
-
-As 2 is the second smallest element in the tree.
- NOTE : You may assume 1 <= k <= Total number of nodes in BST
+https://discuss.leetcode.com/topic/17810/3-ways-implemented-in-java-python-binary-search-in-order-iterative-recursive/75
+If nodes can be altered frequently and this method needs to be called frequently. Just get the
+inorder for the BST and get nodes from direct access, ofcourse given that O(n) space is not an
+issue.
 """
 
 
@@ -27,33 +15,6 @@ def k_smallest_naive(k):
     """
     pass
 
-
-class Solution(object):
-
-    def __init__(self):
-        self.count = 0
-
-    def k_smallest_optimized_recursive(self, root, k):
-        """
-        Time: O(max(h,k))
-        Space: O(h)
-        """
-        return self.inorder(root, k)
-
-    def inorder(self, root, k):
-        if root is None:
-            return
-        val = self.inorder(root.left, k)
-        if val is not None:
-            return val
-        self.count += 1
-        if self.count == k:
-            return root.val
-        else:
-            val = self.inorder(root.right, k)
-            if val is not None:
-                return val
-
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -62,25 +23,27 @@ class Solution(object):
 #         self.right = None
 
 class Solution(object):
-    def preorder(self, root):
+    def inorder(self, root):
+        # Strategy:
+        # Regular inorder, Basic idea is to Go left, decrement k, Go right
+        # At any stage if k == 1, meaning we found our target keep returning that val back
         if root is None:
             return
-        left = self.preorder(root.left)
+        left = self.inorder(root.left)
         if left is not None:
             return left
         if self.k == 1:
             return root.val
         self.k -= 1
-        return self.preorder(root.right)
+        return self.inorder(root.right)
 
     def kthSmallest(self, root, k):
         """
-        :type root: TreeNode
-        :type k: int
-        :rtype: int
+        Time: O(max(h,k))
+        Space: O(h)
         """
         self.k = k
-        return self.preorder(root)
+        return self.inorder(root)
 
 
 if __name__ == '__main__':
