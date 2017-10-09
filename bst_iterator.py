@@ -11,6 +11,11 @@ from tree_base import level_order_array_to_tree, Node
 class Solution:
     """
     Idea: https://discuss.leetcode.com/topic/6575/my-solutions-in-3-languages-with-stack/40
+    Stack to store directed left children from root.
+    When next() be called, I just pop one element and process its right child as new root.
+    The code is pretty straightforward.
+
+    The average time complexity of next() function is O(1) indeed in your case. As the next function can be called n times at most, and the number of right nodes in self.pushAll(tmpNode.right) function is maximal n in a tree which has n nodes, so the amortized time complexity is O(1).
     """
 
 # Definition for a  binary tree node

@@ -36,11 +36,20 @@ class Solution:
         :rtype: List[List[int]]
         Idea: https://discuss.leetcode.com/topic/60981/explanation-of-the-neat-sort-insert-solution
         Time: O(n^2) due to insert on lists
+        The idea is to sort items based on their height in descending order and then just place them in
+        an array based on their k value, similar to selection sort. As k-defines the number of items that 
+        can be in front of a item and as we're picking items in height sorted order (largest first) the last
+        item will be the smallest item and will tell us the exact location where it should be placed, we can't ignore
+        any positions ahead of it b'coz everyone is bigger than him so he definately counted accurately everyone in
+        front of him.Whereas on the other hand the larger guys we placed initially had the liberty of counting
+        only the persons taller than them so their count was not so accurate, so we delibarately placed them before
+        and the smaller persons had more control over their location since "they had to be more accurate since they
+        didn't skip anyone".
         """
-        queue = []
+        arr = []
         for candidate in sorted(people, key=lambda (h,k): (-h,k)):
-            queue.insert(candidate[1], candidate)
-        return queue
+            arr.insert(candidate[1], candidate)
+        return arr 
 
     def construct_queue(self, heights, in_fronts):
         people = [[height, in_front] for height, in_front in zip(heights, in_fronts)]  # noqa

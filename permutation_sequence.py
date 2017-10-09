@@ -8,9 +8,10 @@ class Solution:
         res, arr, k = [], range(1, n+1), k-1
         for i in xrange(1, n+1):
             cur_index = k/factorial(n-i)
-            k = k % factorial(n-i)
             res.append(arr[cur_index])
             del arr[cur_index]
+            k = k % factorial(n-i)
+            k = k - cur_index * factorial(n-i)  # Number of items we've counted already when including arr[cur_index]
         return res
 
     def permutation_sequence2(self, n, k):

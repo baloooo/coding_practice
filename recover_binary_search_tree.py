@@ -13,6 +13,8 @@ class Solution(object):
             return
         self.inorder(root.left)
         if self.pre and self.pre.val > root.val:
+            # Notice: the first time an anomaly is encountered our target is in first node self.pre, whereas for the
+            # second node our target will be in latter node therefore in root
             if self.first is None:
                 self.first = self.pre
             self.second = root
@@ -21,7 +23,7 @@ class Solution(object):
             
     def recoverTree(self, root):
         """
-	Time: O(n) Space: O(n) stack space
+	Time: O(n) Space: O(h) stack space
         :type root: TreeNode
         :rtype: void Do not return anything, modify root in-place instead.
 	Idea: https://discuss.leetcode.com/topic/3988/no-fancy-algorithm-just-simple-and-powerful-in-order-traversal/63

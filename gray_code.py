@@ -7,14 +7,15 @@ reverse of L1.
 3) Modify the list L2 by prefixing a ‘1’ in all codes of L2.
 4) Concatenate L1 and L2. The concatenated list is required list of n-bit Gray
 codes.
+One should know both the techniques
 """
-
 
 class Solution:
     def __init__(self):
         self.two_bit_gray = ['00', '01', '11', '10']
 
     def gray_code(self, bits):
+        # https://en.wikipedia.org/wiki/Gray_code
         def generate_gray(bits):
             if bits == 2:
                 return self.two_bit_gray
@@ -32,6 +33,7 @@ class Solution:
         """
         :type n: int
         :rtype: List[int]
+        Idea: n ^ n/2
         """
         return [(num >> 1) ^ num for num in xrange(2**n)]
 
