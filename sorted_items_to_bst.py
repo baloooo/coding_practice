@@ -30,7 +30,7 @@ class TreeNode(object):
 
 class Solution(object):
     def get_bst(self, arr, start, end):
-        # Never use this conditional: if end < 0 or start >= len(arr):
+        # Note: Never use the conditional: if end < 0 or start >= len(arr):
         if start > end:
             return None
         mid = start + int(math.ceil((end-start)/2.0))
@@ -99,18 +99,6 @@ class Solution(object):
             http://articles.leetcode.com/convert-sorted-list-to-balanced-binary
         Given a singly linked list where elements are sorted in ascending
         order, convert it to a height balanced BST.
-        Definition for singly-linked list.
-        class ListNode(object):
-            def __init__(self, x):
-                self.val = x
-                self.next = None
-
-        Definition for a binary tree node.
-        class TreeNode(object):
-            def __init__(self, x):
-                self.val = x
-                self.left = None
-                self.right = None
         """
         n = self.get_ll_len(head)
         self.head = head

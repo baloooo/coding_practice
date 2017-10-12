@@ -7,6 +7,8 @@ Implementation of Tarjan’s algorithm for finding articulation points
 Time Complexity: The above function is simple DFS with additional arrays.
 So time complexity is same as DFS which is O(V+E) for adjacency list
 representation of graph.
+
+Idea: https://www.youtube.com/watch?v=2kREIkF9UAs
 """
 
 
@@ -50,6 +52,10 @@ class Graph:
                 self.dfs(adjacent_node)
                 if cur_node.visited_time <= adjacent_node.low_time:
                     """
+                    The time cur_node was first visited is the lowest among all
+                    the adjacent nodes low times (lowest time node visited from
+                    any of the adjacent node)
+                    or
                     This means that cur_node doesn't have any backedge to any
                     of it's ancestors and therefore removing this node will
                     disconnect subtree rooted at cur_node from rest of the

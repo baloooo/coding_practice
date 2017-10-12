@@ -5,6 +5,9 @@ For example, given n = 3, a solution set is:
 
 "((()))", "(()())", "(())()", "()(())", "()()()"
 Make sure the returned list of strings are sorted.
+
+Idea: 
+As I understand, the idea is that we will add left brackets whenever possible. For a right bracket, we will add it only if the remaining number of right brackets is greater than the left one. If we had used all the left and right parentheses, we will add the new combination to the result. We can be sure that there will not be any duplicate constructed string.
 """
 
 class Solution():

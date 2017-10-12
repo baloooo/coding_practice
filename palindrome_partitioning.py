@@ -50,6 +50,7 @@ class Solution(object):
 	(in the worst case when you have repeating chars) to make sure every partition
 	is a palindrome. so n * 2 ^ (n - 1) = O(n*2^n).
 	Space: O(2^n) As there can be max of 2^n partitions, so to store each one of them
+    ex: "aaaaaaaaa"
         """
         self.cur_pal_parts = []
         self.palindromic_parts = []

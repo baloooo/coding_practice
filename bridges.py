@@ -49,7 +49,7 @@ class Graph:
                 if adjacent_node.low_time == adjacent_node.visited_time:
                     # This means an edge b/w cur_node and adjacent_node will be a bridge, as this adjacent_node doesn't have any back edge (as low_time is what we set at the beginning)  # noqa
                     self.bridges.add((cur_node, adjacent_node))
-            elif adjacent_node != cur_node.parent:
+            elif adjacent_node != cur_node.parent: # this is shorter than if continue used in articulation points
                 cur_node.low_time = min(cur_node.low_time,
                                         adjacent_node.visited_time)
 

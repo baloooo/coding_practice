@@ -17,8 +17,8 @@ class Solution(object):
         For ex: for row=1 base_row_index would be 0 and not 1 which you would get if you cancel
         3's.
         base_col_index = 3*(col/3)
-        row_offset = i/3
-        col_offset = i%3
+        row_offset = index / 3
+        col_offset = index % 3
         """
         for index in xrange(9):
             if index != cur_col and board[cur_row][index] == cur_num: return False

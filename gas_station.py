@@ -16,10 +16,10 @@ Completing the circuit means starting at i and ending up at i again.
 Example :
 
 Input :
-      Gas :   [1, 2]
-            Cost :  [2, 1]
+    Gas :   [1, 2]
+    Cost :  [2, 1]
 
-            Output : 1
+    Output : 1
 
 If you start from index 0, you can fill in gas[0] = 1 amount of gas.
 Now your tank has 1 unit of gas. But you need cost[0] = 2 gas to travel to
@@ -47,7 +47,7 @@ class Solution:
            There must be a solution.
         """
         start, total_deficency, tank = 0, 0, 0
-        # total_deficency is the total amount of fuel we're short of when we reach the last stattion
+        # total_deficency is the total amount of fuel we're short of when we reach the last station
         for i in xrange(len(gas_arr)):
             tank += gas_arr[i] - cost_arr[i]
             if tank < 0:

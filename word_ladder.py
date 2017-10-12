@@ -80,26 +80,6 @@ class Solution:
 
     def word_ladder_optimized(self, word_list, source_word, goal_word):
         """
-        Problem statement:
-         Given two words (beginWord and endWord), and a dictionary's word list,
-        find the length of shortest transformation sequence from beginWord to
-        endWord, such that:
-
-        Only one letter can be changed at a time.
-        Each transformed word must exist in the word list.
-        Note that beginWord is not a transformed word.
-
-        For example,
-
-        Given:
-        beginWord = "hit"
-        endWord = "cog"
-        wordList = ["hot","dot","dog","lot","log","cog"]
-
-        As one shortest transformation is
-            "hit" -> "hot" -> "dot" -> "dog" -> "cog",
-        return its length 5.
-
         Note:
 
             Return 0 if there is no such transformation sequence.
@@ -109,6 +89,10 @@ class Solution:
             You may assume beginWord and endWord are non-empty and are not the
             same.
 
+        tldr: Standard BFS with visited_set = set()
+        Time complexity: O(n*w*26)
+        Space: O(n)
+        
         The trick (different from naive method above) here is to make use of
         the datastructures (set in this case)
         For every word in word_set we change it one bit and then check if
@@ -116,8 +100,7 @@ class Solution:
         as set() we can do so in O(1). So for each_word in word_set (n) we
         iterate thru its size (w) and for each iteration try to fix 26
         alphabet chars and see which one works. Therefore in total:
-        Time complexity: O(n*w*26)
-        Space: O(n)
+        
         """
         from string import ascii_lowercase
         word_set = set(word_list)
@@ -142,15 +125,6 @@ class Solution:
 
     def word_ladder_2(self, word_list, source_word, goal_word):
         """
-        Given two words (beginWord and endWord), and a dictionary's word list,
-        find all shortest transformation sequence(s) from beginWord to endWord
-         such that:
-
-        Only one letter can be changed at a time
-        Each transformed word must exist in the word list.
-        Note that beginWord is not a transformed word.
-        For example,
-
         Given:
         beginWord = "hit"
         endWord = "cog"
