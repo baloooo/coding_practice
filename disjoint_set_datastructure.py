@@ -1,4 +1,13 @@
 """
+The idea of disjoint datastructures is more clearly shown with the help of implementation of 
+kruskal algorithm where we break each node in the graph to individual nodes and then pick
+minimum weight edge and see if it help join two different forests and not nodes with in the same
+forest as our end goal is to have minimum number of edges that can join all the nodes in the graph.
+Here disjoint set helps in:
+Helping find if this min. weight edge joins two nodes of already connected graph or not.
+
+In computer science, a disjoint-set data structure, also called a union–find data structure or merge–find set, is a data structure that keeps track of a set of elements partitioned into a number of disjoint (non-overlapping) subsets. It provides near-constant-time operations (bounded by the inverse Ackermann function) to add new sets, to merge existing sets, and to determine whether elements are in the same set. In addition to many other uses (see the Applications section), disjoint-sets play a key role in Kruskal's algorithm for finding the minimum spanning tree of a graph.
+
 Disjoint set data structure using path compression (for better find complexity)
 and union by rank.
 """

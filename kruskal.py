@@ -20,10 +20,11 @@ class Graph:
 
     def kruskal_mst(self):
         """
-        We can achieve this bound as follows: first sort the edges by weight
-        using a comparison sort in O(E log E) time; this allows the step
+        We can achieve this bound as follows:
+        1: sort the edges by weight using a comparison sort in O(E log E) time; this allows the step
         "remove an edge with minimum weight from S" to operate in constant
-        time. Next, we use a disjoint-set data structure (Union&Find) to keep
+        time.
+        2: we use a disjoint-set data structure (Union&Find) to keep
         track of which vertices are in which components. We need to perform
         O(V) operations, as in each iteration we connect a vertex to the
         spanning tree, two 'find' operations and possibly one union for each

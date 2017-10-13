@@ -80,6 +80,7 @@ class Solution:
 
     def word_ladder_optimized(self, word_list, source_word, goal_word):
         """
+        Uses separate lists instead of one queue
         Note:
 
             Return 0 if there is no such transformation sequence.
@@ -100,7 +101,11 @@ class Solution:
         as set() we can do so in O(1). So for each_word in word_set (n) we
         iterate thru its size (w) and for each iteration try to fix 26
         alphabet chars and see which one works. Therefore in total:
-        
+
+        Another key idea here is to use word_list and next_word_list to measure,
+        when one level of BFS has completed and therefore cur_distance can be incremented.
+        if we use a queue instead, we have no(yet I can think of) way of measuring the
+        end of current level and beginning of next and therefore increment of cur_distance.
         """
         from string import ascii_lowercase
         word_set = set(word_list)
@@ -115,32 +120,48 @@ class Solution:
                 for index in xrange(len(cur_word)):
                     for ch in ascii_lowercase:
                         candidate_word = cur_word[:index] + ch + cur_word[index+1:]  # noqa
-                        if (candidate_word in word_set and
-                                candidate_word not in visited_set):
+                        if (candidate_word in word_set and candidate_word not in visited_set):
                             visited_set.add(candidate_word)
                             next_word_list.append(candidate_word)
             cur_word_list = next_word_list
             cur_distance += 1
         return cur_distance
 
+    def word_ladder_optimized_queue(self, beginWord, endWord, wordList):
+        """
+        Same as above, but uses regular queue instead of two lists for marking
+        different levels.
+        Appends None after every level therefore whenever queue front has None we can be 
+        sure that one level has completed, and when consecutive None are encountered BFS
+        has ended.
+        """
+        from Queue import Queue
+        from string import ascii_lowercase
+        word_set = set(wordList)
+        cur_word_q, visited_set = Queue(), set(beginWord)
+        cur_word_q.put(beginWord)
+        cur_word_q.put(None)
+        cur_distance = 0
+        while not cur_word_q.empty():
+            cur_word = cur_word_q.get()
+            if cur_word is None:
+                # end of level
+                cur_distance += 1
+                cur_word_q.put(None)
+                cur_word = cur_word_q.get()
+                if cur_word is None: break
+            if cur_word == endWord: return cur_distance + 1
+            for index in xrange(len(cur_word)):
+                for ch in ascii_lowercase:
+                    candidate_word = ''.join([cur_word[:index], ch, cur_word[index+1:]])
+                    if candidate_word in word_set and candidate_word not in visited_set:
+                        #if candidate_word == endWord: return cur_distance + 1
+                        cur_word_q.put(candidate_word)
+                        visited_set.add(candidate_word)
+            #cur_distance += 1
+        return 0
+
     def word_ladder_2(self, word_list, source_word, goal_word):
-        """
-        Given:
-        beginWord = "hit"
-        endWord = "cog"
-        wordList = ["hot","dot","dog","lot","log","cog"]
-        Return
-          [
-            ["hit","hot","dot","dog","cog"],
-            ["hit","hot","lot","log","cog"]
-          ]
-        Note:
-        Return an empty list if there is no such transformation sequence.
-        All words have the same length.
-        All words contain only lowercase alphabetic characters.
-        You may assume no duplicates in the word list.
-        You may assume beginWord and endWord are non-empty and are not the same
-        """
         from string import ascii_lowercase
         from collections import defaultdict
         from Queue import Queue
@@ -149,7 +170,8 @@ class Solution:
         This graph is realized using neighbor_dict which is just a mapping
         of a word to (:) all words that are in one edit distance of this
         word.
-        neighbor_dict = {'dog': ['cog'],
+        neighbor_dict = 
+            {'dog': ['cog'],
 			 'dot': ['dog'],
 			 'hit': ['hot'],
 			 'hot': ['dot', 'lot'],
