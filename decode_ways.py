@@ -39,13 +39,16 @@ class Solution:
         Time: O(len(s))
         Space : O(len(s))
         """
+        # Deal with corner case of zero and one length strings
+        # Note: s[0] = '0' makes the string invalid
         if not s or s[0] == '0':
             return 0
         if len(s) == 1:
             return 1
+        # Note: The size of dp array is n+1 here since we get no. of ways we can decode digits up to nth index will be stored at n+1 index of the array.
         dp = [0]*(len(s)+1)
-        dp[0] = 1
-        dp[1] = 1 if s[0] != '0' else 0
+        dp[0] = 1  # since we've already established above s[0] != '0'
+        dp[1] = 1 if s[0] != '0' else 0 # dp[1] tells number of ways s[0] can be decoded, dp[2] tells no_of_ways s[0],s[1] can be decoded and so on.
         for i in xrange(2, len(s)+1):
             if s[i-1] != '0':
                 dp[i] += dp[i-1]

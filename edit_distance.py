@@ -8,6 +8,11 @@ Change a character
 Given two string s1 and s2, find if s1 can be converted to s2 with exactly one
 edit.
 Expected time complexity is O(m+n) where m and n are lengths of two strings.
+One cannot simply replace all the mismatching entries in this scenario since, for strings
+x = "abcde"
+y = "fabcde"
+here instead of replacing each mismatch chars it would be correct to just insert one 'f' at
+the beginning and therefore min. edit distance is 1 for x and y.
 """
 
 
@@ -63,17 +68,34 @@ edit distance between
 
 class Solution2:
 
+    def get_min_distance(self, w1, w2, idx1, idx2):
+        # Time: O(3^m)
+        # Space: O(stack depth) which is O(max(len(str1), len(str2)))
+        # recursion from tail without wonky + 2 on line 96 here
+        if idx1 == 0:
+            return idx2
+        if idx2 == 0:
+            return idx1
+        if w1[idx1-1] == w2[idx2-1]:
+            return self.get_min_distance(w1, w2, idx1 - 1, idx2 - 1)
+        return 1 + min(
+                self.get_min_distance(w1, w2, idx1 - 1, idx2),
+                self.get_min_distance(w1, w2, idx1, idx2 - 1),
+                self.get_min_distance(w1, w2, idx1 - 1, idx2 - 1)
+            )
+
     def edit_distance_recursion(self, str1, str2, str1_index, str2_index):
         """
         Time: O(3^m)
         Space: O(stack depth) which is O(max(len(str1), len(str2)))
+        Traverse from tail since this will save you some computations on returning lengths etc
         """
         if str1_index == len(str1):
             return len(str2)-str2_index
         if str2_index == len(str2):
             return len(str1)-str1_index
         if str1[str1_index] == str2[str2_index]:
-            return self.edit_distance(str1, str2, str1_index+1, str2_index+2)
+            return self.edit_distance(str1, str2, str1_index+1, str2_index + 2)
         # else:
         return 1+min(
             self.edit_distance(str1, str2, str1_index+1, str2_index),  # noqa Insert/Delete in str2
