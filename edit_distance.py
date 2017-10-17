@@ -109,7 +109,9 @@ class Solution2:
         Space: O(m*n)
         http://www.geeksforgeeks.org/dynamic-programming-set-5-edit-distance/
         https://discuss.leetcode.com/topic/17639/20ms-detailed-explained-c-solutions-o-n-space
-        https://www.youtube.com/watch?v=b6AGUjqIPsA
+        https://www.youtube.com/watch?v=b6AGUjqIPsA    # his insert and delete representations
+        are accurate and intutive when chalked graphically, start by constructing a 2d array
+        and naming rows and cols as shown in the video, helps make a better image of the sol'n
         """
         dp = [[0 for _ in xrange(len(str2)+1)] for _ in xrange(len(str1)+1)]
         for i in xrange(len(str1)+1):

@@ -16,6 +16,28 @@ so can make at most 3 steps eg to 5 or 8 or 9.
 
 
 class Solution:
+    def min_jumps_to_end_optimized(self, arr):
+        """
+        Strategy used here is BFS which is more intutive than the below one.
+        https://discuss.leetcode.com/topic/3191/o-n-bfs-solution
+        """
+        # strategy: BFS
+        if len(arr) <= 1: return 0
+        level = 0 # jumps
+        cur_max = next_max = 0
+        index = 0
+        while index <= cur_max:
+            level += 1
+            while index <= cur_max:
+                next_max = max(next_max, index + arr[index])
+                index += 1
+            
+            if next_max >= len(arr) - 1:
+                return level
+
+            cur_max = next_max
+        return 0 
+
     """
     Both exercises are of Greedy type
     https://discuss.leetcode.com/topic/11761/easy-python-greedy-solution-with-explanation

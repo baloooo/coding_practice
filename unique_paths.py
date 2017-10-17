@@ -109,6 +109,42 @@ class Solution(object):
                     obstacle_grid[cur_row][cur_col] = obstacle_grid[cur_row-1][cur_col] + obstacle_grid[cur_row][cur_col-1]  # noqa
         return obstacle_grid[row_len-1][col_len-1]
 
+    def uniquePathsWithObstacles_optimized(self, obstacleGrid):
+        """
+        :type obstacleGrid: List[List[int]]
+        :rtype: int
+        This is more intutive since this is broken in to more logical steps, the only
+        down side is the space complexity is O(row_n*col_n) (incase we're not allowed to
+        modify the existing array and have to take a copy of obstacleGrid) but for everything else
+        this is more logical
+        """
+        if obstacleGrid[0][0] == 1: return 0 # you cannot go anwhere from start position
+        row_n, col_n = len(obstacleGrid), len(obstacleGrid[0])
+        # Step1: populate zeroth row, currently obstacleGrid depics obstacles after this population it would depict number of ways to reach an index (x,y) in it.
+        for col in xrange(col_n):
+            if obstacleGrid[0][col] == 0:
+                obstacleGrid[0][col] = 1  # This now depicts number of ways you can reach this (x,y) pos'n
+            else: # obstacle found, therefore no index in this row can be reached so populate that
+                for j in xrange(col, col_n):
+                    obstacleGrid[0][j] = 0  # Note: This zero is the number of ways
+                break
+        # Step 2: populate zeroth column
+        for row in xrange(1, row_n): # Note: Here row starts from 1 since zeroth was aleready populated in above loop (this can cancel it's effect)
+            if obstacleGrid[row][0] == 0:
+                obstacleGrid[row][0] = 1
+            else:
+                for i in xrange(row, row_n):
+                    obstacleGrid[i][0] = 0
+                break
+        # Step3: populate 1 to n for grid
+        for row in xrange(1, row_n):
+            for col in xrange(1, col_n):
+                if obstacleGrid[row][col] == 1: # you cannot go thru this index so no need to calculate no. of ways you can reach this index since you can't go anywhere from here, instead put 0 here to depict this doesn't add anything to our no. of ways count.
+                    obstacleGrid[row][col] = 0
+                else:
+                    obstacleGrid[row][col] = obstacleGrid[row-1][col] + obstacleGrid[row][col-1]
+        return obstacleGrid[row_n-1][col_n-1]
+
 if __name__ == '__main__':
     # print Solution().unique_paths(3, 3)
     obstacle_grid = [[0]]

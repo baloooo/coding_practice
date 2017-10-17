@@ -13,44 +13,61 @@ Another example is ")()())", where the longest valid parentheses substring is
 # Time: O(n)
 # Space: O(n) (in the form of stack)
 class Solution:
-    """
-    Algo:
-    1) Create an empty stack and use last to track base for longest valid paran
-        # Alternatively  push -1 to it. The first element
-       of stack is used to provide base for next valid string.
+    def longestValidParentheses_optimized(self, s):
+        """
+        Time: O(n) Space: O(1)
+        """
+        left, right = 0, 0
+        maxans = 0
+        # Left to right scan
+        for c in s:
+            if c == '(':
+                left += 1
+            else:
+                right += 1
+            if left == right:
+                maxans = max(maxans, left+right)
+            elif right > left:
+                left = right = 0
+        # right to left scan
+        # for right justified valid strings, right to left scan is needed.
+        # Consider the input "(()" , left to right scan will output 0, but the answer is 2.
+        left = right = 0
+        for c in reversed(s):
+            if c == '(':
+                left += 1
+            else:
+                right += 1
+            if left == right:
+                maxans = max(maxans, left+right)
+            elif left > right: 
+                '''
+                since we're scanning from R-L, right's will be greater than left consider (()), therefore
+                invalid strings are such ()((
+                '''
+                left = right = 0
+        return maxans
 
-    2) Initialize result as 0.
-
-    3) If the character is '(' i.e. str[i] == '('), push index
-       'i' to the stack.
-    2) Else (if the character is ')')
-       a) Pop an item from stack (Most of the time an opening bracket)
-       b) If stack is not empty, then find length of current valid
-          substring by taking difference between current index and
-          top of the stack. If current length is more than result,
-          then update the result.
-       c) If stack is empty, push current index as base for next
-          valid substring.
-
-    3) Return result.
-    """
-    def longest_valid_paranthesis(self, inp_str):
-        # Time: O(n)
-        # Space: O(n)
-        longest, last, stack = 0, -1, []
-        for index, char in enumerate(inp_str):
-            if char == '(':
+    def longestValidParentheses(self, s):
+        """
+        Time: O(n) space: O(n)
+        https://leetcode.com/articles/longest-valid-parentheses/
+        """
+        maxans, stack = 0, []
+        stack.append(-1) # defaults with -1 so as to facilitate length calculation index-(-1) gives the accurate length
+        for index, c in enumerate(s):
+            if c == '(':
                 stack.append(index)
-            elif not stack:
-                last = index
             else:
                 stack.pop()
-                if stack:
-                    longest = max(longest, index-stack[-1])
+                if len(stack) == 0:
+                    '''This also means this was not a match since the only case when sentinel gets popped is when we've
+                    encountered mulitple closing parans which are just invalid and the only thing we want from them is to
+                    append the last index of those invalid paran to be a sentinel'''
+                    stack.append(index)
                 else:
-                    longest = max(longest, index-last)
-        return longest
-
+                    maxans = max(maxans, index  - stack[-1])
+        return maxans
 
 if __name__ == '__main__':
     test_cases = [
@@ -61,8 +78,6 @@ if __name__ == '__main__':
         ("(()", 2),
         ("((((((", 0),
         ("))))))", 0),
-        ("()(((((())())((()())(())((((())))())((()()))(()(((()()(()((()()))(())()))(((", 30),  # noqa
-        (")()))(())((())))))())()(((((())())((()())(())((((())))())((()()))(()(((()()(()((()()))(())()))(((", 30),    # noqa
         ("()()()(((()()()()", 8),
         ("((()))", 6),
     ]
