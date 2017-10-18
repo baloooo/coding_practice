@@ -29,11 +29,13 @@ class Solution:
                 self.count_recursive(coins, index, total_sum-coins[index]))
 
     def count_dp(self, coins, total_sum):
-        dp = [[0 for _ in xrange(total_sum+1)] for _ in xrange(len(coins)+1)]  # noqa
-        dp[0][0] = 1
         """
         dp[i][j] : the number of combinations to make up total_sum j by using
                    the first i types of coins
+                   (j)total_sum ->
+
+                   (i)total_coin |
+                                 V
         State transition:
             Case 1: not using the ith coin, only using the first i-1 coins to
             make up total_sum j, then we have dp[i-1][j] ways.
@@ -53,24 +55,19 @@ class Solution:
         Space: O(m*n)
         Time: O(m*n)
         """
+        dp = [[0 for _ in xrange(total_sum+1)] for _ in xrange(len(coins)+1)]  # noqa
+        dp[0][0] = 1
         for cur_coin_index in xrange(1, len(coins)+1):
-            dp[cur_coin_index][0] = 1
+            dp[cur_coin_index][0] = 1 # As one can always make zero sum with zero number of coins, so 1 way.
             cur_coin_val = coins[cur_coin_index-1]
             for cur_sum in xrange(1, total_sum+1):
-                # for row in xrange(len(dp)):
-                #     for col in xrange(len(dp[0])):
-                #         print dp[row][col],
-                #     print
-                # print '-'*10
                 """
                 notice 'cur_coin-1' here since indexes start from 1
                 dp[cur_coin-1] means last row, but coins[cur_coin-1] means
                 cur coin with indexing on an array which is zero based
                 """
-                dp[cur_coin_index][cur_sum] = (
-                    dp[cur_coin_index-1][cur_sum] +
-                    (dp[cur_coin_index][cur_sum-cur_coin_val] if
-                        cur_sum >= cur_coin_val else 0))
+                dp[cur_coin_index][cur_sum] = (dp[cur_coin_index-1][cur_sum] +
+                        (dp[cur_coin_index][cur_sum-cur_coin_val] if cur_sum >= cur_coin_val else 0))
         return dp[len(coins)][total_sum]
 
     def count_dp_optimized(self, coins, total_sum):

@@ -64,11 +64,13 @@ class Solution:
         MAX = float('inf')
         dp = [0] + [MAX] * amount
         for cur_amount in xrange(1, amount+1):
-            for cur_coin in xrange(len(coins)):
+            for cur_coin in coins:
                 # If we can make cur_amount with current coin
-                if coins[cur_coin] <= cur_amount:
-                    dp[cur_amount] = min(
-                        dp[cur_amount], dp[cur_amount-coins[cur_coin]]+1)
+                if cur_coin <= cur_amount:
+                    # minimum of already calculated min_coins_needed for this amount from prev. coins and
+                    # number of min coins needed if we supply one current denomination coin thereby subtracting it's cost/amount
+                    # from the total amount.
+                    dp[cur_amount] = min(dp[cur_amount], dp[cur_amount - cur_coin] + 1)
         return dp[amount] if dp[amount] != MAX else -1
 
 if __name__ == '__main__':

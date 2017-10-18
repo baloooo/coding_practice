@@ -7,7 +7,7 @@ class Solution:
     def best_time_to_sell_stocks_advanced(self, stock_report):
         pass
 
-    def best_time_to_sell_stocks_intermediate(self, stock_report):
+    def best_time_to_sell_stocks_2(self, stock_report):
         """
         Say you have an array for which the ith element is the price of a given
         stock on day i.
@@ -25,44 +25,31 @@ class Solution:
         Idea:
         Basically, if tomorrow's price is higher than today's, we buy it today
         and sell tomorrow. Otherwise, we don't. Here is the code:
+        Idea: https://leetcode.com/articles/best-time-buy-and-sell-stock-ii/
+        The key point is we need to consider every peak immediately following a valley to maximize the profit. In case we skip one of the peaks (trying to obtain more profit), we will end up losing the profit over one of the transactions leading to an overall lesser profit.
+        instead of looking for every peak following a valley, we can simply go on crawling over the slope and keep on adding the profit obtained from every consecutive transaction. In the end,we will be using the peaks and valleys effectively, but we need not track the costs corresponding to the peaks and valleys along with the maximum profit, but we can directly keep on adding the difference between the consecutive numbers of the array if the second number is larger than the first one, and at the total sum we obtain will be the maximum profit. 
         """
-        total_worth = 0
-        for cur_day in xrange(1, len(stock_report)):
-            if stock_report[cur_day] > stock_report[cur_day-1]:
-                total_worth += stock_report[cur_day] - stock_report[cur_day-1]
-        return total_worth
+        max_profit = 0
+        for index in xrange(1, len(prices)):
+            if prices[i - 1] < prices[i]: # valley --> peak encountered
+                max_profit += prices[i - 1] + prices[i]
+        return max_profit
 
-    def best_time_to_sell_stocks_basic(self, stock_report):
+    def best_time_to_sell_stocks_1(self, stock_report):
         """
-        Say you have an array for which the ith element is the price of a given
-        stock on day i.
-
-        If you were only permitted to complete at most one transaction
-        (ie, buy one and sell one share of the stock), design an algorithm to
-        find the maximum profit.
-
-        Example 1:
-        Input: [7, 1, 5, 3, 6, 4]
-        Output: 5
-
-        max. difference = 6-1 = 5 (not 7-1 = 6, as selling price needs to be
-        larger than buying price)
-        Example 2:
-        Input: [7, 6, 4, 3, 1]
-        Output: 0
-
-        In this case, no transaction is done, i.e. max profit = 0.
+        Preferred: https://leetcode.com/articles/best-time-buy-and-sell-stock/
+        alternative: Idea: https://discuss.leetcode.com/topic/5863/sharing-my-simple-and-clear-c-solution/20
         """
-        cur_min = float('inf')
-        max_difference = 0
-        for cur_stock in stock_report:
-            if cur_stock < cur_min:
-                cur_min = cur_stock
-                continue
-            cur_difference = cur_stock - cur_min
-            if cur_difference > max_difference:
-                max_difference = cur_difference
-        return max_difference
+        min_price = float('inf')
+        max_profit = 0
+        for price in prices:
+            if price < min_price:
+                min_price = price
+            elif price - min_price > max_profit:
+                max_profit = price - min_price
+            # or can be more precisely written as (but for clarity left as above)
+            # max_profit = max(max_profit, price - min_price)
+        return max_profit
 
 if __name__ == '__main__':
     stock_report = [100, 180, 260, 310, 40, 535, 695]
