@@ -19,7 +19,7 @@ class Solution(object):
                 """
                 From leetcode link above: Since in the stack, we are maintaining a increasing height in the stack, every time we check a bar that is right bounded by h, will also be left bounded by the height that is previous stored in the stack. So the width would go from stack[-1] + 1 to i - 1 included, which is i - stack[-1] - 1
                 """
-                w = index - stack[-1] - 1 if stack else index
+                w = index - stack[-1] - 1 if stack else index  # Note: check if stack is not empty
                 max_area = max(max_area, h*w)
             stack.append(index)  # Notice: We're appending indexes and not values.
         return max_area
