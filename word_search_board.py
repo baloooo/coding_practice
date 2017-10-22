@@ -82,21 +82,21 @@ class Solution:
         return result
 
 
-if __name__ == '__main__':
-    test_cases = [
-        # ((["ABCE", "SFCS", "ADEE"], "ABCCED"), True),
-        # ((["a"], "a"), True),
-        # ((["aa"], "aa"), True),
-        ((["ab", "cd"], ["acdb", "ca"]), ["acdb", "ca"]),
-        # ((["ABCE", "SFES", "ADEE"], "ABCESEEEFS"), True),
-    ]
-    for test_case in test_cases:
-        res = Solution().word_in_grid(test_case[0][0], test_case[0][1])
-        if res == test_case[1]:
-            print "Passed"
-        else:
-            print "Failed: Test case: {0} Got {1} Expected {2}".format(
-                test_case[0], res, test_case[1])
+# if __name__ == '__main__':
+#     test_cases = [
+#         # ((["ABCE", "SFCS", "ADEE"], "ABCCED"), True),
+#         # ((["a"], "a"), True),
+#         # ((["aa"], "aa"), True),
+#         ((["ab", "cd"], ["acdb", "ca"]), ["acdb", "ca"]),
+#         # ((["ABCE", "SFES", "ADEE"], "ABCESEEEFS"), True),
+#     ]
+#     for test_case in test_cases:
+#         res = Solution().word_in_grid(test_case[0][0], test_case[0][1])
+#         if res == test_case[1]:
+#             print "Passed"
+#         else:
+#             print "Failed: Test case: {0} Got {1} Expected {2}".format(
+#                 test_case[0], res, test_case[1])
 
 
 class Solution2:
@@ -141,8 +141,7 @@ class Solution2:
                     if self.dfs(cur_row, cur_col, 0, [(cur_row, cur_col)]):
                         # print self.path
                         return 1
-        return 0
-
+        return 0 
 # if __name__ == '__main__':
 #     test_cases = [
 #         ((["FEDCBECD", "FABBGACG", "CDEDGAEC", "BFFEGGBA", "FCEEAFDA",
@@ -157,3 +156,49 @@ class Solution2:
 #         else:
 #             print "Failed: Test case: {0} Got {1} Expected {2}".format(
 #                 test_case[0], res, test_case[1])
+class Solution3(object):
+    def dfs(self, board, row, col, word, index, visited):
+        if index == len(word): return True
+        if (row < 0 or col < 0 or row >= len(board) or col >= len(board[0]) or 
+                board[row][col] != word[index] or (row,col) in visited):
+            return False
+        visited.add((row, col))
+        return (
+            self.dfs(board, row+1, col, word, index+1, visited) or 
+            self.dfs(board, row, col+1, word, index+1, visited) or 
+            self.dfs(board, row-1, col, word, index+1, visited) or 
+            self.dfs(board, row, col-1, word, index+1, visited))
+
+    def exist(self, board, word):
+        """
+        :type board: List[List[str]]
+        :type word: str
+        :rtype: bool
+        Time: (m*n*(4^L)) m*n is the dimension of board and for each char in the board we dfs, which
+        has TC 4^L as at each step in DFS, we have max 4 choices and there are at max L steps where L is the 
+        number of words in word to be searched
+        https://discuss.leetcode.com/topic/37162/what-is-the-time-complexity-for-the-dfs-solution/11
+        """
+        for i in xrange(len(board)):
+            for j in xrange(len(board[0])):
+                visited = set()
+                if self.dfs(board, i, j, word, 0, visited):
+                    return True
+        return False
+                
+if __name__ == '__main__':
+    test_cases = [
+#         ((["FEDCBECD", "FABBGACG", "CDEDGAEC", "BFFEGGBA", "FCEEAFDA",
+#            "AGFADEAC", "ADGDCBAA", "EAABDDFF"], "BCDCB"), 1),
+#         ((["CDGCG", "CDAAA", "ECDDB", "FBGEC", "BEBBF", "DFGEF", "CGGAD",
+#            "AACGG", "BDGGB"], "BABABC"), 1),
+	  (([["A","B","C","E"],["S","F","E","S"],["A","D","E","E"]], "ABCESEEEFS"), True)
+        ]
+    for test_case in test_cases:
+        # res = Solution2().exist(test_case[0][0], test_case[0][1])
+        res = Solution3().exist(test_case[0][0], test_case[0][1])
+        if res == test_case[1]:
+            print "Passed"
+        else:
+            print "Failed: Test case: {0} Got {1} Expected {2}".format(
+                test_case[0], res, test_case[1])

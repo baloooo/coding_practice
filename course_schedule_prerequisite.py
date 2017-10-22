@@ -51,11 +51,14 @@ class Solution:
         # and value at index depicts
         # Indegree of node_num
         self.indegree_list = [0]*num_courses
+        # Note the order here is determined by which way we can move in a graph. Here [0,1] depicts only way to 
+        # reach 0 is from 1 therefore 0 <-- 1
         for destination, source in prerequisite_list:
             self.adjacency_list[source].append(destination)
             self.indegree_list[destination] += 1
 
     def can_finish(self, num_courses, prerequisite_list):
+        # Kahn's algo for topological sorting: http://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
         # prerequisite_list[destination, source]
         self.make_graph(num_courses, prerequisite_list)
         # populate zero_indegree_q
