@@ -27,13 +27,41 @@ class Solution:
     def __init__(self):
         pass
 
-    def canPartition(self, arr):
+    def canPartition(self, nums):
         """
-        :type nums: List[int]
-        :rtype: bool
+        Time: O(KN) where N is number of element in nums and K is sum of elements in nums.
+        Space: O((k+1)* (N+1))
+	Idea: https://discuss.leetcode.com/topic/67539/0-1-knapsack-detailed-explanation
+	      http://www.geeksforgeeks.org/dynamic-programming-set-18-partition-problem/
+        Todo: Also return the partitions, asked on IB
         """
+	target_sum = 0
+        for num in nums:
+            target_sum += num
+        if (target_sum & 1) == 1:
+            return False
+        target_sum = target_sum/2
+        dp = [[False for _ in xrange(len(nums)+1)] for _ in xrange(target_sum+1)]
+        for col in xrange(len(nums)+1): dp[0][col] = True # zero sum can be made from any of denoms
+        
+        for cur_sum in xrange(1, target_sum+1):
+            for cur_denoms in xrange(1, len(nums)+1):
+                dp[cur_sum][cur_denoms] = dp[cur_sum][cur_denoms-1]
+                if cur_sum >= nums[cur_denoms-1]:
+                    dp[cur_sum][cur_denoms] = dp[cur_sum][cur_denoms-1] or dp[cur_sum - nums[cur_denoms - 1]][cur_denoms-1]
+        for row in dp:
+            print row
+        return dp[target_sum][len(nums)]
+
+    def canPartitionKSubsets(self, nums, k):
+	'''
+	can be done by just recursion but not DP.
+	https://discuss.leetcode.com/topic/107185/java-c-straightforward-dfs-solution
+	'''
+	pass
 
 
 if __name__ == '__main__':
     arr = [1, 5, 11, 5]
+    arr = [ 1, 7, 15, 29, 11, 9]
     print Solution().canPartition(arr)
