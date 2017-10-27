@@ -1,48 +1,42 @@
 """
-Substring Concatenation
-You are given a string, S, and a list of words, L, that are all of the same
-length.
-
-Find all starting indices of substring(s) in S that is a concatenation of each
-word in L exactly once and without any intervening characters.
-
-Example :
-
-S: "barfoothefoobarman"
-L: ["foo", "bar"]
-You should return the indices: [0,9].
-(order does not matter).
+https://leetcode.com/problems/substring-with-concatenation-of-all-words/description/
 """
+import collections
 
 
-def substring_concat(base_str, word_list):
-    word_len = len(word_list[0])
+def substring_concat_orig(base_str, word_list):
+    '''
+    Time: O(len(base_str) * len(word_list) * word_len)
+    Space: O(2 * len(word_list) * len(word_list[0]))
+    Idea:https://discuss.leetcode.com/topic/17943/naive-c-solution-using-two-unordered_map-about-20-lines/20?page=1
+    check Two pointer sol.n: https://github.com/kamyu104/LeetCode/blob/master/Python/substring-with-concatenation-of-all-words.py#L31
+    '''
+    word_len, word_freq_map = len(word_list[0]), collections.defaultdict(int)
     word_list_len = word_len*len(word_list)
     start_indices = []
-    for i in xrange(len(base_str)-word_list_len-1):
-        sub_str_map = {}
-        # defaulting dict to word_list, b'coz we only care about these
-        for word in word_list:
-            if sub_str_map.get(word) is None:
-                sub_str_map[word] = 1
-            else:
-                sub_str_map[word] += 1
-        for j in xrange(i, (i+word_list_len), word_len):
-            try:
-                sub_str_map[base_str[j:j+word_len]] -= 1
-            except KeyError:
+    for word in word_list:
+        word_freq_map[word] += 1
+    for i in xrange(len(base_str)-word_list_len+1): # O(len(base_string))
+        cur_word_freq_map, word_count = collections.defaultdict(int), 0
+        for j in xrange(i, (i+word_list_len), word_len): # O(len(word_list)
+            word = base_str[j:j+word_len] # O(word_len)
+            if word not in word_freq_map:
                 # break if tried to enter a string not in word_list
                 break
-        else:
-            for word_count in sub_str_map.values():
-                if word_count != 0:
-                    break
-            else:
-                start_indices.append(i)
+            cur_word_freq_map[word] += 1
+            # If had a valid string but freq more than in original
+            if cur_word_freq_map[word] > word_freq_map[word]:
+                break
+            word_count += 1
+        if word_count == len(word_list):
+            start_indices.append(i)
     return start_indices
 
+
+
 if __name__ == '__main__':
-    base_str, word_list = "barfoothefoobarman", ["foo", "bar"]
-    base_str = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-    word_list = ["aaa", "aaa", "aaa", "aaa", "aaa"]
-    print substring_concat(base_str, word_list)
+    # base_str, word_list = "barfoothefoobarman", ["foo", "bar"]
+    # base_str = "aaaaaaaaaaaaaaaaaaa"
+    # word_list = ["aaa", "aaa", "aaa", "aaa", "aaa"]
+    base_str, word_list = "wordgoodgoodgoodbestword", ["word","good","best","good"]
+    print substring_concat_orig(base_str, word_list)

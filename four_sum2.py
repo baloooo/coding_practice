@@ -6,11 +6,15 @@ class Solution(object):
         :type C: List[int]
         :type D: List[int]
         :rtype: int
+        Idea is to convert 4 sum to 2 sum with hash map type solution
+        Make hasmap with every possible combinations of A and B
+        and for every possible sum of C and D perform 2 sum with hash map technique
         Idea: https://discuss.leetcode.com/topic/67658/simple-java-solution-with-explanation
         Time: O(n^2) n being the number of elements in "each" array.
         Space: O(2n)
         """
-        two_sum_map, count = collections.defaultdict(int), 0
+        from collections import defaultdict
+        two_sum_map, count = defaultdict(int), 0
         for ele1 in A:
             for ele2 in B:
                 cur_sum = ele1 + ele2

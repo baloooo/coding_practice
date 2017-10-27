@@ -10,14 +10,23 @@ class Solution(object):
         """
         :type height: List[int]
         :rtype: int
-	Idea: https://www.youtube.com/watch?v=KV-Eq3wYjxI
-	Abstract: for each bar calculate what is the max amount of water it can hold.
-	The amount of water each bar can hold over itself is defined by max height bar on the left and max height bar on the right
-	and that is min(max(left_max, right_max)) - cur_bar_height
-	And then just move the minimum bar ahead
-	Implementation: https://discuss.leetcode.com/topic/3016/share-my-short-solution
+        Idea: https://www.youtube.com/watch?v=KV-Eq3wYjxI
+        Abstract: "For each bar" calculate what is the max amount of water it can hold.
+        The amount of water each bar can hold over itself is defined by
+        max height bar on the left and max height bar on the right
+        and that is min(left_max, right_max) - cur_bar_height
+        And then just move the minimum bar ahead
+        Implementation: https://discuss.leetcode.com/topic/3016/share-my-short-solution
         """
         max_water, left_max, right_max, start, end = 0, 0, 0, 0, len(height)-1
+        '''
+        start and end are the target bars depending on which one is in consideration which
+        depends on which one is smaller out of left_max and right_max. As the smaller of
+        the left and right maxes will determine the amount of water over any particular
+        bar. Notice if we had left_max and right_max arrays populated we could have just
+        iterated from start to end but since we wanted it to be done without extra space
+        just keep following the smaller of left_max/right_max and move start/end accordingly.
+        '''
         while start < end:
             left_max = max(left_max, height[start])
             right_max = max(right_max, height[end])

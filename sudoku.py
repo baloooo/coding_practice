@@ -18,7 +18,7 @@ class Solution(object):
         3's.
         base_col_index = 3*(col/3)
         row_offset = index / 3
-        col_offset = index % 3
+        col_offset = index % 3 since column will only be in [index, index+2]
         """
         for index in xrange(9):
             if index != cur_col and board[cur_row][index] == cur_num: return False

@@ -45,13 +45,16 @@ def justify_text2(words, max_width):
         if num_of_letters + len(w) + len(cur) > max_width:
             # Assign spaces in round robin fashion
             for i in range(max_width - num_of_letters):
-                # (len(cur)-1) or 1 ensures spaces are never assigned in zeroth spot
+                # The "or 1" part is for dealing with the edge case len(cur) == 1.
+                # len(cur)-1 makes sure last char is never given a space since lines are not supposed to end with spaces.
+                # appends a space after every string in cur array
                 cur[i % (len(cur) -1 or 1)] += ' '
             res.append(''.join(cur))
             num_of_letters = 0
             cur = []
         cur += [w]
         num_of_letters += len(w)
+    # puts one space after every word in current and then puts all remaining spaces at last, ljust fills in spaces for remaining places
     return res + [' '.join(cur).ljust(max_width)]
 
 

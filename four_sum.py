@@ -1,7 +1,45 @@
+#latest
+class Solution(object):
+    def n_sum(self, arr, n, start_index, target, cur, res):
+        if n < 2 or target < arr[0]*n or target > arr[-1]*n: # powerful optimization for pruning
+            return
+        if n == 2:
+            start, end = start_index, len(arr)-1
+            while start < end:
+                cur_sum = arr[start] + arr[end]
+                if cur_sum == target:
+                    res.append(cur+[arr[start], arr[end]])
+                    start += 1 # don't forget this step
+                    while start < end and start > 0 and arr[start] == arr[start-1]: # Note: Pruning optimization
+                        start += 1
+                    while start < end and arr[end] == arr[end-1]:
+                        end -= 1
+                elif cur_sum < target:
+                    start += 1
+                else:
+                    end -= 1
+        else:
+            for i in xrange(start_index, len(arr) - n + 1):
+                if i == start_index or arr[i] != arr[i - 1]: # powerful optimization
+                    cur.append(arr[i])
+                    self.n_sum(arr, n-1, i+1, target-arr[i], cur, res)
+                    cur.pop()
+
+    def fourSum(self, arr, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        res = [] # This use of variable than self.res is preferred
+        arr.sort()
+        self.n_sum(arr, 4, 0, target, [], res)
+        return res
+
 class Solution(object):
     def n_sum(self, arr, n, start_index, target, cur):
-	if n < 2:
-	    return
+        if n < 2:
+            return
         if n == 2:
             start, end = start_index, len(arr)-1
             while start < end:

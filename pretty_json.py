@@ -2,12 +2,37 @@
 """
 import json
 
+def pretty(json_object):
+    print json_object
+    s = json_object
+    indent = 0
+    curr_line = ''
+    for char in s:
+        if char == ',':
+            print ' '*indent + curr_line + char
+            curr_line = ''
+        elif char == '[' or char == '{':
+            if curr_line != '':
+                print indent*' ' + curr_line
+                curr_line = ''
+            print indent*' ' + char
+            indent += 4
+        elif char == ']' or char == '}':
+            if curr_line != '':
+                print indent*' ' + curr_line
+                curr_line = ''
+            indent -= 4
+            print indent*' ' + char
+        else:
+            curr_line += char
+
 
 def pretty_json(json_object, space_unit='\t'):
     json_str = json.dumps(json_object)
     json_str = '{"attributes":[{"nm":"ACCOUNT","lv":[{"v":{"Id":None,"State":None},"vt":"java.util.Map","cn":1}],"vt":"java.util.Map","status":"SUCCESS","lmd":13585},{"nm":"PROFILE","lv":[{"v":{"Party":None,"Ads":None},"vt":"java.util.Map","cn":2}],"vt":"java.util.Map","status":"SUCCESS","lmd":41962}]}'
+
     # Todo: Put commas inthe same line as closing braces
-    spaces ,final_json, index = [], [], 0
+    spaces, final_json, index = [], [], 0
     cur_line = []
     while(index < (len(json_str))):
         if json_str[index] in ['{', '[']:
@@ -44,6 +69,7 @@ if __name__ == '__main__':
     # json_object = {'A':'B','C':{'D':'E','F':{'G':'H','I':'J'}}}
     json_object = {"A":"B","C":{"D":"E","F":{"G":"H","I":"J"}}}
 
-    print 'json_str: ', json_object
-    for each in pretty_json(json_object):
-        print each
+    pretty(json_object)
+    # print 'json_str: ', json_object
+    # for each in pretty_json(json_object):
+    #     print each

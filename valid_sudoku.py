@@ -21,21 +21,32 @@ class Solution:
                 print ele,
             print
         m,n=len(board),len(board[0])
-        check_row=[[0 for i in range(9)] for j in range(9)]#three 2d array to check each row, col and sub box
-        check_col=[[0 for i in range(9)] for j in range(9)]#three 2d array to check each row, col and sub box
-        check_box=[[0 for i in range(9)] for j in range(9)]#three 2d array to check each row, col and sub box
+        '''
+        three 2d array to check each row, col and sub box
+        Here each row in this 2d matrix will try to put True on indexes 0-8 and if for
+        any row there is already a True means number is repeated. Notice having three
+        separate arrays help in putting one value in 3 spaces helps to check if cur number
+        has been encountered for this row, col, or box before.
+        '''
+        check_row=[[False for i in range(9)] for j in range(9)]
+        check_col=[[False for i in range(9)] for j in range(9)]
+        check_box=[[False for i in range(9)] for j in range(9)]
         for i in xrange(m):
             for j in xrange(n):
                 if board[i][j] != '.':
-                    num=int(board[i][j])-1 # need -1 becasue the index of array is 0~8
-                    k=i/3*3+j/3
-                    import ipdb; ipdb.set_trace()
-                    #because if previously the same number of same row,col or box have exist, it is false
+                    num = int(board[i][j])-1  # need -1 becasue the index of array is 0~8
+                    k = i/3*3+j/3
+                    '''
+                    i, j, k are the row numbers for which we are testing cur_num presence
+                    where box's row is got from row and col numbers as follows
+                    box_row = row/3*3 + col/3
+                    ex: for row=4, col=5, box_number 4 or check_box row number 4 is the one
+                    we'll be checking
+                    '''
                     if check_row[i][num] or check_col[j][num] or check_box[k][num]:
                         return False
                     #assign value to all the checking 2d arrayes
-    
-                    check_row[i][num]=check_col[j][num]= check_box[k][num]=1
+                    check_row[i][num] = check_col[j][num] = check_box[k][num] = True
         return True
 
 

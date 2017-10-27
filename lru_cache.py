@@ -148,44 +148,63 @@ if __name__ == '__main__':
             index += 2
             out_index += 1
 
+
 # 188ms LCode: Alternate implementation
 import collections
 class LRUCache(object):
+
+    '''
+    The idea is to store a tuple (key, val, access_time) in queue and for every access
+    add a new entry to queue with updated access time (when capacity is reached old (k,v,a_time)
+    tuple will be flushed out by delete_old_entries method
+    Notice that even if there are lot of updations cache size won't increase and therefore delete_old_entries
+    won't be inititated which would unfortunately increase the size of queue (so we may want to have a limit over that too, 
+    may be if len(self.queue) > self.capacity pop elements from queue but put them back if access time is same)
+    '''
 
     def __init__(self, capacity):
         """
         :type capacity: int
         """
-        self.d = dict()
-        self.dq = collections.deque()
+        from Queue import deque
         self.capacity = capacity
+        self.queue = deque()  # Back --> Front
+        self.time_stamp = 0
+        self.cache = {}
+
+    def delete_old_entries(self):
+        while len(self.cache) > self.capacity: # more entries in cache than the capacity
+            key, value, time = self.queue.pop()  # pop the front of the queue
+            value_from_cache, time_from_cache = self.cache[key]
+            '''
+            Pop this entry from cache also since access time and value matches with cache entries,
+            this is done b'coz value for a key can be updated and hence the access time in which case
+            only the entry from queue should be removed not from the cache.
+            '''
+            if value == value_from_cache and time == time_from_cache:
+                del self.cache[key]
 
     def get(self, key):
         """
         :type key: int
         :rtype: int
         """
-        if not key in self.d: return -1
-        self.dq.append(key)
-        self.d[key][1] += 1
-        return self.d[key][0]
-    
+        try:
+            value, _ = self.cache[key]
+        except KeyError:
+            return -1
+        self.time_stamp += 1
+        self.cache[key] = (value, self.time_stamp)
+        self.queue.appendleft((key, value, self.time_stamp))
+        return value
+
     def put(self, key, value):
         """
         :type key: int
         :type value: int
         :rtype: void
         """
-        self.dq.append(key)
-        if not key in self.d:
-            self.d[key] = [value,1]
-        else:
-            self.d[key][0] = value
-            self.d[key][1] += 1
-        if len(self.d) > self.capacity:
-            while True:            
-                k = self.dq.popleft()
-                self.d[k][1] -= 1
-                if self.d[k][1] == 0:
-                    del self.d[k]
-                    return
+        self.time_stamp += 1
+        self.cache[key] = (value, self.time_stamp)
+        self.queue.appendleft((key, value, self.time_stamp))
+        self.delete_old_entries()

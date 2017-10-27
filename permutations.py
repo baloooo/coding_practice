@@ -1,29 +1,65 @@
-"""
-Given a collection of numbers, return all possible permutations.
+'''
+Time: O(n!)
+Space: O(len(arr)) // In the form of stack frames.
+Duplicates: allowed
+Lexicographic sorted: Yes
+'''
+class Solution(object):
+    def dfs(self, nums, cur, used, perms):
+        if len(cur) == len(nums):
+            perms.append(cur[:])
+            return
+        for i in xrange(len(nums)):
+            if used[i]: continue
+            if i > 0 and nums[i] == nums[i-1] and not used[i-1]:
+                continue
+            used[i] = True
+            cur.append(nums[i])
+            self.dfs(nums, cur, used, perms)
+            used[i] = False
+            cur.pop()
+        
+    def permute2(self, nums):
+        """
+        Without using additional set as below.
+        Idea: https://discuss.leetcode.com/topic/31445/really-easy-java-solution-much-easier-than-the-solutions-with-very-high-vote
+        same as https://discuss.leetcode.com/topic/46162/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partioning/57
+        """
+        perms = []
+        if len(nums) == 0: return perms
+        used = [False] * len(nums)
+        nums.sort()
+        self.dfs(nums, [], used, perms)
+        return perms
+        
 
-Example:
+class Solution(object):
+    def generate_permutations(self, arr, start):
+        if start == len(arr):
+            self.permutations.append(arr[::])
+        else:
+            for index in xrange(start, len(arr)):
+                if index > start and arr[index] == arr[index-1]:
+                    continue
+                arr[start], arr[index] = arr[index], arr[start]
+                self.generate_permutations(arr, start+1)
+                arr[start], arr[index] = arr[index], arr[start]
 
-[1,2,3] will have the following permutations:
-
-[1,2,3]
-[1,3,2]
-[2,1,3]
-[2,3,1]
-[3,1,2]
-[3,2,1]
- NOTE
- No two entries in the permutation sequence should be the same.
- For the purpose of this problem, assume that all the numbers in the collection
- are unique.
-"""
-
-
-# Time: O(n!)
-# Space: O(len(arr)) // In the form of stack frames.
-# Duplicates: allowed
-# Lexicographic sorted: Yes
-def permute_recursive_optimized(arr):
-    pass
+    def permute2(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        self.permutations = []
+        nums.sort()
+        self.generate_permutations(nums, 0)
+        '''
+        This removes duplicates list solutions within generated permutations, Notice that duplicates within a list solution
+        are removed by if index > start and arr[index] == arr[index-1]:
+        '''
+        b_set = set(map(tuple,self.permutations))
+        b = map(list,b_set)
+        return b
 
 
 # Time: O(n*n!) (For each n! permutations we'll be copying arr of size n)
