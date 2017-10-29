@@ -1,3 +1,6 @@
+'''
+min_coin_change: https://leetcode.com/articles/coin-change/
+'''
 
 class Solution:
 
@@ -16,6 +19,11 @@ class Solution:
                    1 + self.count(coins, index, target_sum-coins[index]))
 
     def min_coin_change_recursive(self, coins, target_sum):
+        '''
+        Time: O(S^n) where S=target_sum and n = len(coins)
+        S/c^1 * S/c^2 * ...S/c^n = S/c^n
+        S/c1 is the total number of ways we can use c1 to contribute in a combination that makes up total_sum
+        '''
         min_coins = self.count(coins, 0, target_sum)
         print 'min coins are', min_coins
         return min_coins if min_coins else -1
@@ -44,21 +52,8 @@ class Solution:
 
     def min_coin_change(self, coins, amount):
         """
-        You are given coins of different denominations and a total amount of
-        money amount. Write a function to compute the fewest number of coins
-        that you need to make up that amount. If that amount of money cannot
-        be made up by any combination of the coins, return -1.
-
-        Example 1:
-        coins = [1, 2, 5], amount = 11
-        return 3 (11 = 5 + 5 + 1)
-
-        Example 2:
-        coins = [2], amount = 3
-        return -1.
-
-        Note:
         You may assume that you have an infinite number of each kind of coin.
+        Time: O(S*N) where S=amount and N = len(coins)
         """
         # dp=[min_coins_needed_to_make_cur_index_amount]
         MAX = float('inf')
@@ -72,13 +67,25 @@ class Solution:
                     # from the total amount.
                     dp[cur_amount] = min(dp[cur_amount], dp[cur_amount - cur_coin] + 1)
         return dp[amount] if dp[amount] != MAX else -1
+    def coin_change2(self, coins, amount):
+	# swapping loops for amount and coin doesn't work for number of ways but does work for min coins.(perhaps)
+	# explanation: https://discuss.leetcode.com/topic/78798/7-lines-simple-java-dp-solution/4
+	dp = [1] + [0]*amount
+        for cur_amount in xrange(1, amount+1):
+            for coin in coins:
+                if coin <= cur_amount:
+                    dp[cur_amount] += dp[cur_amount-coin]
+	print dp
+        return dp[-1]
 
 if __name__ == '__main__':
     # coins, amount = [186, 419, 83, 408], 6249
     # print Solution().min_coin_change(coins, amount)
-    coins, amount = [1, 2, 3], 4
+    # coins, amount = [1, 2, 3], 4
+    coins, amount = [1, 2, 5], 5
+    print Solution().coin_change2(coins, amount)
     # sol = Solution()
     # print sol.make_change(coins, amount)
     # print sol.memo
     # print Solution().min_coin_change(coins, amount)
-    print Solution().min_coin_change_recursive(coins, amount)
+    # print Solution().min_coin_change_recursive(coins, amount)

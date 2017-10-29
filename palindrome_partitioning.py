@@ -1,6 +1,9 @@
 class Solution(object):
     def minCut(self, s):
         """
+        Time: O(n^2)
+        Space: O(n)
+
         https://discuss.leetcode.com/topic/2840/my-solution-does-not-need-a-table-for-palindrome-is-it-right-it-uses-only-o-n-space/62
         The definition of 'cut' array is the minimum number of cuts of a sub string.
         More specifically, cut[n] stores the cut number of string s[0, n-1].
@@ -14,10 +17,9 @@ class Solution(object):
         Use two variables in two loops to represent a palindrome:
         The external loop variable 'i' represents the center of the palindrome.
         The internal loop variable 'j' represents the 'radius' of the palindrome.
-        Apparently, j <= i is a must.
+        j <= i is a must, j can only come up to i from left and when it reaches i (center is i) radius is zero 
         This palindrome can then be represented as s[i-j, i+j].
-        If this string is indeed a palindrome, 
-        then one possible value of cut[i+j] is cut[i-j] + 1,
+        --> If this string is indeed a palindrome, then one possible value of cut[i+j] is cut[i-j] + 1,
         where cut[i-j] corresponds to s[0, i-j-1] and 1 correspond to the palindrome s[i-j, i+j];
 
         When the loops finish, you'll get the answer at cut[s.length]

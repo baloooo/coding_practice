@@ -14,6 +14,7 @@ class Solution(object):
 
     def find_unique_paths_bruteforce_main(self, x, y, m, n):
         """
+        Nice video for little extension : https://www.youtube.com/watch?v=M8BYckxI8_U
         Time: O((m+n)!/m!n!)
         https://stackoverflow.com/questions/17207266/robot-moving-in-a-grid-algorithm-possible-paths-and-time-complexity
         https://stackoverflow.com/questions/11607376/which-function-grows-faster-exponential-or-factorial

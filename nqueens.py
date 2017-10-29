@@ -26,7 +26,7 @@ import copy
 
 class Solution():
     """
-    T(n) = n-1(T(n-1)) + O(n) which is O(n^n), therefore exponential.
+    T(n) = n-1(T(n-1)) + O(n) which is O(n!)
     Idea: We can go row by row, and in each position, we need to check if the column, the 45° diagonal and the 135° diagonal had a queen before
     https://discuss.leetcode.com/topic/13617/accepted-4ms-c-solution-use-backtracking-and-bitmask-easy-understand
     Time:  

@@ -17,6 +17,8 @@ class Solution():
 
    def gen_paran_latest(self, open_paran_count, close_paran_count):
 	"""
+        Time: O(n*catlan(n)) = O(4^n / n^(3/2))
+        Space: O(n*C(2n, n)/(n+1))
         Idea: https://discuss.leetcode.com/topic/4485/concise-recursive-c-solution/33
 	open_paran_count: No. of remaining open paranthesis. '('
 	close_paran_count: No. of remaining closed paranthesis. ')'
