@@ -1,26 +1,7 @@
 """
-Given two words (start and end), and a dictionary, find the length of shortest
-transformation sequence from start to end, such that:
-
-You must change exactly one character in every transformation
-Each intermediate word must exist in the dictionary
-Example :
-
-Given:
-
-start = "hit"
-end = "cog"
-dict = ["hot","dot","dog","lot","log"]
-As one shortest transformation is "hit" -> "hot" -> "dot" -> "dog" -> "cog",
-return its length 5.
-
-Note that we account for the length of the transformation path instead of the
-number of transformation itself.
-
- Note:
-Return 0 if there is no such transformation sequence.
-All words have the same length.
-All words contain only lowercase alphabetic characters.
+Notice these will be shortest paths since we're using BFS which always gives
+shortest path for a equal weight graph traversal. It's only when weights we
+need to go for dijkistra's and to bellman ford when negative edge weights come in.
 """
 
 
@@ -96,11 +77,11 @@ class Solution:
         
         The trick (different from naive method above) here is to make use of
         the datastructures (set in this case)
-        For every word in word_set we change it one bit and then check if
-        this one bit changed word is in word_set and since this word_set is
-        as set() we can do so in O(1). So for each_word in word_set (n) we
+        For every word in word_list we change it one bit and then check if
+        this one bit changed word is in word_set and since this is a set()
+        we can search in O(1). So for each_word in word_list (n) we
         iterate thru its size (w) and for each iteration try to fix 26
-        alphabet chars and see which one works. Therefore in total:
+        alphabet chars and see which one works. Therefore in total: n*w*26
 
         Another key idea here is to use word_list and next_word_list to measure,
         when one level of BFS has completed and therefore cur_distance can be incremented.
@@ -125,7 +106,7 @@ class Solution:
                             next_word_list.append(candidate_word)
             cur_word_list = next_word_list
             cur_distance += 1
-        return cur_distance
+        return 0 # if we reach here, means we didn't find goal_word
 
     def word_ladder_optimized_queue(self, beginWord, endWord, wordList):
         """
@@ -161,6 +142,14 @@ class Solution:
             #cur_distance += 1
         return 0
 
+    def dfs(self, cur_word, goal_word, neighbor_dict, goal_path):
+        # O(n) where n = total_nodes in neighbor_dict
+        if cur_word == goal_word:
+            self.result.append(goal_path)
+        else:
+            for candidate_word in neighbor_dict[cur_word]:
+                self.dfs(candidate_word, goal_word, neighbor_dict, goal_path + [candidate_word])
+
     def word_ladder_2(self, word_list, source_word, goal_word):
         from string import ascii_lowercase
         from collections import defaultdict
@@ -170,13 +159,16 @@ class Solution:
         This graph is realized using neighbor_dict which is just a mapping
         of a word to (:) all words that are in one edit distance of this
         word.
-        neighbor_dict = 
-            {'dog': ['cog'],
-			 'dot': ['dog'],
-			 'hit': ['hot'],
-			 'hot': ['dot', 'lot'],
-			 'log': ['cog'],
-			 'lot': ['log']}
+        neighbor_dict = {
+            'dog': ['cog'],
+            'dot': ['dog'],
+            'hit': ['hot'],
+            'hot': ['dot', 'lot'],
+            'log': ['cog'],
+            'lot': ['log']}
+        Time complexity: O(n*w*26) as per kamyu but ought to be revisited, as former part seems
+        to be intutive but not completely sure about dfs part how much time would it take.
+        Space: O(n) for visited/unvisited
         """
         word_set = set(word_list)
         neighbor_dict = defaultdict(list)
@@ -220,21 +212,14 @@ class Solution:
         # DFS for each possible paths
         # here we start from the goal word and try to reach source_word
         # and record all shortest possible paths we can do it from.
-	print neighbor_dict
+        print neighbor_dict
         self.dfs(source_word, goal_word, neighbor_dict, [source_word])
         return self.result
 
-    def dfs(self, cur_word, goal_word, neighbor_dict, goal_path):
-        if cur_word == goal_word:
-            self.result.append(goal_path)
-        else:
-            for candidate_word in neighbor_dict[cur_word]:
-                self.dfs(candidate_word, goal_word, neighbor_dict, goal_path + [candidate_word])
-
     def backtrack(self, neighbor_dict, beginWord, word, result, path):
-	"""
-	To be used when dict is made like so neighbor_dict[candidate_word].append(cur_word)
-	"""
+        """
+        To be used when dict is made like so neighbor_dict[candidate_word].append(cur_word)
+        """
         if beginWord == word:
             result.append(path)
         else:
@@ -246,6 +231,8 @@ class Solution:
 if __name__ == '__main__':
     source_word, goal_word, word_dict = "hit", "cog", ["hot", "dot", "dog",
                                                        "lot", "log", "cog"]
+    source_word, goal_word, word_dict = "aax", "aaf", ["aaa", "aab", "aac",
+                                                       "aad", "aae", "aaf"]
     # source_word, goal_word, word_dict = "a", "c", ["a", "b", "c"]
     # print Solution().word_ladder(word_dict, source_word, goal_word)
     # source_word, goal_word, word_dict = "a", "c", ["a", "b", "c"]

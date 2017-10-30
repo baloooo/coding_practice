@@ -9,11 +9,12 @@ class Solution(object):
                 self.cur_comb.append(arr[index])
                 self.find_combinations(arr, index, remaining_sum-arr[index])
                 self.cur_comb.pop()
-        
+
     def combinationSum(self, candidates, target):
         """
-        The input of Combination Sum has no dups, but each element can be used for MORE than one time.
-        Time: check kamyu and https://discuss.leetcode.com/topic/25900/if-asked-to-discuss-the-time-complexity-of-your-solution-what-would-you-say/8
+        The input of Combination Sum has no dups, but each element can be used
+        for MORE than one time.
+        Time: https://discuss.leetcode.com/topic/25900/if-asked-to-discuss-the-time-complexity-of-your-solution-what-would-you-say/8
         """
         self.combs = []
         self.cur_comb = []
@@ -21,7 +22,7 @@ class Solution(object):
         return self.combs
 
 
-class Solution(object):
+class Solution2(object):
     def find_combinations(self, arr, start, remaining_sum):
         if remaining_sum < 0:
             return

@@ -67,15 +67,20 @@ class Solution:
                     # from the total amount.
                     dp[cur_amount] = min(dp[cur_amount], dp[cur_amount - cur_coin] + 1)
         return dp[amount] if dp[amount] != MAX else -1
+
     def coin_change2(self, coins, amount):
-	# swapping loops for amount and coin doesn't work for number of ways but does work for min coins.(perhaps)
-	# explanation: https://discuss.leetcode.com/topic/78798/7-lines-simple-java-dp-solution/4
-	dp = [1] + [0]*amount
+        '''
+        This implementation is just to demonstrate this doesn't work. For correct implementation
+        check count_dp_optimized in way_to_coin_change.py
+        # swapping loops for amount and coin doesn't work for number of ways but does work for min coins.(perhaps)
+        # explanation: https://discuss.leetcode.com/topic/78798/7-lines-simple-java-dp-solution/4
+        '''
+        dp = [1] + [0]*amount
         for cur_amount in xrange(1, amount+1):
             for coin in coins:
                 if coin <= cur_amount:
                     dp[cur_amount] += dp[cur_amount-coin]
-	print dp
+        print dp
         return dp[-1]
 
 if __name__ == '__main__':
