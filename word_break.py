@@ -1,6 +1,34 @@
 
 
 class Solution:
+
+    def dfs(self, dp, target, word_set, i, word_len_set):
+        if i not in dp:  # word_break for cur_len has not been calculated
+            res = []
+            for j in word_len_set: # as we only want to get chunks of lens we've words of.
+                prefix = target[i: j]
+                if prefix in word_set:
+                    for word in self.dfs(dp, target, word_set, i + j, word_len_set): 
+                        res.append(prefix + word)
+            dp[i] = res
+        return dp[i]
+
+    def word_break2(self, word_list, target):
+        '''
+        solution from top solutions submitted dashboard (not discuss)
+        Time: 
+        Space: 
+        https://discuss.leetcode.com/topic/27855/my-concise-java-solution-based-on-memorized-dfs
+        https://github.com/kamyu104/LeetCode/blob/master/Python/word-break-ii.py
+        '''
+        word_set = len(word_list)
+        word_len_set = set()
+        for word in word_list:
+            word_len_set.add(len(word))
+        dp = {len(target): ['']}  # reason for this?
+        return self.dfs(dp, target, word_set, 0, word_len_set)
+
+
     def word_break(self, start, word_set, target):
         if start == len(target):
             return True
@@ -39,8 +67,6 @@ class Solution:
                 if dp[len(target)]: return True
         return dp[len(target)]
 
-    def word_break2(self, word_list, target):
-        pass
 
 if __name__ == '__main__':
     test_cases = [
