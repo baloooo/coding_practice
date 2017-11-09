@@ -5,9 +5,6 @@ Code: https://leetcode.com/articles/regular-expression-matching/
 
 
 class Solution:
-    def __init__(self):
-        pass 
-
     def is_match_bruteforce(self, text, pattern):
         '''
         Time & space: check https://leetcode.com/articles/regular-expression-matching/ 

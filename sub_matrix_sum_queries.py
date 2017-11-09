@@ -7,9 +7,6 @@ Idea: https://stackoverflow.com/questions/2277749/calculate-the-sum-of-elements-
 
 
 class Solution:
-    def __init__(self):
-        pass
-
     def generate_summed_area_matrix(self, original_matrix):
         row_num = len(original_matrix)
         col_num = len(original_matrix[0])
