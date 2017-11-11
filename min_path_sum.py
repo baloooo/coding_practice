@@ -6,20 +6,35 @@ Idea:
 
 
 class Solution:
-    def __init__(self):
-        pass
+    def min_path_recursion(self, grid, i, j):
+        if i < 0 or j < 0:
+            return float('inf')
+        elif i == 0 and j == 0:
+            return grid[i][j]
+        return grid[i][j] + min(self.min_path(grid, i-1, j), self.min_path(grid, i, j-1))
+
+    def min_path_sum(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+	Idea: http://www.geeksforgeeks.org/dynamic-programming-set-6-min-cost-path/
+        """
+        return self.min_path(grid, len(grid)-1, len(grid[0])-1)
 
     def min_path_sum(self, matrix):
         row_len = len(matrix)
         col_len = len(matrix[0])
         dp = [[0 for _ in xrange(col_len)] for _ in xrange(row_len)]
+
         # sum first row
         dp[0][0] = matrix[0][0]
         for col in xrange(1, col_len):
             dp[0][col] = matrix[0][col] + dp[0][col-1]
+
         # sum first col
         for row in xrange(1, row_len):
             dp[row][0] = matrix[row][0] + dp[row-1][0]
+
         # apply algo starting from first row, first col
         for row in xrange(1, row_len):
             for col in xrange(1, col_len):
