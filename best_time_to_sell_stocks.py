@@ -4,7 +4,40 @@ class Solution:
     def __init__(self):
         pass
 
-    def best_time_to_sell_stocks_advanced(self, stock_report):
+    def best_time_to_sell_stocks_k(self, prices, k):
+        '''
+        Time: O(k.n^2)
+        Idea: https://www.youtube.com/watch?v=oDhu5uGq_ic
+        http://www.geeksforgeeks.org/maximum-profit-by-buying-and-selling-a-share-at-most-k-times/
+
+        i(rows) -> transaction,
+        j(cols) -> day
+        profit[i][j] = max(profit[i][j-1], # no transaction on jth day.
+                      price[j] - price[m] + profit[i-1][m] {for m = 0 ... j-1})
+                      # best you can get by completing a transaction on jth day
+        '''
+        '''
+        table to store results of subproblems profit[i][j] stores maximum profit using
+        atmost i transactions up to day j (including day j)
+        '''
+        if not prices or not k: return 0
+        profit = [[0 for _ in xrange(len(prices)] for _ in xrange(k+1)]
+        # For day 0, you can't earn money irrespective of how many times you trade
+        for row in xrange(k+1):
+            profit[row][0] = 0
+        # profit is 0, if we don't do any transactions, i.e k = 0
+        for day in xrange(len(prices)):
+            profit[0][day] = 0
+
+        for i in xrange(k+1):
+            for j in xrange(len(prices)):
+                max_so_far = -float('inf')
+                for m in xrange(j):
+                    max_so_far = max(max_so_far, prices[j] - prices[m] + profit[i-1][m])
+                profit[i][j] = max(profit[i][j-1], max_so_far)
+        return profit[k][len(prices)-1]
+
+    def best_time_to_sell_stocks_k_optimized(self, prices, k):
         pass
 
     def best_time_to_sell_stocks_2(self, stock_report):
