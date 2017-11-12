@@ -16,16 +16,20 @@ price    | 3   5   8   9  10  17  17  20
 class Solution:
     # For a rod of length 8 there are 128(2^(n-1)) ways to cut it.
     def cut_rod_recursion(self, prices, n): # n=length of rod
-        # Time: 2^n, Space: O(n) stack depth
+        '''
+        Time: 2^n, Space: O(n) stack depth
+        when you try to visualize how this executes you'll get to know how this generates all possible
+        combinations
+        '''
         if n <= 0: return 0
         max_profit = -float('inf')
         for i in xrange(n):
             max_profit = max(max_profit, prices[i] + self.cut_rod_recursion(prices, n-i-1))
         return max_profit
 
-    def cut_rod_dp(self, prices, n, dp):
+    def cut_rod_dp_td(self, prices, n, dp):
         # Top down https://web.stanford.edu/class/archive/cs/cs161/cs161.1168/lecture12.pdf
-        # Time: O(n^2)
+        # Time: O(n^2) Space: O(n + log(n)) {dp, and call stack respectively}
         if dp[n] >= 0:
             return dp[n]
         if n == 0:
@@ -37,19 +41,23 @@ class Solution:
         dp[n] = max_profit
         return dp[n]
 
-    def cut_rod_dp(self, prices):
-        # Bottom up https://web.stanford.edu/class/archive/cs/cs161/cs161.1168/lecture12.pdf
-        # Preferred since doesn't needs call stack as in Top down approach
+    def cut_rod_dp_bu_optimized(self, prices):
+        '''
+        Time: O(n^2) Space: O(n)
+        Bottom up https://web.stanford.edu/class/archive/cs/cs161/cs161.1168/lecture12.pdf
+        https://www.youtube.com/watch?v=IRwVmTmN6go
+        Preferred since doesn't needs call stack as in Top down approach
+        '''
         dp = [0]*(len(prices)+1)
-        for j in xrange(1, len(prices)+1):
+        for i in xrange(1, len(prices)+1):
             max_profit = -float('inf')
-            for i in xrange(1, j):
-                max_profit = max(max_profit, prices[i] + dp[j-i])
-            dp[j] = max_profit
+            for j in xrange(1, i):
+                max_profit = max(max_profit, prices[j] + dp[i-j])
+            dp[i] = max_profit
         return dp[len(prices)]
 
 
-    def cut_rod(self, prices):
+    def cut_rod_dp1(self, prices):
         # Time: O(n^2), without DP: 2^n
         # Idea: https://www.youtube.com/watch?v=ElFrskby_7M
 	dp = [0]*(len(prices)+1) # dp[i] is the optimal price for the rod up to length i
@@ -68,9 +76,10 @@ if __name__ == '__main__':
     test_cases = [
         ([1, 5, 8, 9, 10, 17, 17, 20], 22),
         ([3, 5, 8, 9, 10, 17, 17, 20], 24),
+        ([3], 3),
     ]
     for test_case in test_cases:
-        res = Solution().cut_rod(test_case[0])
+        res = Solution().cut_rod_dp_bu_optimized(test_case[0])
         if res == test_case[1]:
             print "Passed"
         else:
