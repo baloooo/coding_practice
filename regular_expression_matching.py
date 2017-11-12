@@ -26,8 +26,7 @@ class Solution:
         '''
         dp[i][j] is True if text[0..i) matches pattern[0..j), False otherwise.
         Time = Space =  O(len(text)*len(pattern))
-        1. check prev index text and prev index pattern if current index text and pattern are same
-        or pattern has '.' at current index.
+        1. No *: check prev index text and prev index pattern if they are same or pattern has '.' at current index.
         2. if we've * at current index, there're 2 sub-cases.
             a) we've zero repetion of pattern[j], in which case it will be p[i][j-2] whatever we
             had before two indexes before since 'xa*' i.e at index of x

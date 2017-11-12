@@ -19,10 +19,13 @@ class Solution(object):
 	Idea: http://www.geeksforgeeks.org/wildcard-pattern-matching/
 	Time:  O(m x n).
 	Space: O(m x n).
+        For details on cur impl. and further improvement.
+        https://discuss.leetcode.com/topic/17901/accepted-c-dp-solution-with-a-trick
         """
         if len(pattern) == 0:
             return len(text) == 0
         dp = [[False for _ in xrange(len(pattern)+1)] for _ in xrange(len(text)+1)]
+        
         dp[0][0] = True
     
         for j in xrange(1, len(pattern)+1):
