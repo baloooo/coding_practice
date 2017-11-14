@@ -33,6 +33,7 @@ class Solution:
 
     def max_distance(self, arr):
         # http://www.geeksforgeeks.org/given-an-array-arr-find-the-maximum-j-i-such-that-arrj-arri/
+        # check simple and optimized solns there
         cur_min = arr[0]
         lmin = [arr[0]]
         for index in xrange(1, len(arr)):
@@ -46,9 +47,6 @@ class Solution:
         rmax.reverse()
         lindex = rindex = 0
         max_distance = 0
-        print 'arr: ', arr
-        print 'lmin: ', lmin
-        print 'rmax: ', rmax
         while (lindex < len(arr) and rindex < len(arr)):
             if lmin[lindex] > rmax[rindex]:
                 lindex += 1

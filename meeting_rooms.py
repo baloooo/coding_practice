@@ -49,7 +49,8 @@ class Solution:
 
     def meeting_rooms_latest(self, intervals):
         """
-        Idea://discuss.leetcode.com/topic/35253/explanation-of-super-easy-java-solution-beats-98-8-from-pinkfloyda 
+        @ofLucas explanations is most accurate
+        Idea://discuss.leetcode.com/topic/35253/explanation-of-super-easy-java-solution-beats-98-8-from-pinkfloyda
         """
         starts, ends = [], []
         for interval in intervals:
@@ -62,6 +63,10 @@ class Solution:
             if start_time < ends[ends_iterator]:
                 rooms += 1
             else:
+                '''
+                As when you hit this meeting's end time, you must have surely hit its start time
+                as start time < end time and starts and ends are both sorted.
+                '''
                 ends_iterator += 1
         return rooms
 

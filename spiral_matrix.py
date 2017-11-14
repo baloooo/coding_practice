@@ -15,7 +15,7 @@ You should return [1,2,3,6,9,8,7,4,5].
 
 class Solution:
 
-    def spiral(self, matrix):
+    def print_spiral(self, matrix):
         # https://discuss.leetcode.com/topic/21090/0ms-clear-c-solution
         '''
         The idea is just to add the elements in the spiral order.
@@ -33,8 +33,11 @@ class Solution:
         while(True):
             for cur_col in xrange(left_boundary, right_boundary+1):
                 spiral.append(matrix[top_boundary][cur_col])
+            # bring in boundaries
             top_boundary += 1
+            # check no boundary just got met
             if top_boundary > bottom_boundary: break
+
             for cur_row in xrange(top_boundary, bottom_boundary+1):
                 spiral.append(matrix[cur_row][right_boundary])
             right_boundary -= 1
@@ -48,18 +51,6 @@ class Solution:
             left_boundary += 1
             if left_boundary > right_boundary: break
         return spiral
-
-if __name__ == '__main__':
-    test_cases = [
-        ([[1,2,3],[4,5,6],[7,8,9]], [1,2,3,6,9,8,7,4,5])
-    ]
-    for test_case in test_cases:
-        res = Solution().spiral(test_case[0])
-        if res == test_case[1]:
-            print "Passed"
-        else:
-            print "Failed: Test case: {0} Got {1} Expected {2}".format(
-                test_case[0], res, test_case[1])
 
 """
 Given an integer n, generate a square matrix filled with elements from 1 to n2 in spiral order.
@@ -75,18 +66,13 @@ You should return the following matrix:
 ]
 """
 
-
-
 class Solution2:
-    def __init__(self):
-        pass 
-
-    class Solution2(object):
         def generateMatrix(self, n):
-            """
-            :type n: int
-            :rtype: List[List[int]]
-            """
+            '''
+            same as above just have a running variable num and instead of appending to
+            spiral a value at matrix[x][y] put num to blank matrix you generated initially
+            at spiral[x][y]
+            '''
             if not n:
                 return []
             # initialize boundaries
@@ -115,19 +101,3 @@ class Solution2:
                 left_boundary += 1
                 if left_boundary > right_boundary: break
             return spiral
-if __name__ == '__main__':
-    test_cases = [
-        (3, [
-         [ 1, 2, 3 ],
-         [ 8, 9, 4 ],
-         [ 7, 6, 5 ]
-        ]),
-    ]
-    for test_case in test_cases:
-        res = Solution2().spiral_matrix2(test_case[0])
-        if res == test_case[1]:
-            print "Passed"
-        else:
-            print "Failed: Test case: {0} Got {1} Expected {2}".format(
-                test_case[0], res, test_case[1])
-

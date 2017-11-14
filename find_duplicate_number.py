@@ -13,8 +13,8 @@ class Solution(object):
         """
         Idea is same as the one used for finding cycle in linkedlists
         since duplicated number can be repeated our xor logic won't work therefore this
-        """
         Note: Notice the starting values for start and slo
+        """
         slow = arr[0]
         fast = arr[arr[0]]
         while slow != fast:

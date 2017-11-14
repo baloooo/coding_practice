@@ -22,6 +22,29 @@ class Solution:
             pend = [1] + [pend[k] + pend[k+1] for k in xrange(len(pend)-1)] + [1]
         return result
 
+    def pascal_triangle_latest(self, num_rows):
+        # Time: O(n^2)
+        # Idea: https://github.com/kamyu104/LeetCode/blob/master/Python/pascals-triangle.py
+        # probably easy to comprehend and reproducible in other langs
+        res = []
+        for i in xrange(num_rows):
+            res.append([])
+            for j in xrange(i+1):
+                if j in [0, i]:
+                    res[i].append(1) # since first and last values of a pascal row are always 1
+                else:
+                    '''
+                    res[i-1][j-1] gives above row(i-1) prev col(j-1) and cur col(j) which is what
+                    normally done in pascal
+                    '''
+                    res[i].append(res[i-1][j-1] + res[i-1][j])
+        return res
+
+    def kth_row_pascal(self, k):
+        # Time: O(n^2)
+        # Idea: https://github.com/kamyu104/LeetCode/blob/master/Python/pascals-triangle-ii.py
+        pass
+
 if __name__ == '__main__':
     test_cases = [
         (5, [

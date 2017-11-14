@@ -15,6 +15,10 @@ def selection_sort(arr):
 def largest_number(arr):
     """
     Idea is to concat strings and compare their ASCIIs to check which is smaller and bigger
+    O(nlogn)
+    Proof why this works, instead of str(num1) + str(num2) they mathemetically append it(by
+    multiplying and then adding it).
+    https://discuss.leetcode.com/topic/36004/mathematical-proof-of-correctness-of-sorting-method
     """
     nums = [str(x) for x in arr]
     # https://docs.python.org/3/howto/sorting.html#the-old-way-using-the-cmp-parameter
