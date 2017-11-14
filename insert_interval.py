@@ -7,6 +7,7 @@ class Solution:
     def insert_interval(self, intervals, new_interval):
 	"""
 	Same idea as below just doing it in one pass
+        Idea: https://discuss.leetcode.com/topic/17937/two-easy-o-n-c-solutions-with-explanations
 	"""
 	s, e = newInterval.start, newInterval.end
 	left, right = [], []
@@ -15,7 +16,7 @@ class Solution:
 		left += i,
 	    elif i.start > e:
 		right += i,
-	    else:
+	    else: # Notice one of them is min and other max
 		s = min(s, i.start)
 		e = max(e, i.end)
 	return left + [Interval(s, e)] + right
