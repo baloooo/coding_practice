@@ -4,31 +4,26 @@ Idea: Idea is simple: store states of each row in the first of that row, and sto
 """
 
 
-class Solution:
-    def __init__(self):
-        pass
-
-    def set_matrix_zero(self, matrix):
-        # should column 0 be made all zeros
-        col0 = 1
-        for row in xrange(len(matrix)):
-            # If any row of column zero is zero set col0
-            if matrix[row][0] == 0:
-                col0 = 0
-            for col in xrange(len(matrix[0])):
-                if matrix[row][col] == 0:
-                    matrix[row][0] = matrix[0][col] = 0
-        # start setting from bottom up way
-        for row in xrange(len(matrix)-1, 0, -1):
-            # last statement sets the column value so run
-            # the loop untill column 1
-            for col in xrange(len(matrix[0])-1, 0, -1):
-                # import ipdb; ipdb.set_trace()
-                if matrix[row][0] == 0 or matrix[0][col] == 0:
-                    matrix[row][col] = 0
-            if col0 == 0:
-                matrix[row][0] = 0
-        return matrix
+class Solution(object):
+    def setZeroes(self, matrix):
+        """
+        Idea: https://discuss.leetcode.com/topic/5056/any-shorter-o-1-space-solution?page=1
+        """
+        # place markers at row and col beginnings.
+        col0 = False
+        for i in xrange(len(matrix)): # Pass 1
+            if matrix[i][0] == 0: col0 = True
+            for j in xrange(1, len(matrix[0])):
+                if matrix[i][j] == 0:
+                    matrix[i][0] = 0 # marks this row to be zeroed
+                    matrix[0][j] = 0 # marks this col to be zeroed
+        # Pass 2
+        for i in xrange(len(matrix)-1, -1, -1):
+            for j in xrange(len(matrix[0])-1, 0, -1):
+                if matrix[i][0] == 0 or matrix[0][j] == 0:
+                    matrix[i][j] = 0
+            if col0: matrix[i][0] = 0
+                    
 
 if __name__ == '__main__':
     test_cases = [

@@ -1,22 +1,11 @@
 # coding: utf-8
-"""
-Given an array of size n, find the majority element. The majority element is the element that appears more than floor(n/2) times.
-
-You may assume that the array is non-empty and the majority element always exist in the array.
-
-Example :
-
-    Input : [2, 1, 2]
-    Return  : 2 which occurs 2 times which is greater than 3/2. 
-"""
-
 
 class Solution:
-    def __init__(self):
-        pass
-
     def majority_element_one_third(self, nums):
         """
+        Can be done using hashing for any majority k elements by maintaining a frequency map.
+        Though would take n space.
+
         Given an integer array of size n, find all elements that appear more
         than ⌊ n/3 ⌋ times. The algorithm should run in linear time and in O(1)
         space.
@@ -25,9 +14,12 @@ class Solution:
         cand1, cand2 = None, None
         count1, count2 = 0, 0
         for ele in nums:
-            # this order of if-else matters
-	    # Always check for element equivalence first b'coz and candidate's count may go to zero and then come up back, but if 
-	    #   you check count first, whenever first time count gets to zero, candidate can be thrown out.
+            '''
+            This order of if-else matters. Always check for element equivalence first,
+            as candidate's count may go to zero and then come up back, but if you check
+            count first, whenever first time count gets to zero, candidate can be thrown out.
+            Also, notice that this opposite to what we do in n/2 majority element.
+            '''
             if ele == cand1:
                 count1 += 1
             if ele == cand2:

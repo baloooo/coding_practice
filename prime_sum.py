@@ -6,6 +6,9 @@ class Solution:
     https://stackoverflow.com/questions/2582732/time-complexity-of-sieve-of-eratosthenes-algorithm
     '''
     def find_prime_numbers(self, A):
+        '''
+        Seive of Erato: O(n(logn)(loglogn))
+        '''
         prime_numbers = []
         num_range = [False]*(A-1)
         for index, cur_num in enumerate(num_range, start=2):
@@ -20,8 +23,12 @@ class Solution:
     # @param A : integer
     # @return a list of integers
     def primesum(self, A):
+        O(O(seive) + O(two_sum))
         prime_numbers = self.find_prime_numbers(A)
-        print prime_numbers
+        '''
+        once you have prime numbers, problem breaks down to finding two numbers whose sum is x
+        can be done w/ O(n^2) and constant space or O(n) time with hashing.
+        '''
         for index, prime1 in enumerate(prime_numbers):
             for prime2 in prime_numbers[index:]:
                 if prime1 + prime2 == A:

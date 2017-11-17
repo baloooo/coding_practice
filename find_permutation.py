@@ -1,6 +1,10 @@
 '''
-https://leetcode.com/articles/find-permutation/
+Solution article: https://leetcode.com/articles/find-permutation/
+Idea is to start from sorted array and then manage D in consecutive groups as they're encountered
+since arr is sorted I's will take care of themselves.
+To generate the required arrangement, we can start off with the minmin number that can be formed for the given nn. Then, to satisfy the given pattern ss, we need to reverse only those subsections of the minmin array which have a D in the pattern at their corresponding positions.
 '''
+
 def sol_stack(pattern):
     # Time: O(n) Space: O(n)
     arr = range(1, len(pattern)+2)

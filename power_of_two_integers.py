@@ -8,6 +8,20 @@ class Solution:
         """
         return bool(n!=0 and not (n&(n-1)) )
 
+    def power_of_two_integers(self, n):
+        # http://www.geeksforgeeks.org/check-if-a-number-can-be-expressed-as-xy-x-raised-to-power-y/
+        # x^y where x >0 and y > 1
+        from math import sqrt
+        if n <= 1: return True
+        for base in xrange(2, sqrt(n)):
+            cur = base
+            while cur <= n:
+                cur = cur * base
+                if cur == n:
+                    return True
+        return False
+                
+
 if __name__ == '__main__':
     test_cases = [
         (4, True),

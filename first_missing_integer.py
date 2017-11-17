@@ -9,7 +9,7 @@ Your algorithm should run in O(n) time and uses constant space.
 '''
 
 
-def firstMissingPositive(self, nums):
+def firstMissingPositive(nums):
     """
     https://discuss.leetcode.com/topic/45556/python-o-1-space-o-n-time-solution-with-explanation
     Basic idea:
@@ -18,23 +18,27 @@ def firstMissingPositive(self, nums):
     2. we can use the array index as the hash to restore the frequency of each number within 
          the range [1,...,l+1] 
     """
-    # this helps when nums is empty + it doesn't harm since it will only bump index 0 which
-    # we don't care about and set any entry greater than n, to anyways.
+    # this helps when nums is empty or when all items in the arr are already there like [1, 2, 3],
+    # now [1, 2, 3, 0] will help to return 4 for this example.
     nums.append(0)
     n = len(nums)
     for i in range(len(nums)): #delete those useless elements
         # Notice the = sign here since we bumped up the n by appending 0 we made it >=
+        # As we would want to filter out 5 here [1, 5, 3, 0]
         if nums[i]<0 or nums[i]>=n:
             nums[i]=0
     for i in range(len(nums)): #use the index as the hash to record the frequency of each number
         nums[nums[i]%n]+=n
+    print nums
     for i in range(1,len(nums)):
         '''
         This makes sure any number that is less than n is our number since every other number
         was either removed (which was greater than n in first loop) or bumped up in second loop
-        So if you now find a number less than n (nums[i]/n) will be zero only when a number is in the 
-        range 1-n you have got your number.
+        So if you now find a number less than n (nums[i]/n) will be zero only when a number is in
+        the range 1-n you have got your number.
         '''
         if nums[i]/n==0:
             return i
     return n
+
+print firstMissingPositive([1, 2, 3])
