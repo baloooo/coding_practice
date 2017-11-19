@@ -43,36 +43,38 @@ class Solution:
         return self.result
 
 
-def pow_mod_iterative(base, power, mod_no):
-    if mod_no == 0:
-        return float('inf')
-    if power == 0:
-        if mod_no == 1:
-            return 0
-        else:
-            return 1
-    if base == 0:
-        return 0
-    result = 1
-    # Update base if it is more than or equal to mod_no
-    base = base % mod_no
-    while(power > 0):
-        if power & 1:
-            result = (result * base) % mod_no
-        power = power / 2
-        base = (base * base) % mod_no
-    return result
+    def pow_mod_iterative(base, power, mod_no):
+        '''
+        Preferable than above since it is iterative
+        Idea is similar to power_function below
+        check out these, if you need some revision on mod rules
+        https://math.stackexchange.com/questions/111330/explain-for-students-why-does-0-mod-n-equal-0-zero
+        https://math.stackexchange.com/questions/516251/why-is-n-mod-0-undefined
+        '''
+        # check if any of the three are zero
+        if mod_no == 0:
+            return float('inf') # b'coz a % 0 is always infinite
+        if power == 0:
+            if mod_no == 1:
+                return 0 # b'coz 1 mod 1 is zero
+            else:
+                return 1 # b'coz 1 mod x is always 1
+        if base == 0:
+            return 0 # b'coz 0 mod x is always 0
+        result = 1
+        # Update base if it is more than or equal to mod_no
+        base = base % mod_no
+        while(power > 0):
+            if power & 1:
+                result = (result * base) % mod_no
+            power = power / 2
+            base = (base * base) % mod_no
+        return result
 
-class Solution(object):
-    """
-    https://leetcode.com/problems/powx-n/#/description
-    Idea: https://discuss.leetcode.com/topic/40546/iterative-log-n-solution-with-clear-explanation
-    """
     def power_function(self, base, power):
         """
-        :type x: float
-        :type n: int
-        :rtype: float
+        https://leetcode.com/problems/powx-n/#/description
+        Idea: https://discuss.leetcode.com/topic/40546/iterative-log-n-solution-with-clear-explanation
         """
         abs_power = abs(power)
         res = 1

@@ -6,7 +6,8 @@ Note: Your solution should be in logarithmic time complexity.
 class Solution:
     def trailingZeroes(self, n):
         '''
-        Idea: https://discuss.leetcode.com/topic/6513/simple-c-c-solution-with-detailed-explaination
+        Idea and descriptive examples:
+        https://discuss.leetcode.com/topic/6513/simple-c-c-solution-with-detailed-explaination
         '''
         base = 5
         zeros = 0

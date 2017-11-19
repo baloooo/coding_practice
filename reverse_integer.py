@@ -16,7 +16,7 @@ Return 0 if the result overflows and does not fit in a 32 bit signed integer
 """
 
 
-def reverse(self, x):
+def my_reverse(self, x):
     ans = 0
     if x >= 0:
         while x:
@@ -24,7 +24,7 @@ def reverse(self, x):
             x /= 10
         return ans if ans <= 2147483647 else 0  # Handle overflow.
     else:
-        return -self.reverse(-x)
+        return -self.my_reverse(-x)
 
 
 def reverse_integer(num):

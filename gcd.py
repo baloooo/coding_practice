@@ -29,23 +29,6 @@ def gcd_euclidean(a, b):
     return a
 
 
-def gcd(a, b):
-    if a == 0:
-        return b
-    if b == 0:
-        return a
-    if a<b:
-        temp = a
-        a = b
-        b = temp
-    while(1):
-        remainder = a % b
-        if remainder == 0:
-            return b
-        else:
-            a = b
-            b = remainder
-
 if __name__ == '__main__':
     test_cases = [[10, 15], [55, 34], [121393, 75025]]
     for each in test_cases:
