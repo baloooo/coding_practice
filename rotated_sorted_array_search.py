@@ -23,9 +23,14 @@ def search(nums, target):
         mid = lo + (hi-lo)/2
         if nums[mid] == target:
             return mid
-        # if lo to mid is sorted and target is in b/w lo to mid OR lo to mid has rotation and target not in mid to hi range.
-        # Note: take care of < and <= and for opposite sign
+        '''
+        If lo to mid is sorted and target is in b/w lo to mid OR
+        lo to mid has rotation and target NOT in mid to hi range.
+        Note: take care of < and <= and for opposite sign
+        '''
+        # target strictly to the left, strictly as hi doesn't rest at mid but mid - 1
         if ((nums[lo] <= nums[mid] and nums[lo] <= target < nums[mid])
+            # OR target not in strictly right
             or (nums[lo] > nums[mid] and not(nums[mid] < target <= nums[hi]))):
                 hi = mid - 1 # go left
         else:
@@ -33,20 +38,25 @@ def search(nums, target):
     return -1
 
 def search_w_repetitions(nums, target):
-    # Idea: https://discuss.leetcode.com/topic/19116/easy-c-solution-based-on-version-i-of-the-problem
-    l, r = 0, len(nums)-1
-    while l <= r:
-	# same as above w only difference of these two lines to remove duplicates
-	while l < r and nums[l] == nums[l+1]: l+=1
-	while r > l and nums[r] == nums[r-1]: r-=1
-	mid = l + (r-l)/2
-	if nums[mid] == target: return True
-	if ((nums[l] <= nums[mid] and nums[l] <= target < nums[mid])
-	    or (nums[l] > nums[mid] and not(nums[mid]<target<=nums[r]))):
-		r = mid - 1
-	else:
-	    l = mid + 1
-    return False
+    '''
+    Idea: The logic is entirely the same as above, just remove the repetitions/duplicates
+    https://discuss.leetcode.com/topic/19116/easy-c-solution-based-on-version-i-of-the-problem
+    '''
+    lo, hi = 0, len(nums)-1
+    while lo <= hi:
+
+        # remove duplicates
+        while lo < hi and nums[lo] == nums[lo+1]: lo+=1
+        while hi > lo and nums[hi] == nums[hi-1]: hi-=1
+
+        mid = lo + (hi-lo)/2
+        if nums[mid] == target: return True
+        if ((nums[lo] <= nums[mid] and nums[lo] <= target < nums[mid])
+            or (nums[lo] > nums[mid] and not(nums[mid]<target<=nums[hi]))):
+            hi = mid - 1
+        else:
+            lo = mid + 1
+        return False
 
 
 if __name__ == '__main__':

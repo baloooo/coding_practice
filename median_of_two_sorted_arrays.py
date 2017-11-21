@@ -43,6 +43,9 @@ class Solution:
 
 
     def find_sorted_median(self, arr1, arr2, median1, median2):
+        https://www.youtube.com/watch?v=LPFhl65R7ww
+        https://leetcode.com/articles/median-of-two-sorted-arrays/
+        https://leetcode.com/problems/median-of-two-sorted-arrays/description/
         pass
 
 if __name__ == '__main__':
