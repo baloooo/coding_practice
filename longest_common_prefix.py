@@ -1,21 +1,8 @@
 """
-    Write a function to find the longest common prefix string amongst an array
-    of strings.
-
-    Longest common prefix for a pair of strings S1 and S2 is the longest
-    string S which is the prefix of both S1 and S2.
-
-    As an example, longest common prefix of "abcdefgh" and "abcefgh" is "abc".
-
-    Given the array of strings, you need to find the longest S which is the
-    prefix of ALL the strings in the array.
-
+    Analysis, explanation: https://leetcode.com/problems/longest-common-prefix/solution/
     Example:
-
     Given the array as:
-
     [
-
       "abcdefgh",
 
       "aefghijk",
@@ -40,38 +27,34 @@ class TrieSolution():
                 if cur_char not in root.child_map:
                     node = TrieNode()
                     root.child_map[cur_char] = node
-            root.end_of_worda = True
+            root.end_of_word = True
             root = main_root
         # find lcp in trie
         # print trie_obj.trie
 
-class OtherSolution():
+class Solution(object):
     def word_by_word(str_list):
         """
+        Recommended solution: Vertical scan
         n = #f strings
         m = length of smallest string
-        O(n*m)
+        Time: O(n*m)
         """
-        min_len_string = str_list[0]
-        min_len_string_len = len(str_list[0])
-        for string in str_list[1:]:
-            if len(string) < min_len_string_len:
-                min_len_string = string
-                min_len_string_len = len(string)
-        for string in str_list:
-            for index, char in enumerate(min_len_string):
-                if char != string[index]:
-                    min_len_string = string[:index]
+        if not strs: return ""
+        min_len_str = strs[0]
+        for i in xrange(1, len(strs)):  # find min len string
+            if len(strs[i]) < len(min_len_str):
+                min_len_str = strs[i]
+
+        for word in strs:
+            for i in xrange(len(min_len_str)):
+                if word[i] != min_len_str[i]:
+                    min_len_str = word[:i]
                     break
-        return min_len_string
+            if not min_len_str: # if at any time min_len_str is null, no need to go ahead.
+                break
+        return min_len_str
 
-
-"""
-LCP for strings
-"""
-
-
-class Solution(object):
     def lcp(self, str1, str2):
         for i in xrange(min(len(str1), len(str2))):
             if str1[i] != str2[i]:
@@ -84,8 +67,13 @@ class Solution(object):
 
     def longestCommonPrefix(self, strs):
         """
-        :type strs: List[str]
-        :rtype: str
+        horizontal scanning: Here we'll scan every word of the list entirely to get our result.
+        A minor optimization can be to either stop when lcp got to zero or up to the length
+        of min len word in the list since we can't go below or above these limits.
+        Overall making a vertical scan is better than horizontal scan since you will never
+        go over the min length word with a vertical scan even when you have a million char
+        word in your list, whereas in horizontal you can.
+        Though their asymptotic time complexities are same
         """
         #if any([not (len(s)) for s in strs]):
         #    return ''
