@@ -13,7 +13,13 @@ The sum that is closest to the target is 2. (-1 + 2 + 1 = 2)
 # Key points:
 #    Logic: two pointers, closest refers to absolute distance between current sum and target
 # Time complexity: O(nlogn) + O(n^2) = O(n^2)
+
+
 def three_sum(arr, target):
+    '''
+Actually would be nice idea to use nsum logic from 4 sum here, so as to have minimum overlap and additional
+data to keep.
+'''
     arr.sort()
     closest_sum = float('inf')
     if len(arr) <= 3:

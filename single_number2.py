@@ -32,6 +32,8 @@ def unique_number(arr):
 
 
 def unique_number_with_negative(nums):
+    '''Idea is similar to total hamming distance logic, here instead all bits at an index
+    are scanned to see if the count where these bits are set % 3 == 0'''
     result = 0
     for pos in range(32):
         mask = 1 << pos

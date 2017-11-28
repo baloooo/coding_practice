@@ -10,13 +10,13 @@ Do not allocate extra space for another array, you must do this in place with co
 Given input array A = [1,1,2],
 Your function should return length = 2, and A is now [1,2]. 
 """
-def remove_duplicates_generalized(self, arr):
+def remove_duplicates_generalized(arr):
         """
-        Idea:   https://discuss.leetcode.com/topic/7673/share-my-o-n-time-and-o-1-solution-when-duplicates-are-allowed-at-most-k-times/12
+        Idea: https://discuss.leetcode.com/topic/7673/share-my-o-n-time-and-o-1-solution-when-duplicates-are-allowed-at-most-k-times/12
         """
         if not arr:
             return 0
-        k = 2 # This depicts the number of tolerable duplicates.
+        k = 1 # This depicts the number of tolerable duplicates.
         i = j = count = 1
         while j < len(arr):
             if arr[j] != arr[j-1]:
@@ -29,7 +29,7 @@ def remove_duplicates_generalized(self, arr):
                     i += 1
                     count += 1
             j += 1
-        return i 
+        return i
 
 def remove_duplicates_optimized(arr):
     """
@@ -57,5 +57,6 @@ if __name__ == '__main__':
     # arr = [1, 1, 2, 3]
     # arr = [1]
     # arr = [1, 2, 3]
-    arr = [0]
-    print remove_duplicates(arr)
+    # arr = [0]
+    arr = [1, 1, 2, 3, 4, 4]
+    print remove_duplicates_generalized(arr)

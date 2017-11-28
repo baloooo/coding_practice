@@ -9,8 +9,8 @@ class Solution(object):
                 arr[lo], arr[mid] = arr[mid], arr[lo]
                 lo += 1
                 mid += 1
-                # since lo rests on a 1 and not zero the swap gives mid pos'n a 1 therefore mid also needs to move
-                # forward
+                '''since lo rests on a 1 and not 0 the swap gives mid pos'n a 1
+                therefore mid also needs to move forward'''
             elif arr[mid] == 1:
                 mid += 1
             else:

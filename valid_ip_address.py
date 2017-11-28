@@ -23,7 +23,8 @@ class Solution(object):
             try:
                 # Notice here we take the entire number for comparison b/w 0 and 255, whereas in IPv6
                 # we have to take individual chars and see if they are in range
-                return all([str(int(octet)) == octet and (0 <= int(octet) <= 255) for octet in octets])
+                return all(
+                    [str(int(octet)) == octet and (0 <= int(octet) <= 255) for octet in octets])
             except ValueError:
                 # can be raised for 172.10.10.abc as int(abc) is invalid
                 return False
@@ -32,16 +33,16 @@ class Solution(object):
         octets = IP.split(':')
         # IPv6 has 8 octets in total
         if len(octets) == 8:
-	    for octet in octets:
+            for octet in octets:
                 # Each octet in IPv6 has exactly 4 hex digits
-		if 1 <= len(octet) <= 4:
+                if 1 <= len(octet) <= 4:
                     # Compare each digit contrary to entire number we used to in IPv4
-		    for c in octet:
-			if c not in string.hexdigits:
-			    return False
-		else:
-		    return False
-            return True	
+                    for c in octet:
+                        if c not in string.hexdigits:
+                            return False
+                else:
+                    return False
+            return True
             # return True if all([1 <= len(octet) <= 4 and octet in string.hexdigits for octet in octets]) else False
 
     def validIPAddress(self, IP):

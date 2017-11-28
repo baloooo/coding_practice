@@ -25,15 +25,10 @@ So total area = 3 * 2 = 6
 
 def max_container_area(arr):
     '''
-    Idea:https://discuss.leetcode.com/topic/25004/easy-concise-java-o-n-solution-with-proof-and-explanation
-    Also https://leetcode.com/articles/container-most-water/
-    Crux of the idea is that we've to find the area which depends on x-distance and y-distance
-    b/w two walls of the container in 2D plane. Now x-distance is governed by the distance
-    b/w walls of the container and y-distance is governed by the minimum height b/w two walls.
-    So the whole idea is to use two pointer tech. to have two pointers and scan thru the 
-    arr to see how width*height value changes and since we want difference b/w heights of the
-    wall to be as min as possible always move the wall with less height. Meanwhile keep
-    recording the max_area seen so far.
+    Code: https://discuss.leetcode.com/topic/25004/easy-concise-java-o-n-solution-with-proof-and-explanation
+    Idea: https://leetcode.com/articles/container-most-water/
+    The intuition behind this approach is that the area formed between the lines will always be limited by the height of the shorter line. Further, the farther the lines, the more will be the area obtained.
+    We take two pointers, one at the beginning and one at the end of the array constituting the length of the lines. Futher, we maintain a variable maxareamaxarea to store the maximum area obtained till now. At every step, we find out the area formed between them, update maxareamaxarea and move the pointer pointing to the shorter line towards the other end by one step.
     '''
     start, end = 0, len(arr)-1
     max_area = 0

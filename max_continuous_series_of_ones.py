@@ -1,4 +1,4 @@
-
+# coding: utf-8
 
 class Solution:
 
@@ -16,6 +16,12 @@ class Solution:
         return max_ones
 
     def maxone(self, arr, flips_remaining):
+        '''
+        The main steps are:
+        – While zeroCount is no more than m: expand the window to the right (wR++) and update the count zeroCount.
+        – While zeroCount exceeds m, shrink the window from left (wL++), update zeroCount;
+        – Update the widest window along the way. The positions of output zeros are inside the best window.
+        '''
         cur_wl = cur_wr = best_l = best_r = 0
         while cur_wr < len(arr):
             if arr[cur_wr] == 0:
@@ -25,6 +31,8 @@ class Solution:
                     while arr[cur_wl] != 0:
                         cur_wl += 1
                     cur_wl += 1
+            # Notice that cur_wr should be updated first before best_r/l match since we've adjusted wl according
+            # to the latest value of wr at line 27
             cur_wr += 1
             if best_r - best_l < cur_wr - cur_wl:
                 best_r, best_l = cur_wr, cur_wl
@@ -69,10 +77,11 @@ class Solution:
 if __name__ == '__main__':
     test_cases = [
         # (([1, 0, 0, 1, 1, 0, 1, 0, 1, 1], 2), [5, 7])
-        (([1, 1, 0, 1, 1, 0, 0, 1, 1, 1], 1), [0, 1, 2, 3, 4])
+        # (([1, 1, 0, 1, 1, 0, 0, 1, 1, 1], 1), [0, 1, 2, 3, 4])
+        (([1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0 ], 4), [0, 1, 2, 3, 4])
     ]
     for test_case in test_cases:
-        res = Solution().my_func(test_case[0][0], test_case[0][1])
+        res = Solution().maxone(test_case[0][0], test_case[0][1])
         if res == test_case[1]:
             print "Passed"
         else:
