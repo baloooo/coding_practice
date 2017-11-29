@@ -26,6 +26,8 @@ class Solution:
     # @return a list of integers
     def prev_smaller(self, arr):
         """
+        http://www.geeksforgeeks.org/find-the-nearest-smaller-numbers-on-left-side-in-an-array/
+
         S = new empty stack data structure
         for x in the input sequence:
             while S is nonempty and the top element of S is greater than or equal to x:
@@ -54,7 +56,7 @@ class Solution:
         for ele in arr:
             print stack
             if stack:
-                while stack and ele <= stack[-1]:
+                while stack and ele <= stack[-1]: # remember the equal sign.
                     stack.pop()
                 if stack:
                     res_arr.append(stack[-1])

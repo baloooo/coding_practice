@@ -7,7 +7,7 @@ Given an array S of n integers, find three integers in S such that the sum is cl
 """
 class Solution(object):
     def nsum(self, arr, n, start_index, target, cur):
-        if n < 2:
+        if n < 2: # don't add all the other conditions since we need CLOSEST not EXACT.
             return
         if n == 2:
             start, end = start_index, len(arr)-1
@@ -18,7 +18,10 @@ class Solution(object):
                     return True
                 if abs(target-self.closest) > abs(target-(sum(cur)+cur_sum)):
                     self.closest = sum(cur)+cur_sum
-                # self.closest = min(abs(self.closest), abs(cur_sum))
+                '''
+                self.closest = min(abs(self.closest), abs(cur_sum)) doesn't work, we absolutely need to store cur, since
+                the trick is to always store cur and cur_sum in closest and not the difference which can be false as for 
+                test_case [0, 0, 1] and target 1 '''
                 if cur_sum < target:
                     start += 1
                 else:
@@ -47,7 +50,7 @@ class Solution2:
 
     def my_func(self, arr, target):
         import sys
-	arr.sort()
+        arr.sort()
         closest = sys.maxint
         for index in xrange(len(arr)-2):
             start, end = index + 1, len(arr)-1
@@ -65,8 +68,8 @@ class Solution2:
 
 if __name__ == '__main__':
     # arr, target = [-1,2,1,-4], 1
-    # arr, target = [0,2,1,-3], 1
-    arr, target = [-10,0,-2,3,-8,1,-10,8,-8,6,-7,0,-7,2,2,-5,-8,1,-4,6], 18
+    arr, target = [0,2,1,-3], 1
+    # arr, target = [-10,0,-2,3,-8,1,-10,8,-8,6,-7,0,-7,2,2,-5,-8,1,-4,6], 18
     print Solution().threeSumClosest(arr, target)
     # test_cases = [
     #     (([-1, 2, 1, -4], 1), 2),
