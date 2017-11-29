@@ -1,4 +1,15 @@
-class BitOperations(object):
+class Solution(object):
+    def reverse_bits_optimized(self, num):
+        lsb = 1
+        msb = 1 << 31
+        reversed_num = 0
+        for i in xrange(32):
+            if num & lsb:
+                reversed_num = reversed_num | msb
+            lsb = lsb << 1
+            msb = msb >> 1
+        return reversed_num
+
     def check_and_set_bit(self, num, pos):
         mask = 1 << pos
         if num & mask:

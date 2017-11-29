@@ -1,10 +1,15 @@
 class Solution(object):
     def multiply(self, num1, num2):
         """
+        There're lot of little caveats in this one, do implement it when going over.
         :type num1: str
         :type num2: str
         :rtype: str
         Idea: https://discuss.leetcode.com/topic/20883/simple-python-solution-18-lines/8
+        Idea is to reverse both the nums strings and start from there multiplying each place
+        digits. Core idea is to place num1[i] * num2[i] at product[i] and then initialize
+        product[i-1] += product[i]/10 where product[i] might have 36 from multiplication above.
+        and in next step normalize product[i] by product[i]/10, and keep moving forward with it.
         """
         def reverse(strs):
             '''
@@ -13,7 +18,7 @@ class Solution(object):
             return ''.join([strs[i] for i in xrange(len(strs)-1, -1, -1)])
         product = [0]*(len(num1)+len(num2))
         pos = len(product) - 1
-        num1, num2 = reverse(num1), reverse(num2)
+        num1, num2 = ''.join(reversed(num1)), num2[::-1] # showing 3 different ways to reverse inc/ above one.
         for n1 in num1:
             cur_pos = pos
             for n2 in num2:
@@ -26,7 +31,6 @@ class Solution(object):
         cur_pos = 0
         while cur_pos < len(product) and product[cur_pos] == 0:
             cur_pos += 1
-        print product, cur_pos
         return ''.join(map(str, product[cur_pos:])) or '0'
 
 if __name__ == '__main__':

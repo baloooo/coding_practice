@@ -49,7 +49,7 @@ class Solution:
         return [lo, search(target+1)-1] if target in nums[lo:lo+1] else [-1, -1]
         '''
         return [lo, search(target+1)-1] if len(nums) and lo < len(nums) and target == nums[lo] else [-1, -1]
-        nums[lo:lo+1] gives handles with above three conds stringed with 'AND'.
+        nums[lo:lo+1] gives handles with above three conds stringed with 'AND'.'''
 
 if __name__ == '__main__':
     arr, target = [5, 7, 7, 8, 8, 10], 8

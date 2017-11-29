@@ -26,6 +26,36 @@ def pretty(json_object):
         else:
             curr_line += char
 
+def pretty_json2(A):
+    # IB editorial
+    ret = []
+    n = len(A)
+    if n == 0:
+	return ret
+    no_indents = 0
+    temp = "\t"*no_indents
+    for i in range(n):
+	if A[i] != ' ':
+	    temp += A[i]
+	if A[i] == '{' or A[i] == '[':
+	    if len(temp) > 2 and temp[-2] != '\t':
+		ret.append(temp[:-1])
+	    temp = "\t"*no_indents+temp[-1]
+	    ret.append(temp)
+	    no_indents += 1
+	    temp = "\t"*no_indents
+	elif A[i] == '}' or A[i] == ']':
+	    no_indents -= 1
+	    if len(temp) > 2 and temp[-2] != '\t':
+		ret.append(temp[:-1])
+	    temp = "\t"*no_indents+temp[-1]
+	elif A[i] == ',':
+	    ret.append(temp)
+	    temp = "\t"*no_indents
+    if len(temp) > 0 and temp[-1] != '\t':
+	ret.append(temp)
+    return ret 
+
 
 def pretty_json(json_object, space_unit='\t'):
     json_str = json.dumps(json_object)
@@ -67,9 +97,11 @@ if __name__ == '__main__':
     json_object = {"id": "0001","type": "donut","name": "Cake","ppu": 0.55, "batters":{"batter":[{ "id": "1001", "type": "Regular" },{ "id": "1002", "type": "Chocolate" }]},"topping":[{ "id": "5001", "type": "None" },{ "id": "5002", "type": "Glazed" }]}
     # json_object = {"id":100,"firstName":"Jack","lastName":"Jones","age":12}
     # json_object = {'A':'B','C':{'D':'E','F':{'G':'H','I':'J'}}}
-    json_object = {"A":"B","C":{"D":"E","F":{"G":"H","I":"J"}}}
+    # json_object = {"A":"B","C":{"D":"E","F":{"G":"H","I":"J"}}}
+    json_object = {"attributes":[{"nm":"ACCOUNT","lv":[{"v":{"Id":None,"State":None},"vt":"java.util.Map","cn":1}],"vt":"java.util.Map","status":"SUCCESS","lmd":13585},{"nm":"PROFILE","lv":[{"v":{"Party":None,"Ads":None},"vt":"java.util.Map","cn":2}],"vt":"java.util.Map","status":"SUCCESS","lmd":41962}]}
 
-    pretty(json_object)
-    # print 'json_str: ', json_object
-    # for each in pretty_json(json_object):
-    #     print each
+    # print pretty_json2(json.dumps(json_object))
+    # pretty(json_object)
+    print 'json_str: ', json_object
+    for each in pretty_json2(json.dumps(json_object)):
+        print each

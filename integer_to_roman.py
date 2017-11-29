@@ -48,14 +48,14 @@ def integer_to_roman_optimized(num):
             # since roman_keys are reverse sorted the first time we get a roman_key less than our MSB cur_digit, we've got out hit
             if roman_key <= cur_digit: # perfect match
 
-                if cur_digit % roman_key == 0:
+                if cur_digit % roman_key == 0: # For ex: 3000
                     repetition = cur_digit / roman_key
                     res.append(int_to_roman_map[roman_key]*repetition)
                     break
-                else:
+                else: # For ex: 6
                     res.append(int_to_roman_map[roman_key])
                     cur_digit -= roman_key
-    return ''.join(map(str, res))
+    return ''.join(res)
 
 
 int_to_roman_map = {

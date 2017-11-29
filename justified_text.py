@@ -54,7 +54,8 @@ def justify_text2(words, max_width):
             cur = []
         cur += [w]
         num_of_letters += len(w)
-    # puts one space after every word in current and then puts all remaining spaces at last, ljust fills in spaces for remaining places
+    # puts one space after every word in current and then puts all remaining spaces at last, ljust fills in spaces for remaining places, lines to end with space is acceptable for the last row as there's nothing after that.
+    # Also notice here ' ' is used for joining cur not '' as used in line 52
     return res + [' '.join(cur).ljust(max_width)]
 
 

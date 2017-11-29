@@ -15,6 +15,8 @@ class Solution(object):
     def isNumber(self, s):
         """
         Idea: https://discuss.leetcode.com/topic/30058/a-simple-solution-in-python-based-on-dfa/26?page=1
+              https://en.wikipedia.org/wiki/Scientific_notation#E-notation
+        Key points: Space/blank is the initial state.
         """
         # Indexes of the array states are treated as state numbers.
         states = [{}, 
