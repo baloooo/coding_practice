@@ -1,38 +1,20 @@
 # -*- coding: utf-8 -*-
 
-"""
-
-A long array A[] is given to you. There is a sliding window of size w which is moving from the very left of the array to the very right. You can only see the w numbers in the window. Each time the sliding window moves rightwards by one position.
-
-Example :
-
-    The array is [1 3 -1 -3 5 3 6 7], and w is 3.
-
-    Window positionMax   
-    [1 3 -1] -3 5 3 6 73
-    1 [3 -1 -3] 5 3 6 7331 3 [-1 -3 5] 3 6 733151 3 -1 [-3 5 3] 6 73315151 3 -1 -3 [5 3 6] 7331515161 3 -1 -3 5 [3 6 7]73315151617Input: A long array A[], and a window width w
-    Output: An array B[], B[i] is the maximum value of from A[i] to A[i+w-1]
-    Requirement: Find a good optimal way to get B[i]
-
-     Note: If w > length of the array, return 1 element with the max of the array. 
-"""
-
-
 def sliding_window_max(arr, k):
     """
     :type nums: List[int]
     :type k: int
     :rtype: List[int]
     Idea: http://www.geeksforgeeks.org/maximum-of-all-subarrays-of-size-k/
-    Create a Double Ended Queue, Qi that will store indexes of array elements
-    The queue will store indexes of useful elements in every window and it will
-    maintain decreasing order of values from front to rear in Qi, i.e., 
-    arr[Qi.front[]] to arr[Qi.rear()] are sorted in decreasing order
+    We create a Dequeue, Qi of capacity k, that stores only useful elements of current window of k elements. An element is useful if it is in current window and is greater than all other elements on left side of it in current window. We process all array elements one by one and maintain Qi to contain useful elements of current window and these useful elements are maintained in sorted order. The element at front of the Qi is the largest and element at rear of Qi is the smallest of current window
+    There're two kind of pops here, one is to remove all elements smaller than element to be added from the rear of the queue.
+    Second is while adding each element after the first k elements pop all elements from the front of the queue that went
+    outside the k window size.
     """
     from collections import deque
     if not arr:
         return []
-    q = deque()
+    q = deque() # q = [Front ........ Rear]
     res = []
     # Parse starting window size elements
     for index in range(k):

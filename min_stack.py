@@ -10,12 +10,24 @@ getMin() – Retrieve the minimum element in the stack.
 Note that all the operations have to be constant time operations.
 """
 import sys
-
-# Time:  O(n)
-# Space: O(n) for values + O(1) for bookeeping
+'''
+Time:  O(n)
+Space: O(n) for values + O(1) for bookeeping or should be said as O(1) since space for storing
+input from user shouldn't be in extra space used for computation.'''
 
 
 class MinStackOptimized:
+    '''
+    This implementation is currently flawed and doesn't pass all test cases on leetcode.
+    Use http://www.geeksforgeeks.org/design-a-stack-that-supports-getmin-in-o1-time-and-o1-extra-space/  and implement it here instead of this.
+    The idea is to store difference (cur_ele - min seen till now) in the stack, this serves us with
+    the advantage that now in one shot we can tell:
+    1. min number till cur_index by seeing self.min
+    2. cur element by adding self.min to TOS.
+    3. when cur_min is popped next minimum can be regenerated from tos(cur_ele being popped) and current min
+       which is kind of the main requirement to get the running min incase of consecutive popping and 
+       eventually popping of current minimum.
+    '''
     def __init__(self):
         self.stack = []
         self.min = sys.maxint
