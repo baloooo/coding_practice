@@ -21,7 +21,7 @@ def add_two_numbers(l1, l2):
         if l2:
             total_sum += l2.val
             l2 = l2.next
-        new_node = ListNode(total_sum%10)
+        new_node = ListNode(total_sum % 10)
         cur.next = new_node
         cur = cur.next
         total_sum /= 10

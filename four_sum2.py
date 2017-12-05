@@ -10,6 +10,7 @@ class Solution(object):
         Make hasmap with every possible combinations of A and B
         and for every possible sum of C and D perform 2 sum with hash map technique
         Idea: https://discuss.leetcode.com/topic/67658/simple-java-solution-with-explanation
+        http://www.geeksforgeeks.org/find-four-elements-sum-given-value-set-3-hashmap/
         Time: O(n^2) n being the number of elements in "each" array.
         Space: O(2n)
         """

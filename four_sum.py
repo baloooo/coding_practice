@@ -10,7 +10,10 @@ class Solution(object):
                 if cur_sum == target:
                     res.append(cur+[arr[start], arr[end]])
                     start += 1 # don't forget this step
-                    while start < end and start > 0 and arr[start] == arr[start-1]: # Note: Pruning optimization
+                    '''Note: This comparison has to be b/w start and start-1 and not start+1 since, we
+                    just incremented start in previous step so we're already on one unknown location.
+                    We want to compare this with last known location therfore start and start-1.'''
+                    while start < end and start > 0 and arr[start] == arr[start-1]:
                         start += 1
                     while start < end and arr[end] == arr[end-1]:
                         end -= 1
@@ -30,6 +33,8 @@ class Solution(object):
         :type nums: List[int]
         :type target: int
         :rtype: List[List[int]]
+        I think, This is O(n^3) solution. If allowed for space http://www.geeksforgeeks.org/find-four-elements-sum-given-value-set-3-hashmap/
+        is more efficient O(n^2Logn) and O(n^2) space.    
         """
         res = [] # This use of variable than self.res is preferred
         arr.sort()

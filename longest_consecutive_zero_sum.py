@@ -30,11 +30,12 @@ class Solution:
         for index, ele in enumerate(arr):
             cur_sum += ele
             if cur_sum == 0:
-                # If the running sum reaches zero from the beginning of the array, the longest zero-sum subarray consists of the entire array till the index we reached
+                '''Very imp. point: If the running sum reaches zero from the beginning of the array, the longest 
+                zero-sum subarray consists of the entire array till the index we reached'''
                 max_len = index + 1
                 start = 0
-            if cur_sum in sum_map:
-                cur_len = index-sum_map[cur_sum]
+            elif cur_sum in sum_map:
+                cur_len = index-sum_map[cur_sum] # sum_map[cur_sum] already points to a location one index before actual start so no need to add 1 here for len calculation
                 if max_len < cur_len:
                     max_len = cur_len
                     start = sum_map[cur_sum]+1

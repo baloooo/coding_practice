@@ -13,6 +13,8 @@ Input :
         1 -> 2 -> 3 -> 4
 
 Return the node corresponding to node 3.
+
+PROOF: https://stackoverflow.com/questions/2936213/explain-how-finding-cycle-start-node-in-cycle-linked-list-work
 """
 class Node(object):
     def __init__(self, val, next=None):

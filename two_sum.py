@@ -18,6 +18,20 @@ index1 out of them.
 Input: [2, 7, 11, 15], target=9
 Output: index1 = 1, index2 = 2
 """
+class Solution(object):
+    def twoSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        sum_map = {}
+        for i, num in enumerate(nums):
+            if sum_map.get(target-num):
+                return [sum_map[target-num]-1, i]
+            sum_map[num] = i+1 # Adding 1 to have pointers from 1 to prevent sum_map.get return 0 which would falsify if if-loop even when input is returned. Ex: [3, 3], 6
+        return [-1, -1]
+
 
 
 # sum not unique

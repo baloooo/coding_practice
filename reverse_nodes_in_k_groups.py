@@ -23,13 +23,10 @@ class ListNode(object):
 class Solution(object):
     def reverseKGroup(self, head, k):
         """
-        :type head: ListNode
-        :type k: int
-        :rtype: ListNode
+        verify if k nodes exist, and get a pointer to next group's head in the same loop.i
+        reverse k nodes
+        link head of this group to next group and tail of this group to head of prev group
         """
-        # verify if k nodes exist.
-        # reverse k nodes
-        # link head of this group to next group and tail of this group to head of prev group
         prev_tail = dummy = ListNode('dummy')
         # l and r are the limits in which nodes need to be reversed
         prev_tail.next = l = r = head

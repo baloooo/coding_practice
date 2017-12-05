@@ -13,6 +13,7 @@ class Solution(object):
         :type s: str
         :type k: int
         :rtype: int
+        Time: O(nk)
         """
         # Use dictionary d to keep track of (character, location) pair,
         # where location is the rightmost location that the character appears at
@@ -22,7 +23,7 @@ class Solution(object):
             d[c] = i
             if len(d) > k:
                 low = min(d.values())
-                del d[s[low]]
-                low += 1
+                del d[s[low]] # s[low] will give the char in the string that has lowest index, now delete this char from dictionary
+                low += 1 # this will be new low since we deleted first minimum, this would also work when our low had duplicates since we already would have updated it with the max value for low char.
             ret = max(i - low + 1, ret)
         return ret

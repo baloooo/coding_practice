@@ -19,10 +19,9 @@ class Solution(object):
             len += 1
         head.next = orig_head # circle the LL
         k = k % len
-        if k:
-            head = orig_head
-            for _ in xrange(len-k-1): # when the head is at len-k-1 node(i.e just before our end node)
-                head = head.next
+        head = orig_head
+        for _ in xrange(len-k-1): # when the head is at len-k-1 node(i.e just before our end node)
+            head = head.next
         orig_head = head.next
         head.next = None
         return orig_head

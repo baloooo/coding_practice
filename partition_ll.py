@@ -16,9 +16,6 @@ class ListNode(object):
 class Solution(object):
     def partition(self, head, x):
         """
-        :type head: ListNode
-        :type x: int
-        :rtype: ListNode
         https://discuss.leetcode.com/topic/7005/very-concise-one-pass-solution/20
         The idea is to just iterate over all the nodes and move nodes
         less than x to first_half list and others to second_half list. In the end

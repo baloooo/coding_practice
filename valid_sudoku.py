@@ -15,6 +15,12 @@ A partially filled sudoku which is valid.
 """
 class Solution:
     def valid_sudoku(self, board):
+        '''
+        There are two ways to go about it, one is the method at the bottom of the file here, where
+        we run O(n^2) loop for each row in board, for each col in board and each box in board.
+        Total: O(n^2) + O(n^2) + O(n^2), we can reduce this to just one O(n^2) by taking 
+        "BOOLEAN" O(3*(n^2)) space.
+        '''
         if not board:return False
         for row in board:
             for ele in row:
