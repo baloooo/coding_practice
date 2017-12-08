@@ -19,11 +19,11 @@ class Solution:
     def minWindow(self, s, t):
         """
         Idea: http://articles.leetcode.com/finding-minimum-window-in-s-which/
-            https://discuss.leetcode.com/topic/30941/here-is-a-10-line-template-that-can-solve-most-substring-problems/76
+        https://discuss.leetcode.com/topic/30941/here-is-a-10-line-template-that-can-solve-most-substring-problems/76
         s: base string
         t: target
         need_to_find is a map of characters in target to their frequency
-        Time: 
+        Time: O(N)
         Space: 
         """
         if not s or not t or len(s) < len(t):
@@ -44,9 +44,14 @@ class Solution:
             # Notice need_to_find can have useless chars with zero value
                 count += 1
             if count == len(t):
-                # if window found, try finding a smaller window.
+                '''if window found, try finding a smaller window.
                 # Advance start index as far right as possible,
                 # stop when advancing breaks window constraint.
+                Notice the check need_to_find[s[start]] == 0 here, this comes in since need_to_find is
+                a defaultdict and while we traverse from start trying to pull in left boundary, we may
+                encounter characters that are not in need_to_find /(t) so these will just be set to freq zero
+                in both dicts. The otherway would be to a have bunch of if-else to check initially if character
+                is in t and then compare their frequencies.'''
                 while have_found[s[start]] > need_to_find[s[start]] or need_to_find[s[start]] == 0:
                     if have_found[s[start]] > need_to_find[s[start]]:
                         have_found[s[start]] -= 1

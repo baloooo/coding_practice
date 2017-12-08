@@ -16,9 +16,12 @@ import collections
 class Solution(object):
     def fractionToDecimal(self, num, denom):
         """
-	Time: O(digits in quotient) 
-	This solution contains less gotchas and therefore less chances of making silly mistakes. There're lot of
-	small things to do in fractionToDecimal2
+        This is latest and most efficient solution.
+	    Time: O(digits in quotient) 
+	    This solution contains less gotchas and therefore less chances of making silly mistakes.
+        There're lot of small things to do in fractionToDecimal_old
+        This has a solution available under LC premium.
+        
         """
         # step 1: Get sign
         decimal = []
@@ -35,19 +38,18 @@ class Solution(object):
         decimal.append('.')
         # seen is the mapping of past seen remainders to their index as in when laid out in array
         # so when you encounter a seen remainder you can get the index to carve out the part before it using the index
-        seen = {int(rem): len(decimal)}
+        seen_rem = {rem: len(decimal)}
         while rem != 0:
             rem = rem * 10
             quot, rem = divmod(rem, denom)
             decimal.append(str(quot))
-            if rem in seen:
-                index = seen[rem]
-                decimal =  ''.join(decimal[:index]) + '(' + ''.join(decimal[index:]) + ')'
-                break
-            seen[rem] = len(decimal)
+            if rem in seen_rem:
+                index = seen_rem[rem]
+                return ''.join(decimal[:index]) + '(' + ''.join(decimal[index:]) + ')'
+            seen_rem[rem] = len(decimal)
         return ''.join(decimal)
 
-    def fractionToDecimal2(self, num, denom):
+    def fractionToDecimal_old(self, num, denom):
         """
         :type numerator: int
         :type denominator: int

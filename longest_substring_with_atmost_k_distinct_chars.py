@@ -14,6 +14,9 @@ class Solution(object):
         :type k: int
         :rtype: int
         Time: O(nk)
+
+        http://www.geeksforgeeks.org/find-the-longest-substring-with-k-unique-characters-in-a-given-string/
+        below implementation cannot be trusted
         """
         # Use dictionary d to keep track of (character, location) pair,
         # where location is the rightmost location that the character appears at

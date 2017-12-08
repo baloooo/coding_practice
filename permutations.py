@@ -5,19 +5,20 @@ Duplicates: allowed
 Lexicographic sorted: Yes
 '''
 class Solution(object):
-    def dfs(self, nums, cur, used, perms):
-        if len(cur) == len(nums):
+    def dfs(self, arr, cur, used, perms):
+        if len(cur) == len(arr):
             perms.append(cur[:])
-            return
-        for i in xrange(len(nums)):
-            if used[i]: continue
-            if i > 0 and nums[i] == nums[i-1] and not used[i-1]:
-                continue
-            used[i] = True
-            cur.append(nums[i])
-            self.dfs(nums, cur, used, perms)
-            used[i] = False
-            cur.pop()
+        else:
+            for i in xrange(len(arr)):
+                ''' If current index ele is already used or cur index ele is same as previous
+                index ele and previous index ele is already used, skip this index. '''
+                if used[i] or (i > 0 and arr[i] == arr[i-1] and used[i-1]):
+                    continue
+                used[i] = True
+                cur.append(arr[i])
+                self.dfs(arr, cur, used, perms)
+                cur.pop()
+                used[i] = False
         
     def permute2(self, nums):
         """

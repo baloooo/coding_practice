@@ -23,8 +23,8 @@ class Solution(object):
         """
         :type strs: List[str]
         :rtype: List[List[str]]
-	Idea: https://leetcode.com/articles/group-anagrams/
-	Time: O(n*k) (Most efficient of all)
+	    Idea: https://leetcode.com/articles/group-anagrams/
+	    Time: O(n*k) (Most efficient of all)
         """
         str_map = collections.defaultdict(list)
         for cur_str in strs:

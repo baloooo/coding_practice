@@ -10,8 +10,9 @@ class Point(object):
 class Solution:
     def max_points(self, points):
         '''
-        Idea: https://discuss.leetcode.com/topic/18447/16ms-28ms-c-solutions-with-explanations/7
-        https://discuss.leetcode.com/topic/21896/python-68-ms-code/6
+        Bruteforce would be to [calculate slope for all the other points combinations for each point in points]
+        Idea: Got the idea here but not sure if/why (dx/dvs, dy/dvs) == slope ? https://discuss.leetcode.com/topic/18447/16ms-28ms-c-solutions-with-explanations/7
+        below implementation: https://discuss.leetcode.com/topic/21896/python-68-ms-code/6
         Time: O(n^2)
         Calculate slopes of each point with every other point
         '''
@@ -28,7 +29,7 @@ class Solution:
                         slope = float('inf')
                     else:
                         '''
-                        np is used as representation of floating point numbers can be inaccurate
+                        np(numpy) is used as representation of floating point numbers can be inaccurate
                         therefore rounding off can result in different slopes, so just increasing
                         the purview of slope
                         '''

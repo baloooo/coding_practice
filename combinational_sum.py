@@ -1,4 +1,22 @@
 class Solution(object):
+    def combinationSum4_recursive(self, arr, target):
+        """
+        
+        """
+        res = 0
+        if target == 0:
+            return 1
+        else:
+            for i in xrange(len(arr)):
+                res += self.combinationSum4(arr, target-arr[i])
+        return res
+
+    def combinationSum4_dp(self, arr, target):
+        '''
+        https://discuss.leetcode.com/topic/52302/1ms-java-dp-solution-with-detailed-explanation/43
+        '''
+        pass
+        
     def find_combinations(self, arr, start, remaining_sum):
         if remaining_sum < 0:
             return

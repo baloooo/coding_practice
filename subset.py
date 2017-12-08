@@ -32,10 +32,6 @@ class Solution(object):
             cur_subset.pop()
 
     def subsetsWithDup(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: List[List[int]]
-        """
         result, cur_subset = [], []
         nums.sort()
         self.backtrack(nums, result, cur_subset, 0)
@@ -43,18 +39,11 @@ class Solution(object):
 
 class Solution2(object):
     def backtrack(self, nums, result, cur_subset, start):
-        print '-'*40
-        print 'start : %s cur_subset: %s' % (start, cur_subset)
         result.append(cur_subset[:])
-        print 'result: %s' % result
         for index in xrange(start, len(nums)):
             cur_subset.append(nums[index])
-            print 'pushing index: %s' % index
-            print 'cur_subset: %s' % cur_subset
             self.backtrack(nums, result, cur_subset, index+1)
             cur_subset.pop()
-            print 'popping index: %s' % index
-            print 'cur_subset: %s' % cur_subset
     def subsets(self, nums):
         """
         :type nums: List[int]
