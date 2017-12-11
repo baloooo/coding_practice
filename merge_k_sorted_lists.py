@@ -29,27 +29,7 @@ class Solution(object):
             cur_node = cur_node.next
         return head.next
 
-
-def merge_k_sorted_lists_optimized(sorted_ll_lists):
-    # http://www.geeksforgeeks.org/merge-k-sorted-linked-lists/
-    # Notice that this tech. destroys the existing lists though which might
-    # not be an acceptable strategy in some cases.
-    # time: O(nlogk)
-    # space: O(1)
     def merge_two_linklist(head1, head2):
-        # alternate approach if no Node method is available
-        # if head1 is None or head2 is None:
-        #     return head1 or head2
-        # if head1.val > head2.val:
-        #     head1, head2 = head2, head1
-        # original = head1
-        # while head1.next is not None:
-        #     if head2.val < head1.next.val:
-        #         temp = head1.next
-        #         head1.next = head2
-        #         head2 = temp
-        #     head1 = head1.next
-        # return original
         cur = original = ListNode(None)
         while (head1 and head2):
             if head1.val < head2.val:
@@ -62,38 +42,25 @@ def merge_k_sorted_lists_optimized(sorted_ll_lists):
         cur.next = head1 or head2
         return original.next
 
-    if not sorted_ll_lists:
-        return None
-    left = 0
-    right = len(sorted_ll_lists) - 1
-    while(right > 0):
-        if left >= right:
-            # when left crosses right re_initialize it to leftmost point
-            left = 0
-        sorted_ll_lists[left] = merge_two_linklist(
-            sorted_ll_lists[left], sorted_ll_lists[right])
-        left += 1
-        right -= 1
-    return sorted_ll_lists[0]
-
-
-# Time: O(nlogk) ( n being total nodes cumulative of k lists)
-# space: O(k) (for min heap)
-def merge_k_sorted_lists_using_heap(sorted_ll_list):
-    min_heap = []
-    original_head = merged_link_list = ListNode(None)
-    # Can be optimized from O(klogk) to O(k) if we gather all list items in
-    # heap and heapify once rather than executing heappush k times.
-    for list_head in sorted_ll_list:
-        heapq.heappush(min_heap, (list_head.val, list_head))
-    # loop
-    while(min_heap):
-        heap_min = heapq.heappop(min_heap)
-        merged_link_list.next = heap_min[1]
-        merged_link_list = merged_link_list.next
-        if heap_min[1].next is not None:
-            heapq.heappush(min_heap, (heap_min[1].next.val, heap_min[1].next))
-    return original_head.next
+    def merge_k_sorted_lists_optimized(sorted_ll_lists):
+        # http://www.geeksforgeeks.org/merge-k-sorted-linked-lists/
+        # https://leetcode.com/articles/merge-k-sorted-list/
+        # Notice that this tech. destroys the existing lists though which might
+        # not be an acceptable strategy in some cases.
+        # time: O(nlogk)
+        # space: O(1)
+        if not sorted_ll_lists:
+            return None
+        left = 0
+        right = len(sorted_ll_lists) - 1
+        while(right > 0):
+            if left >= right:
+                # when left crosses right re_initialize it to leftmost point
+                left = 0
+            sorted_ll_lists[left] = self.merge_two_linklist(sorted_ll_lists[left], sorted_ll_lists[right])
+            left += 1
+            right -= 1
+        return sorted_ll_lists[0]
 
 
 def merge_k_sorted_lists(list_head):

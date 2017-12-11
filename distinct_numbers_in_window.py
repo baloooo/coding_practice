@@ -25,6 +25,12 @@ So, we return an array [2, 3, 3, 2].
 """
 
 def distinct_number_in_window(inp_arr, window_size):
+    '''
+    http://www.geeksforgeeks.org/count-distinct-elements-in-every-window-of-size-k/
+    The idea is to create a hash map that stores elements of current widow.
+    When we slide the window, we remove an element from hash and add an element.
+    We also keep track of distinct elements
+    '''
     from collections import defaultdict
     # {number: number_count}
     if window_size > len(inp_arr):

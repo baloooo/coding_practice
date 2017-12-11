@@ -40,7 +40,7 @@ class Solution():
             if queens[cur_row][col] == 'Q': return False
         for cur_col in xrange(col):
             if queens[row][cur_col] == 'Q': return False
-        for cur_row, cur_col in zip(xrange(row-1, -1, -1), xrange(col+1, len(queens))): # 135 degree
+        for cur_row, cur_col in zip(xrange(row-1, -1, -1), xrange(col+1, len(queens[0]))): # 135 degree
             if queens[cur_row][cur_col] == 'Q': return False
         for cur_row, cur_col in zip(xrange(row-1, -1, -1), xrange(col-1, -1, -1)):
             if queens[cur_row][cur_col] == 'Q': return False
@@ -52,7 +52,7 @@ class Solution():
             # res.append(copy.deepcopy(queens))
             res.append([''.join(cur_row) for cur_row in queens])
             return
-        for col in xrange(len(queens)):
+        for col in xrange(len(queens[0])):
             if self.is_valid(queens, row, col):
                 queens[row][col] = 'Q'
                 self.get_nqueens(queens, res, row + 1)

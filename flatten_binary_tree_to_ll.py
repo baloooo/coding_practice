@@ -27,11 +27,18 @@ Note that the left child of all nodes should be NULL.
 """
 
 class Solution:
+    def flatten_bst(self, root)
+        '''
+        Similar version of the problem: http://www.geeksforgeeks.org/convert-a-given-binary-tree-to-doubly-linked-list-set-2/
+        https://articles.leetcode.com/convert-binary-search-tree-bst-to/
+        '''
+        pass
 
     def flatten(self, root):
         """
         :type root: TreeNode
         :rtype: void Do not return anything, modify root in-place instead.
+
         Idea: https://discuss.leetcode.com/topic/3995/share-my-simple-non-recursive-solution-o-1-space-complexity
         This traversal is very similar to morris traversal used for traversing a tree without recursion/stack
         """

@@ -39,19 +39,19 @@ class Solution(object):
             return []
         cur_level, lvl_order_result, zig_zag = [root], [], False
         while cur_level:
-            cur_level_nodes = []
+            cur_level_vals = []
             next_level = []
             for node in cur_level:
-                cur_level_nodes.append(node.val)
+                cur_level_vals.append(node.val)
                 if node.left:
                     next_level.append(node.left)
                 if node.right:
                     next_level.append(node.right)
             cur_level = next_level
             if zig_zag:
-                lvl_order_result.append(cur_level_nodes[::-1])
+                lvl_order_result.append(cur_level_vals[::-1])
             else:
-                lvl_order_result.append(cur_level_nodes)
+                lvl_order_result.append(cur_level_vals)
             zig_zag = not zig_zag
         return lvl_order_result
         

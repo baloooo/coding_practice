@@ -35,7 +35,7 @@ class Solution(object):
                         if self.is_valid(board, cur_row, cur_col, cur_num):
                             board[cur_row][cur_col] = cur_num
                             if self.solve_sudoku(board, cur_row, cur_col+1):
-                                return board
+                                return True
                             else:
                                 board[cur_row][cur_col] = '.'
                     return False
@@ -47,7 +47,6 @@ class Solution(object):
         :rtype: void Do not return anything, modify board in-place instead.
         Idea: https://discuss.leetcode.com/topic/11327/straight-forward-java-solution-using-backtracking/33
         """
-        board = [list(row) for row in board]
         return self.solve_sudoku(board, 0, 0)
 
 if __name__ == '__main__':

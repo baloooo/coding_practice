@@ -1,14 +1,16 @@
 
 
 class Solution:
-
-    def my_func(self, root):
+    def vertical_order(self, root):
+        '''
+	http://www.geeksforgeeks.org/print-a-binary-tree-in-vertical-order-set-3-using-level-order-traversal/
+        '''
         from collections import defaultdict
         from collections import deque
         cols = defaultdict(list)
         queue = deque()
         queue.append((root, 0))
-        while queue:
+        while queue: # Level order traversal
             node, index = queue.popleft()
             if node:
                 queue.append((node.left, index-1))

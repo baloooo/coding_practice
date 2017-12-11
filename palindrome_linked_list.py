@@ -13,34 +13,45 @@ def construct_linked_list_from_array(inp_arr):
         prev = node
     return head
 
-def reverse(self, head, orig_last):
-    last, cur, next = None, head, head.next
-    while cur is not orig_last:
-        next = cur.next
-        cur.next = last
-        last = cur
-        cur = next
-    return last
+class Solution:
+    def reverse(self, head, end):
+        last, cur, next = None, head, None
+        while cur is not end:
+            next = cur.next
+            cur.next = last
+            last = cur
+            cur = next
+        return last
 
 
-def find_mid(self, head):
-    slow, fast = head, head.next
-    while fast and fast.next:
-        slow = slow.next
-        fast = fast.next.next
-    return slow
+    def find_mid(self, head):
+	# returning fast pointer here is a nice trick to subtley tell whether this LL was an even
+	# or odd length LL. if fast == None odd lenght LL, else even length
+        slow, fast = head, head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        return slow, fast
 
-def is_palindrome_optimized(self, head):
-    # This kind of approach is better for understanding.
-    mid = self.find_mid(head)
-    self.reverse(head, mid)
-    cur = mid
-    while head != mid or cur is not None:
-        if head.val != cur.val:
-            return False
-        head = head.next
-        cur = cur.next
-    return True
+
+    def isPalindrome_optimized(self, head):
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+        # This kind of approach is better for understanding.
+        mid, end_ptr= self.find_mid(head)
+        frst_hlf = self.reverse(head, mid)
+	if end_ptr is not None:
+	    scnd_hlf = mid.next
+	else:
+	    scnd_hlf = mid
+        while frst_hlf != mid and scnd_hlf is not None:
+            if frst_hlf.val != scnd_hlf.val:
+                return False
+            frst_hlf = frst_hlf.next
+            scnd_hlf = scnd_hlf.next
+        return True
 
 def is_palindrome(head):
     """
@@ -80,10 +91,12 @@ if __name__ == '__main__':
         ([1], True),
         ([1, 2, 3, 4, 4, 3, 2, 1], True),
         ([4, 28, 6, 23, 46, 46, 23, 6, 28, 4], True),
+        ([1, 2], False),
     ]
     for test_case in test_cases:
         head = construct_linked_list_from_array(test_case[0])
-        res = is_palindrome(head)
+        # res = Solution().is_palindrome_optimized(head)
+        res = Solution().isPalindrome(head)
         if res == test_case[1]:
             print "Passed"
         else:
