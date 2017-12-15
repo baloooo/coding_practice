@@ -51,7 +51,7 @@ class Solution:
         for i in xrange(len(gas_arr)):
             tank += gas_arr[i] - cost_arr[i]
             if tank < 0:
-                start = i + 1
+                start = i + 1 # start from next location as we nullified tank with zero on index i, remember start = i+1 not i
                 # This accumulates all the deficiency in the gas till reset point  # noqa
                 total_deficency += tank
                 tank = 0

@@ -47,12 +47,12 @@ def next_right_pointer_optimized(root):
             if root.right:
                 needle.next = root.right
                 needle = needle.next
-            root = root.next
+            root = root.next # root is None when one level completes.
         # cur level is over, which also means sewing of next level is completed.
         root = nxt_lvl_head.next
 
 def next_right_pointer(root):
-    # Space: O(width of binary tree) Time: O(n)
+    #  Time: O(n), Space: O(width of binary tree)
     if not root: return
         cur_lvl = [root]
     while cur_lvl:

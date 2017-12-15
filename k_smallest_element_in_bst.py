@@ -1,8 +1,5 @@
 """
-https://discuss.leetcode.com/topic/17810/3-ways-implemented-in-java-python-binary-search-in-order-iterative-recursive/75
-If nodes can be altered frequently and this method needs to be called frequently. Just get the
-inorder for the BST and get nodes from direct access, ofcourse given that O(n) space is not an
-issue.
+.
 """
 
 
@@ -24,9 +21,6 @@ def k_smallest_naive(k):
 
 class Solution(object):
     def inorder(self, root):
-        # Strategy:
-        # Regular inorder, Basic idea is to Go left, decrement k, Go right
-        # At any stage if k == 1, meaning we found our target keep returning that val back
         if root is None:
             return
         left = self.inorder(root.left)
@@ -41,6 +35,15 @@ class Solution(object):
         """
         Time: O(max(h,k))
         Space: O(h)
+        https://discuss.leetcode.com/topic/17810/3-ways-implemented-in-java-python-binary-search-in-order-iterative-recursive/75
+        Strategy:
+        
+        Regular inorder, Basic idea is to Go left, decrement k, Go right
+        
+        At any stage if k == 1, meaning we found our target keep returning that val back.
+        If there are multiple insertion/deletion of nodes and we need to calculate kthsmallest frequently, we should
+        start storing count of nodes in left subtree at every nodes, which can easiliy be maintained while creation/deletion
+        and easy to access too.
         """
         self.k = k
         return self.inorder(root)

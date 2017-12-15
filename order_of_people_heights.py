@@ -31,7 +31,7 @@ class Solution:
 
     def reconstructQueue(self, people):
         """
-	from leetcode
+	    from leetcode
         :type people: List[List[int]]
         :rtype: List[List[int]]
         Idea: https://discuss.leetcode.com/topic/60981/explanation-of-the-neat-sort-insert-solution

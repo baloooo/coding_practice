@@ -43,16 +43,23 @@ class Solution:
                 continue
             if board[cur_row][cur_col] == 'O':
                 board[cur_row][cur_col] = '1'
+                '''Notice we didn't require visited set here since we're
+                modifying the cur_row, cur_col so next time around even if we
+                hit it we won't pursue it since it won't satisfy the criteria
+                anymore.'''
                 bfs_q.put((cur_row+1, cur_col))
                 bfs_q.put((cur_row-1, cur_col))
                 bfs_q.put((cur_row, cur_col+1))
                 bfs_q.put((cur_row, cur_col-1))
 
     def solve2(self, board):
+        '''
+        This is better than solve, since this works two border at a time.
+        '''
         # check borders
         row_len = len(board)-1
         col_len = len(board[0])-1
-        # North  & south border
+        # North & south border
         for col in xrange(len(board[0])):
             if board[0][col] == 'O':
                 # iteratively convert all 0 to 1 attached to this 0
