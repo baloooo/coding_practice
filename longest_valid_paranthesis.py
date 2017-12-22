@@ -1,23 +1,15 @@
 """
-Given a string containing just the characters '(' and ')', find the length of
-the longest valid (well-formed) parentheses substring.
+Brute force is O(n^3)
 
-For "(()", the longest valid parentheses substring is "()",
-which has length = 2.
-
-Another example is ")()())", where the longest valid parentheses substring is
-"()()", which has length = 4.
+Article: https://leetcode.com/articles/longest-valid-parentheses/
 """
 
-
-# Time: O(n)
-# Space: O(n) (in the form of stack)
 class Solution:
     def longestValidParentheses_optimized(self, s):
         """
         Time: O(n) Space: O(1)
         """
-        left, right = 0, 0
+        left = right = 0
         maxans = 0
         # Left to right scan
         for c in s:
@@ -51,7 +43,7 @@ class Solution:
     def longestValidParentheses(self, s):
         """
         Time: O(n) space: O(n)
-        https://leetcode.com/articles/longest-valid-parentheses/
+        Article: https://leetcode.com/articles/longest-valid-parentheses/
         """
         maxans, stack = 0, []
         stack.append(-1) # defaults with -1 so as to facilitate length calculation index-(-1) gives the accurate length
@@ -66,7 +58,7 @@ class Solution:
                     append the last index of those invalid paran to be a sentinel'''
                     stack.append(index)
                 else:
-                    maxans = max(maxans, index  - stack[-1])
+                    maxans = max(maxans, index  - stack[-1]) # Notice stack[-1] is not the char that matched (as it's already popped) it's the index before that.
         return maxans
 
 if __name__ == '__main__':

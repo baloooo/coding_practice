@@ -23,13 +23,10 @@ class Solution:
     def climb_stairs2(self, n):
         # Like Fibonacci https://discuss.leetcode.com/topic/5371/basically-it-s-a-fibonacci  # noqa
         # Space: O(1)
-        if n <= 0:
-            return 0
-        if n == 1:
-            return 1
-        if n == 2:
-            return 2
-        dp_cur, dp_prev_prev, dp_prev = 0, 1, 2
+        if n <= 2:
+            return n
+        dp_prev_prev, dp_prev = 1, 2
+        dp_cur = 0
         for i in xrange(2, n):
             dp_cur = dp_prev + dp_prev_prev
             dp_prev, dp_prev_prev = dp_cur, dp_prev
@@ -38,12 +35,8 @@ class Solution:
     def climb_stairs(self, n):
         # Like Fibonacci https://discuss.leetcode.com/topic/5371/basically-it-s-a-fibonacci  # noqa
         # Time: O(n) Space: O(n)
-        if n <= 0:
-            return 0
-        if n == 1:
-            return 1
-        if n == 2:
-            return 2
+        if n <= 2:
+            return n
         # Note: The size of dp array is n here since we get no. of ways we can reach nth stair on position n-1 of the array.
         dp = [0]*(n)
         dp[0], dp[1] = 1, 2

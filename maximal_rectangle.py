@@ -3,6 +3,7 @@ class Solution(object):
         """
         :type matrix: List[List[str]]
         :rtype: int
+        Time : O(mn) For each row, height arr is calculated(O(n)) and then processed O(n) so O(m) * O(2n) = O(mn)
         Idea: https://discuss.leetcode.com/topic/27844/ac-python-dp-solutioin-120ms-based-on-largest-rectangle-in-histogram
         """
         heights = [0] * (len(matrix[0]) + 1) # appends a zero so as to allow stack to be emptied
