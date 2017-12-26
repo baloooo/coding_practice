@@ -107,7 +107,7 @@ class Solution(object):
         self.custom_init(root)
         cur_min = self.next_min()
         cur_max = self.next_max()    
-        while cur_min != cur_max:
+        while cur_min != cur_max: # as min and max cannot point to one single node.
             cur_sum = cur_min.val + cur_max.val
             if cur_sum == target:
                 return True

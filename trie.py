@@ -1,5 +1,10 @@
 """
 Idea: https://discuss.leetcode.com/topic/14202/ac-python-solution/7
+Also contains info on time complexity for insert and search
+http://www.geeksforgeeks.org/trie-insert-and-search/
+Time: O(n) where n is the length of word to be searched.
+Space: O(mnk) where m is the total number of words each of lenght n, and k is the size of character set
+since at each node this character set resides pointing to nodes in it's children
 """
 import collections
 

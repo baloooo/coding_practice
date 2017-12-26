@@ -17,6 +17,40 @@ word = "ABCCED", -> returns true,
 word = "SEE", -> returns true,
 word = "ABCB", -> returns false.
 """
+class Solution(object):
+    '''
+    This is the latest solution
+    Time: (m*n*(4^L)) m*n is the dimension of board and for each char in the board we dfs, which
+    has TC 4^L as at each step in DFS, we have max 4 choices and there are at max L steps where L is the 
+    number of words in word to be searched
+    https://discuss.leetcode.com/topic/37162/what-is-the-time-complexity-for-the-dfs-solution/11
+    '''
+    def dfs(self, board, row, col, word, index, visited):
+        if index == len(word): return True
+        if (row < 0 or col < 0 or row >= len(board) or col >= len(board[0]) or 
+                board[row][col] != word[index] or (row,col) in visited):
+            return False
+        visited.add((row, col))
+        exist = (
+            self.dfs(board, row+1, col, word, index+1, visited) or 
+            self.dfs(board, row, col+1, word, index+1, visited) or 
+            self.dfs(board, row-1, col, word, index+1, visited) or 
+            self.dfs(board, row, col-1, word, index+1, visited))
+        visited.discard((row, col))
+        return exist
+
+    def exist(self, board, word):
+        """
+        :type board: List[List[str]]
+        :type word: str
+        :rtype: bool
+        """
+        for i in xrange(len(board)):
+            for j in xrange(len(board[0])):
+                visited = set()
+                if self.dfs(board, i, j, word, 0, visited):
+                    return True
+        return False
 
 
 class Solution:
@@ -174,6 +208,7 @@ class Solution3(object):
         :type board: List[List[str]]
         :type word: str
         :rtype: bool
+	Todo: This didn't pass all test cases last time around.
         Time: (m*n*(4^L)) m*n is the dimension of board and for each char in the board we dfs, which
         has TC 4^L as at each step in DFS, we have max 4 choices and there are at max L steps where L is the 
         number of words in word to be searched
