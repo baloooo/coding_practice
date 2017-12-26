@@ -27,7 +27,8 @@ class Solution:
         min_coins = self.count(coins, 0, target_sum)
         print 'min coins are', min_coins
         return min_coins if min_coins else -1
-
+    '''
+    Don't know (for now atleast) how this is more efficient or better than recursive one.
     def make_change(self, coins, amount):
         return self.total_ways_to_coin_change(coins, amount, 0)
 
@@ -49,7 +50,7 @@ class Solution:
                 self.total_ways_to_coin_change(coins, amount, index+1))
             self.memo['%s-%s' % (amount, coins[index:])] = total_ways
             return total_ways
-
+    '''
     def min_coin_change(self, coins, amount):
         """
         You may assume that you have an infinite number of each kind of coin.

@@ -18,6 +18,9 @@ class Solution(object):
         :rtype: TreeNode
         Time: O(n) Space: O(n)
         Idea: http://www.geeksforgeeks.org/lowest-common-ancestor-binary-tree-set-1/
+        
+        Also helpful idea is that we can calculate distance b/w any two nodes by using LCA.
+        Dist(n1, n2) = Dist(root, n1) + Dist(root, n2) - 2*Dist(root, lca) 
         """
         # If either p or q is root, that's all we needed return
         if root in [p, q, None]: return root 

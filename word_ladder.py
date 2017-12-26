@@ -1,7 +1,8 @@
 """
 Notice these will be shortest paths since we're using BFS which always gives
-shortest path for a equal weight graph traversal. It's only when weights we
-need to go for dijkistra's and to bellman ford when negative edge weights come in.
+shortest path for a equal weight graph traversal. It's only when weights are
+introduced, we need to go for dijkistra's and to bellman ford when negative
+edge weights come in.
 """
 
 
@@ -19,8 +20,6 @@ class Solution:
     essentially is just one pass over cur_word and target_word, so in total
     overall time complexity: O(n^2*m)
     """
-    def __init__(self):
-        pass
 
     def is_adjacent(self, test_word, cur_word):
         # to store count of differences
@@ -53,6 +52,8 @@ class Solution:
             cur_word, cur_distance = q.get()
             if cur_word == goal_word:
                 return cur_distance+1
+            '''Notice that this scans entire word_list, whether this finds target or not
+            in the current iteration.'''
             for test_word in word_list[:]:
                 if self.is_adjacent(test_word, cur_word):
                     q.put((test_word, cur_distance+1))
@@ -63,7 +64,6 @@ class Solution:
         """
         Uses separate lists instead of one queue
         Note:
-
             Return 0 if there is no such transformation sequence.
             All words have the same length.
             All words contain only lowercase alphabetic characters.
@@ -74,7 +74,7 @@ class Solution:
         tldr: Standard BFS with visited_set = set()
         Time complexity: O(n*w*26)
         Space: O(n)
-        
+
         The trick (different from naive method above) here is to make use of
         the datastructures (set in this case)
         For every word in word_list we change it one bit and then check if
@@ -139,7 +139,6 @@ class Solution:
                         #if candidate_word == endWord: return cur_distance + 1
                         cur_word_q.put(candidate_word)
                         visited_set.add(candidate_word)
-            #cur_distance += 1
         return 0
 
     def dfs(self, cur_word, goal_word, neighbor_dict, goal_path):
@@ -170,15 +169,15 @@ class Solution:
         to be intutive but not completely sure about dfs part how much time would it take.
         Space: O(n) for visited/unvisited
         """
-        word_set = set(word_list)
         neighbor_dict = defaultdict(list)
-        # set to store nodes that have their neighbors explored for current node
+        ''' Used for tracking nodes already seen as values for a key we're
+        constructing a neighbor_dict of.'''
         visited = set()
         bfs_q = Queue()
-        # set to store nodes that have not been explored for their neighbors
+        # set to store nodes that have not been explored for 'KEYS' in neighbors_dict
         unvisited = set(word_list)
         # since we will begin to explore with source_word
-        unvisited.discard(source_word)
+        unvisited.discard(source_word) # Note: VImp
         bfs_q.put(source_word)
         self.result = []
         while not bfs_q.empty():
@@ -205,7 +204,6 @@ class Solution:
                                 bfs_q.put(candidate_word)
                                 visited.add(candidate_word)
                             neighbor_dict[cur_word].append(candidate_word)
-                            # neighbor_dict[candidate_word].append(cur_word)
                             # This can be neighbor_dict[candidate_word].append(cur_word)
                             # but then dfs algo would change, as key: value mappings changed
             unvisited -= visited

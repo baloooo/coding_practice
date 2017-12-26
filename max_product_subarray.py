@@ -1,8 +1,15 @@
 https://discuss.leetcode.com/topic/4417/possibly-simplest-solution-with-o-n-time-complexity/35?page=1
 class Solution:
     def max_product_subarray(self, arr):
+        '''
+        The idea is to not only store max_so_far and cur_max/max_ending_here as we would for max_sum_subarray exercise
+        but also store min_so_far/min_ending_here b'coz if you have a  subarray with a negative product of -100 and a
+        positive product of 150 an element -5 can come next and make the negative product more superior thus chaning it's
+        sign and amplidying it's magnitue too.
+        Therefore we need to track min_so_far too notice this isn't a problem when you're adding numbers as in max_sum_subarr
+        
         # Time: O(n) Space: O(1)
-        # store the result that is the max we have found so far
+        # store the result that is the max we have found so far'''
         max_so_far = arr[0]
         # These store the min/max product of subarray that ends at cur_index
         min_ending_here = max_ending_here = arr[0]

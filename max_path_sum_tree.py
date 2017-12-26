@@ -14,12 +14,16 @@ class Solution(object):
         single_max = max(max(l, r)+root.val, root.val) # single arm max
         max_until_now = max(single_max, l+r+root.val) # max for current root
         self.max_sum = max(self.max_sum, max_until_now) # max until now
-        return single_max
+        return single_max 
+        '''Note: We're returning single_arm_max and not max_untill now since singel_max is the
+        one which ends at root, max_until_now extends to the other side so cannot be used by parent of 
+        current root.'''
 
     def maxPathSum(self, root):
         """
         :type root: TreeNode
         :rtype: int
+        Idea: http://www.geeksforgeeks.org/find-maximum-path-sum-in-a-binary-tree/
         """
         self.max_sum = -float('inf')
         self.find_max_sum(root)

@@ -31,3 +31,17 @@ class Solution(object):
             return 0
         cur_depth = map(self.minDepth, [root.left, root.right])
         return 1 + (min(cur_depth) or max(cur_depth))
+
+
+    def min_depth_helper(self, root):
+        if root is None:
+            return float('inf')
+        if root.left is None and root.right is None:
+            return 1
+        return 1 + min(self.min_depth_helper(root.left), self.min_depth_helper(root.right))
+
+    def min_depth_new(self, root):
+        # seems same as above but was intutive.
+        if root is None:
+            return 0
+        return self.min_depth_helper(root)

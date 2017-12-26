@@ -1,6 +1,9 @@
 class Solution(object):
     def minCut(self, s):
         """
+        check recursive version (bruteforce) for min cut too here:
+        https://www.geeksforgeeks.org/dynamic-programming-set-17-palindrome-partitioning/
+
         Time: O(n^2)
         Space: O(n)
 
@@ -12,15 +15,9 @@ class Solution(object):
 
         Initialize the 'cut' array: For a string with n characters s[0, n-1],
         it needs at most n-1 cut.
+        cut[0] -> s[0, -1] # dummy to tell if
+        cut[1] corresponds to string[0, 0] and since its just one char it needs 0 cuts to make it palindrome.
         Therefore, the 'cut' array is initialized as cut[i] = i-1
-
-        Use two variables in two loops to represent a palindrome:
-        The external loop variable 'i' represents the center of the palindrome.
-        The internal loop variable 'j' represents the 'radius' of the palindrome.
-        j <= i is a must, j can only come up to i from left and when it reaches i (center is i) radius is zero 
-        This palindrome can then be represented as s[i-j, i+j].
-        --> If this string is indeed a palindrome, then one possible value of cut[i+j] is cut[i-j] + 1,
-        where cut[i-j] corresponds to s[0, i-j-1] and 1 correspond to the palindrome s[i-j, i+j];
 
         When the loops finish, you'll get the answer at cut[s.length]
         """

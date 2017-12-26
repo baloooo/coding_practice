@@ -54,6 +54,36 @@ class Solution(object):
 
 
 class Solution:
+    def dfs_optimized(self, board, row, col, word, visited, word_index):
+        if word_index == len(word):
+            return True
+        if row < 0 or col < 0 or row >= len(board) or col >= len(board[0]):
+            return False
+        if word[word_index] != board[row][col]:
+            return False
+        # board[row][col] = '#' # can use this, if modifying board is allowed or visited set
+        visited.add((row, col))
+        exits = (
+            self.dfs(board, row+1, col, word, visited, word_index+1) or
+            self.dfs(board, row-1, col, word, visited, word_index+1) or
+            self.dfs(board, row, col+1, word, visited, word_index+1) or 
+            self.dfs(board, row, col-1, word, visited, word_index+1))
+        visited.discard((row, col))
+        return exist
+
+
+    def exist_optimized(self, board, word):
+        """
+        :type board: List[List[str]]
+        :type word: str
+        :rtype: bool
+        """
+        for row in xrange(len(board)):
+            for col in xrange(len(board[0])):
+                if word[0] == board[row][col]:
+                    if self.dfs(board, row, col, word, set(), 0):
+                        return True
+        return False
 
     def dfs(self, cur_row, cur_col, word_index, path):
         """

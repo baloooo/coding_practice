@@ -29,6 +29,7 @@ from tree_base import level_order_array_to_tree
 
 def is_balance_binary_tree(root):
     # https://discuss.leetcode.com/topic/7798/the-bottom-up-o-n-solution-would-be-better/46
+    # Here -1 means it's not balanced and is translated to False in base method.
     def height(root, cur_height):
         if root == None:
             return 0

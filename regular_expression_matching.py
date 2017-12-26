@@ -28,7 +28,7 @@ class Solution:
         Time = Space =  O(len(text)*len(pattern))
         1. No *: check prev index text and prev index pattern if they are same or pattern has '.' at current index.
         2. if we've * at current index, there're 2 sub-cases.
-            a) we've zero repetion of pattern[j], in which case it will be p[i][j-2] whatever we
+            a) we've zero  repetion of pattern[j], in which case it will be p[i][j-2] whatever we
             had before two indexes before since 'xa*' i.e at index of x
             b) we've one or more repetition, in which case we check prev matches at P[i-1][j]
                ....to complete?

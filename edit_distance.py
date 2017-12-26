@@ -68,7 +68,7 @@ edit distance between
 
 class Solution2:
 
-    def get_min_distance(self, w1, w2, idx1, idx2):
+    def get_min_distance_recursion_old(self, w1, w2, idx1, idx2):
         # Time: O(3^m)
         # Space: O(stack depth) which is O(max(len(str1), len(str2)))
         # recursion from tail without wonky + 2 on line 96 here
@@ -84,7 +84,7 @@ class Solution2:
                 self.get_min_distance(w1, w2, idx1 - 1, idx2 - 1)
             )
 
-    def edit_distance_recursion(self, str1, str2, str1_index, str2_index):
+    def edit_distance_recursion_new(self, str1, str2, str1_index, str2_index):
         """
         Time: O(3^m)
         Space: O(stack depth) which is O(max(len(str1), len(str2)))
@@ -108,6 +108,7 @@ class Solution2:
         Time: O(m*n)
         Space: O(m*n)
         http://www.geeksforgeeks.org/dynamic-programming-set-5-edit-distance/
+        Todo: Complete the 1D version from below link.
         https://discuss.leetcode.com/topic/17639/20ms-detailed-explained-c-solutions-o-n-space
         https://www.youtube.com/watch?v=b6AGUjqIPsA    # his insert and delete representations
         are accurate and intutive when chalked graphically, start by constructing a 2d array

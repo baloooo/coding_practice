@@ -18,7 +18,6 @@ class Solution:
             This order of if-else matters. Always check for element equivalence first,
             as candidate's count may go to zero and then come up back, but if you check
             count first, whenever first time count gets to zero, candidate can be thrown out.
-            Also, notice that this opposite to what we do in n/2 majority element.
             '''
             if ele == cand1:
                 count1 += 1
@@ -51,19 +50,19 @@ class Solution:
             https://gregable.com/2013/10/majority-vote-algorithm-find-majority.html
             http://www.cs.utexas.edu/~moore/best-ideas/mjrty/example.html
         """
-        counter = 0
-        candidate = None
-        for cur_ele in nums:
-            if counter == 0:
-                candidate = cur_ele
-                counter = 1
-            elif cur_ele == candidate:
-                counter += 1
+        cand, freq = arr[0], 1
+        index = 1
+        while index < len(arr):
+            if arr[index] == cand:
+                freq += 1
+            elif freq > 0:
+                freq -= 1
             else:
-                counter -= 1
+                cand = arr[index]
+                freq = 1
+            return cand
         # confirm if not sure whether there is always a majority element
         # with one scan counting the occurrences of candidate.
-        return candidate
 
 if __name__ == '__main__':
     test_cases = [

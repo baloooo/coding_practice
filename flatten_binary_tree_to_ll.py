@@ -27,12 +27,58 @@ Note that the left child of all nodes should be NULL.
 """
 
 class Solution:
-    def flatten_bst(self, root)
+    def _join(self, a, b):
         '''
-        Similar version of the problem: http://www.geeksforgeeks.org/convert-a-given-binary-tree-to-doubly-linked-list-set-2/
+        helper function -- given two list nodes, join them
+        together so the second immediately follow the first.
+        Sets the .next of the first and the .previous of the second.
+        '''
+        a.right = b
+        b.left = a
+
+    def _append(self, l1, l2):
+        '''
+        Appends two circular doubly linked lists l1 and l2 as one circular double LL.
+        @returns 
+        ---------------
+        |             |
+        <- l1 <-> l2 ->
+        '''
+        if l1 is None:
+            reutrn l2
+        if l2 is None:
+            return l1
+        # since l1 is a circular doubly LL, head's left points to tail/end of the Linked List.
+        l1_end = l1.left
+        l2_end = l2.left
+
+        self.join(l1_end, l2)
+        self.join(l2_end, l1)
+
+        return l1
+
+    def tree_to_list(self, root):
+        '''
         https://articles.leetcode.com/convert-binary-search-tree-bst-to/
+        http://cslibrary.stanford.edu/109/TreeListRecursion.html
+        https://www.youtube.com/watch?v=Dte6EF1nHNo
+        converts a binary tree to circular doubly linked list.
         '''
-        pass
+        if root is None:
+            return
+        left_list = self.tree_to_list(root.left) # should construct and return a List from left side of the tree
+        right_list = self.tree_to_list(root.right)
+        '''
+        Since _append method expects circular linked lists we will make root node in to circular
+        doubly linked list.
+        '''
+        root.left = root
+        root.right = root
+        # Concatenate left and right lists with root.
+        root = self._append(left_list, root)
+        root = self._append(root, right_list)
+
+        return root
 
     def flatten(self, root):
         """
@@ -58,25 +104,6 @@ class Solution:
                 now.left = None
             else:
                 now = now.right
-
-    def flatten_binary_tree(self, root):
-        while(root is not None):
-            if root.left is None:
-                root = root.right
-            elif root.right is None:
-                root.right = root.left
-                root.left = None
-                root = root.right
-            else:
-                # Left and right both exists
-                temp = root.right
-                next_root = root.right = root.left
-                root.left = None
-                while root.right is not None:
-                    root = root.right
-                root.right = temp
-                root = next_root
-
 
 if __name__ == '__main__':
     arr = [1, 2, 5, 3, 4, 6, 7]
