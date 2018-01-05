@@ -12,21 +12,28 @@ class Solution:
         Then, we may ignore this part of the pattern, or delete a matching character in the text.
         If we have a match on the remaining strings after any of these operations,
         then the initial inputs matched.
-        '''
+        
+        If there's no text, we still have to go ahead and check if the pattern allows it
+        may be the pattern is a* in which case no text is also fine of .* etc. So no text
+        is not a necessary and sufficient condition to return. On the other hand if there's no
+        pattern we can't go ahead as that is the yard stick we use for our measurements and if we
+        don't have that there are no measurements therefore no point in going ahead. Just check
+        if text exists or not. '''
         if not pattern:
             return not text
         first_match = bool(text) and pattern[0] in [text[0], '.']
         if len(pattern) >= 2 and pattern[1] == '*':
-            return (self.isMatch(text, pattern[2:]) or  # Take zero instances of pattern[0]
-		    (first_match and self.isMatch(text[1:], pattern))) # Take one instance of pattern[0]
+            return (self.is_match_bruteforce(text, pattern[2:]) or  # Take zero instances of pattern[0]
+		    (first_match and self.is_match_bruteforce(text[1:], pattern))) # Take one instance of pattern[0]
         else:
-            return first_match and self.isMatch(text[1:], pattern[1:])
+            return first_match and self.is_match_bruteforce(text[1:], pattern[1:])
 
     def is_match_dp(self, text, pattern):
         '''
         dp[i][j] is True if text[0..i) matches pattern[0..j), False otherwise.
         Time = Space =  O(len(text)*len(pattern))
-        1. No *: check prev index text and prev index pattern if they are same or pattern has '.' at current index.
+        1. No *: check prev index text and prev index pattern if they are same OR
+            pattern has '.' at current index.
         2. if we've * at current index, there're 2 sub-cases.
             a) we've zero  repetion of pattern[j], in which case it will be p[i][j-2] whatever we
             had before two indexes before since 'xa*' i.e at index of x
@@ -40,6 +47,8 @@ class Solution:
         '''
         dp = [[False for _ in xrange(len(pattern)+1)] for _ in xrange(len(text)+1)]
         dp[0][0] = True
+        # Perhaps you can start from 1 for i also if you set row 0 as True to begin with
+        # since for row 0 (which means text len is zero) any pattern will yeild True value.
         for i in xrange(len(text)+1):
             for j in xrange(1, len(pattern)+1): # pattern starts at 1 to take care of a* types
                 if pattern[j-1] == '*':
