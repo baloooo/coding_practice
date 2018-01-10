@@ -9,49 +9,52 @@ class TrieNode(object):
     def __str__(self):
         return "children are: %s and is_word: %r" % (self.children, self.is_word)
 
-
 class Solution(object):
-    def construct_trie(self, words):
+    def construct_trie(self, root, words):
         for word in words:
-            cur = self.root
+            cur = root
             for ch in word:
                 cur = cur.children[ch]
             cur.is_word = True
-
-    def dfs(self, board, i, j, cur_trie_node):
-        if cur_trie_node.children.get(board[i][j]) is None or board[i][j] == '#':
-            return
-        cur_trie_node = cur_trie_node.children[board[i][j]]
-        self.cur_word.append(board[i][j])
-        if (cur_trie_node.is_word and
-                ''.join(self.cur_word) not in self.found_words):
-            self.found_words.add(''.join(self.cur_word))
+        
+    def dfs(self, root, board, row, col, cur, found_words):
+        if (row < 0 or col < 0 or row >= len(board) or col >= len(board[0]) or
+            root.children.get(board[row][col]) is None or board[row][col]=='#'):
+                return False
+        root = root.children[board[row][col]]
+        cur.append(board[row][col])
+        cur_word = ''.join(cur)
+        if root.is_word and cur_word not in found_words:
+            found_words.add(cur_word)
             # return # Here just for reminder: Don't return here so as to catch words like pea and peas
-        board[i][j] = '#'
-        if i+1 < len(board): self.dfs(board, i+1, j, cur_trie_node)
-        if i-1 >= 0: self.dfs(board, i-1, j, cur_trie_node)
-        if j+1 < len(board): self.dfs(board, i, j+1, cur_trie_node)
-        if j-1 >= 0: self.dfs(board, i, j-1, cur_trie_node)
-        board[i][j] = self.cur_word.pop()
-
+        board[row][col] = '#'    
+        self.dfs(root, board, row+1, col, cur, found_words)   
+        self.dfs(root, board, row-1, col, cur, found_words)   
+        self.dfs(root, board, row, col+1, cur, found_words)   
+        self.dfs(root, board, row, col-1, cur, found_words)   
+        board[row][col] = cur.pop()
+        
     def findWords(self, board, words):
         """
-        :type board: List[List[str]]
-        :type words: List[str]
-        :rtype: List[str]
+	Time: O(m * n * l) where m*n is the dimension of board and l is the max size of word
+        Idea: In standard DFS (used in word_search_board 1) we can only chech for one word at
+        a time. For example if word_list = [peaty, pea, bob, peas, zorro, peat] in Trie based solution
+        when for 'peaty' we will check out all prefixes of pea so peaty, pea, peas, peat all will be
+        added to found_words in one shot, as we're comparing all words with common prefix together.
+        http://www.geeksforgeeks.org/boggle-set-2-using-trie/
         """
-        self.root = TrieNode()
-        self.construct_trie(words)
-        self.found_words = set()
-        self.cur_word = []
-        for i in xrange(len(board)):
-            for j in xrange(len(board[0])):
-                self.dfs(board, i, j, self.root)
-        return list(self.found_words)
+        root = TrieNode()
+        self.construct_trie(root, words)
+        found_words = set()
+        for row in xrange(len(board)):
+            for col in xrange(len(board[0])):
+                # Try finding prefixes from each [row][col] position
+                self.dfs(root, board, row, col, [], found_words)
+        return list(found_words)
 
 if __name__ == '__main__':
-    board, words = ["a"], ["a"]
-    # board, words = ["oaan","etae","ihkr","iflv"], ["oath","pea","eat","rain"]
+    # board, words = ["a"], ["a"]
+    board, words = ["oaan","etae","ihkr","iflv"], ["oath","pea","eat","rain"]
     board = [list(each) for each in board]
     words = [list(each) for each in words]
-    print Solution().findWords(board, words)
+    print Solution2().findWords(board, words)
