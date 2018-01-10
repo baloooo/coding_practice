@@ -10,7 +10,8 @@ class Rank(Enum):
     DIRECTOR = 2
 
 
-class Employee(metaclass=ABCMeta):
+class Employee(object):
+    __metaclass__ = ABCMeta
 
     def __init__(self, employee_id, name, rank, call_center):
         self.employee_id = employee_id
@@ -46,6 +47,9 @@ class Operator(Employee):
         super(Operator, self).__init__(employee_id, name, Rank.OPERATOR)
 
     def escalate_call(self):
+        '''
+        State change (State Design Pattern)
+        '''
         self.call.level = Rank.SUPERVISOR
         self._escalate_call()
 
@@ -53,7 +57,7 @@ class Operator(Employee):
 class Supervisor(Employee):
 
     def __init__(self, employee_id, name):
-        super(Operator, self).__init__(employee_id, name, Rank.SUPERVISOR)
+        super(Supervisor, self).__init__(employee_id, name, Rank.SUPERVISOR)
 
     def escalate_call(self):
         self.call.level = Rank.DIRECTOR
@@ -63,7 +67,7 @@ class Supervisor(Employee):
 class Director(Employee):
 
     def __init__(self, employee_id, name):
-        super(Operator, self).__init__(employee_id, name, Rank.DIRECTOR)
+        super(Director, self).__init__(employee_id, name, Rank.DIRECTOR)
 
     def escalate_call(self):
         raise NotImplemented('Directors must be able to handle any call')
@@ -99,14 +103,34 @@ class CallCenter(object):
         employee = None
         if call.rank == Rank.OPERATOR:
             employee = self._dispatch_call(call, self.operators)
+            # Makes sure, if there is no Operator FREE Supervisor should take the call
+            # This is the Chain of responsibility design pattern where
+            # The derived classes know how to satisfy Client requests.
+            # If the "current" object is not available or sufficient, then it
+            # delegates to the base class, which delegates to the "next" object,
+            # and the circle of life continues.
+            # https://sourcemaking.com/design_patterns/chain_of_responsibility
+            if employee is None:
+                call.rank = Rank.SUPERVISOR
         if call.rank == Rank.SUPERVISOR or employee is None:
             employee = self._dispatch_call(call, self.supervisors)
+            if employee is None:
+                call.rank = Rank.DIRECTOR
         if call.rank == Rank.DIRECTOR or employee is None:
             employee = self._dispatch_call(call, self.directors)
-        if employee is None:
+        if employee is None: # Calls are queued if there's no one to attend
             self.queued_calls.append(call)
 
     def _dispatch_call(self, call, employees):
+        '''
+        Goes over list of Employees class(Operator, Supervisors, etc)
+        and selects first available employee and assigns him the call
+        This employee list can be made in to a LinkedList where available will
+        have list of all available employees
+        When a busy employee is freed, we can just de-attach him from busy linked list
+        and attach him to available linked list. This would enable O(1) time for 
+        getting an available employee for the new call instead of O(n) we've right now.
+        '''
         for employee in employees:
             if employee.call is None:
                 employee.take_call(call)
@@ -127,18 +151,16 @@ class CallCenter(object):
         """
         pass
 
-    def dispatch_queued_call_to_newly_freed_employee(self, call, employee):
-        """
-        """
-        pass
-
     def periodic_in_queue_calls_check(self):
         """
         Periodically checks for pending/queued calls waiting to be serviced
         """
-        pass
+        for call in self.queued_calls:
+            self.dispatch_call(call)
 
 if __name__ == '__main__':
+    # These should preferably be LinkedLists so we can remove and add operators easily
+    # as they complete their call.
     operators, supervisors, directors = [], [], []
     for employee_id in xrange(1, 6):
         operators.append(Operator(employee_id))
