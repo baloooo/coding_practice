@@ -1,5 +1,11 @@
 # coding: utf-8
 """
+Todo: Get Time and Space complexities and other pros and cons for both the approaches.
+Support:
+    multithreading/multiprocessing
+    Distributed cache
+
+
 Design and implement a data structure for Least Recently Used (LRU) cache. It
 should support the following operations: get and set.
 get(key) - Get the value (will always be positive) of the key if the key exists
@@ -30,6 +36,8 @@ Input :
          get(5)        returns -1
 Idea:
 
+We need a Doubly LL b'coz given just head and tail of a linked list, to 
+remove a node or move a node to end would require O(n) time.
 Make a Doubly LL where each node will store the value corresponding to a key.
 This key: Node(val) mapping will be stored in a dictionary.
 When a Get is issued for an existing key move it to end, else append new node at end
@@ -119,6 +127,7 @@ class LRUCache:
             val_node = DoublyLinkListNode(key, value)
             self.cache[key] = val_node
         # Gotcha: udpate node order based on access time.
+        # If cache is not Empty
         if self.list.last:
             self.list.move_to_end(val_node)
         else:
@@ -150,16 +159,15 @@ if __name__ == '__main__':
 
 
 # 188ms LCode: Alternate implementation
-import collections
 class LRUCache(object):
 
     '''
     The idea is to store a tuple (key, val, access_time) in queue and for every access
     add a new entry to queue with updated access time (when capacity is reached old (k,v,a_time)
     tuple will be flushed out by delete_old_entries method
-    Notice that even if there are lot of updations cache size won't increase and therefore delete_old_entries
-    won't be inititated which would unfortunately increase the size of queue (so we may want to have a limit over that too, 
-    may be if len(self.queue) > self.capacity pop elements from queue but put them back if access time is same)
+    Cons:
+        Storage of stale (key,value,access_time) tuples in queue for maintaining LRU contract.
+        Though dictionary self.cache will always have latest values.
     '''
 
     def __init__(self, capacity):
