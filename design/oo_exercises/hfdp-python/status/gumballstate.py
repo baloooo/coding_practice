@@ -3,6 +3,9 @@ Gumball machine with State pattern
 
 Author: m1ge7
 Date: 2014/03/30
+Classes here will have methods that would change their state to another State class
+Like inserting a quarter when in NoQuarterState would change self.state to Class HasQuarterState
+and now all methods and attributes of that class will be accessible.
 """
 
 from abc import ABCMeta, abstractmethod
