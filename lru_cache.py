@@ -1,9 +1,10 @@
 # coding: utf-8
 """
-Todo: Get Time and Space complexities and other pros and cons for both the approaches.
-Support:
-    multithreading/multiprocessing
-    Distributed cache
+Todo:
+    Get Time and Space complexities and other pros and cons for both the approaches.
+    Support:
+        multithreading/multiprocessing
+        Distributed cache
 
 
 Design and implement a data structure for Least Recently Used (LRU) cache. It
@@ -61,13 +62,17 @@ class DoublyLinkListNode:
 
 
 class DoublyLinkList:
+    '''
+    Simulates a standard Queue where oldest person in the line is the at the Front,
+    and Back has the person that just came in. Back ---> Front
+    '''
 
     def __init__(self):
         self.head = None
         self.last = None
 
     def move_to_end(self, val_node):
-        # val_node doesn't exist in list
+        # val_node doesn't exist in queue
 
         # if val_node is at last
         if self.last == val_node:
@@ -87,8 +92,21 @@ class DoublyLinkList:
         val_node.next = None
         self.last = val_node
 
-    def delete(self, key, value):
-        pass
+    def delete(self, node=None):
+        if node is None:
+            # Delete node from head, and readjust head
+            self.queue.head = self.queue.head.next  # map head to next head
+            if self.queue.head:
+                self.queue.head.prev = None
+            else:
+                self.queue.last = None
+        else:
+            # Todo: Delete keys from cache
+            pass
+
+    def add(self, key, val):
+        node = DoublyLinkListNode(key, value)
+        return node
 
 
 class LRUCache:
@@ -98,13 +116,13 @@ class LRUCache:
     def __init__(self, capacity):
         # {key: node_object}
         self.capacity = capacity
-        self.list = DoublyLinkList()
+        self.queue = DoublyLinkList()
         self.cache = {}
 
     def get(self, key):
         if self.cache.get(key):
             node = self.cache[key]
-            self.list.move_to_end(node)
+            self.queue.move_to_end(node)
             return node.val
         else:
             return -1
@@ -118,20 +136,15 @@ class LRUCache:
             if self.capacity != 0:
                 self.capacity -= 1
             else:
-                del self.cache[self.list.head.key]  # Delete head node from cache
-                self.list.head = self.list.head.next  # map head to next head
-                if self.list.head:
-                    self.list.head.prev = None
-                else:
-                    self.list.last = None
-            val_node = DoublyLinkListNode(key, value)
-            self.cache[key] = val_node
+                del self.cache[self.queue.head.key]  # Delete head node from cache
+                self.queue.delete()
+            self.cache[key] = self.queue.add(key, value)
         # Gotcha: udpate node order based on access time.
         # If cache is not Empty
-        if self.list.last:
-            self.list.move_to_end(val_node)
+        if self.queue.last:
+            self.queue.move_to_end(val_node)
         else:
-            self.list.head = self.list.last = val_node
+            self.queue.head = self.queue.last = val_node
 
 if __name__ == '__main__':
    capacity, inp = 2, 'S 2 1 S 1 1 S 2 3 S 4 1 G 1 G 2'
