@@ -72,7 +72,7 @@ class Dir(Entry):
         return 'Dir name %s' % self.name
 
     def __init__(self, parent_dir, dir_name):
-        # These children can be files or dirs
+        # Note: These children can be files or dirs
         self.children = OrderedDict()
         super(Dir, self).__init__(parent_dir, dir_name)
 
@@ -80,6 +80,13 @@ class Dir(Entry):
 class FileSystem:
     def __init__(self):
         self.root = Dir('root', 'root')
+
+    def get_path(self, path):
+        if not path: # If path is root directory i.e []
+            return ''
+        if isinstance(path, list): # It's just problem's style of giving path(not a fan though)
+            path = path[0]
+        return path.strip('/').split('/')
 
     def cd(self, path, root=None):
         """
@@ -90,33 +97,46 @@ class FileSystem:
         """
         if root is None:
             root = self.root
-        path = path.strip('/').split('/')
+        path = self.get_path(path)
         for index in xrange(len(path)):
             subdir = path[index]
             if subdir != '':
                 try:
                     root = root.children[subdir]
                 except KeyError:
-                    return 'Invalid path %s' % path
+                    raise Exception('Invalid path %s' % path)
         return root
 
     def ls(self, path):
-        root = self.cd(path)
-        return root.children.keys()
+        '''
+        If it is a file path, return a list that only contains this file's name.
+        If it is a directory path, return the list of file and directory names in this directory.
+        '''
+        try:
+            root = self.cd(path)
+        except Exception as err:  # Add custom exceptions here
+            import ipdb; ipdb.set_trace()
+            print err
+        if isinstance(root, File):
+            return [root.name]
+        else:
+            return root.children.keys()
 
     def addContentToFile(self, path, contents):
+        path = self.get_path(path)
         root = self.cd(path[:-1])
-        root.children[path[-1]] = File(contents)
+        root.children[path[-1]] = File(root, path[-1], contents)
 
     def readContentFromFile(self, path):
+        path = self.get_path(path)
         root = self.cd(path[:-1])
         return root.children[path[-1]].contents
 
     def mkdir(self, path):
         """
-        No point in using _traverse_to_path here since this method
+        No point in using `cd` here since this method
         not only traverses to the path but creates all intermediate
-        paths when necessary so will need to call _tra... multiple times
+        paths when necessary so will need to call `cd` multiple times
         """
         root = self.root
         path = path.split('/')
@@ -128,11 +148,18 @@ class FileSystem:
             root = root.children[subdir]
 
 if __name__ == '__main__':
-    commands = [
-        "ls", "mkdir", "addContentToFile", "ls", "readContentFromFile"]
-    args = [
-        ["/"], ["/a/b/c"], ["/a/b/c/d", "hello"], ["/"], ["/a/b/c/d"]]
+    commands, args = (["ls","mkdir","addContentToFile","ls","readContentFromFile","ls"],
+            [["/"],["/a/b/c"],["/a/b/c/d","hello world"],["/"],["/a/b/c/d"],["/a/b/c/d"]]) 
     fs = FileSystem()
-    import ipdb; ipdb.set_trace()
     for command, arg in zip(commands, args):
         print getattr(fs, command)(*arg)
+    # (["ls","mkdir","mkdir","mkdir","mkdir","ls","addContentToFile","readContentFromFile","addContentToFile"],
+    # [["/"],["/gh"],["/e"],["/jfo"],["/gh/znflyvnd"],["/gh"],["/mhdmck","v"],["/mhdmck"],["/bbigs","kzdi"]])
+    # commands = [
+    #     "ls", "mkdir", "addContentToFile", "ls", "readContentFromFile"]
+    # args = [
+    #     ["/"], ["/a/b/c"], ["/a/b/c/d", "hello"], ["/"], ["/a/b/c/d"]]
+    # commands, args = (["mkdir","ls","ls","mkdir","ls","ls","addContentToFile","readContentFromFile","ls","readContentFromFile"],
+    # [["/# zijzllb"],["/"],["/zijzllb"],["/r"],["/"],["/r"],["/zijzllb/hfktg","d"],["/zijzllb/hfktg"],["/"],["/zijzllb/hfktg"]])
+    # ["mkdir","ls","ls","mkdir","ls","ls","addContentToFile","ls","ls","ls"],
+    # [["/goowmfn"],["/goowmfn"],["/"],["/z"],["/"],["/"],["/goowmfn/c","shetopcy"],["/z"],["/goowmfn/c"],["/goowmfn"]])
