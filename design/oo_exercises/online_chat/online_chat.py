@@ -1,6 +1,8 @@
 from abc import ABCMeta
 # https://code.facebook.com/posts/820258981365363/building-mobile-first-infrastructure-for-messenger/
 """
+Todo: Add more details, next time around.
+
 Possibly use observer pattern to notify users in GroupChats about messages sent.
 Supplementary material:
 cassandra vs hbase: https://stackoverflow.com/questions/14950728/why-hbase-is-a-better-choice-than-cassandra-with-hadoop
@@ -30,6 +32,12 @@ class Messenger(object):
         cls._lock_release()
         return cls.__instance
 
+    @staticmethod
+    def get_uuid()
+        '''
+        Utility method which returns UUIDs which can be used for user_id or chat_ids.
+        '''
+        pass
 
 
 class UserService(object):
@@ -75,9 +83,9 @@ class User(object):
 
 class Chat(metaclass=ABCMeta):
 
-    def __init__(self, chat_id, users):
-        self.chat_id = chat_id
-        self.users = users
+    def __init__(self):
+        self.chat_id = self.get_uuid()
+        self.users = []
         '''
         This will be a ordered queue
         we can have two pointers within here, one points to the point untill
@@ -111,11 +119,21 @@ class PrivateChat(Chat):
         super(PrivateChat, self).__init__()
         self.users.append(first_user)
         self.users.append(second_user)
+        self.registerObserver(self.chat_id, [first_user, second_user])
+
+    def registerObserver(self, chat_id, users):
+        pass
+
+    def removeObserver(self, chat_id, users):
+        pass
+
+    def notifyObserver(self, chat_id, users):
+        pass
 
 
 class GroupChat(Chat):
-    def __init__(self, chat_id, users):
-        super(GroupChat, self).__init__(chat_id, users)
+    def __init__(self, users):
+        super(GroupChat, self).__init__(users)
 
     def drop_message(self, user, message_text):
         # gets unique message id from a service
@@ -149,6 +167,7 @@ class Message(object):
         self.message_id = message_id
         self.message = message
         self.timestamp = datetime.now()
+        self.status = Status.UNREAD
 
 
 class AddRequest(object):
@@ -156,9 +175,12 @@ class AddRequest(object):
     def __init__(self, from_user_id, to_user_id, request_status, timestamp):
         self.from_user_id = from_user_id
         self.to_user_id = to_user_id
-        self.request_status = request_status
         self.timestamp = timestamp
 
+
+class MessageStatus(Enum):
+    UNREAD = 0
+    READ = 1
 
 class RequestStatus(Enum):
 
