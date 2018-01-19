@@ -30,16 +30,17 @@ TODO:
 
 
 class ParkingType(Enum):
-    Handicapped = 'Handicap'
-    Regular = 'Regular'
+    HANDICAPPED = 1
+    REGULAR = 2
 
 
 class ParkingSpace(object):
     def __init__(self, type, level, spot_number):
         self.vehicle_parked = None
         self.type = type
+        # Can also include parking space UUID or just a (area_code+building_no+level+spot_no)
         self.spot_number = spot_number
-        self.level = level
+        self.level = level  # Can help in making decision based on duration of park or if user wants to supply
 
     @property
     def is_available(self):
@@ -90,6 +91,7 @@ class ParkingLot(object):
         for vehicle to park, park it else return message
         Handicaps can park in their spot or regular
         """
+        # To alleviate push backs we can maintain separate PQs for Physicall challenged and regular type vehicles.
         parking_spaces_push_back = []
         while not self.parking_space_queue.empty():
             index = 0
@@ -140,18 +142,6 @@ class VehicleType(Enum):
     Small = 1
     Regular = 2
     Large = 3
-
-
-class VehicleFactory(object):
-
-    # Factory(creational) design pattern
-    def get_vehicle(self, vehicle_type, license_no, *args, **kwargs):
-        if vehicle_type == 'Small':
-            return Small(license_no, *args, **kwargs)
-        elif vehicle_type == 'Regular':
-            return Regular(license_no, *args, **kwargs)
-        elif vehicle_type == 'Large':
-            return Large(license_no, *args, **kwargs)
 
 
 class Vehicle(object):
@@ -208,6 +198,17 @@ class Large(Vehicle):
 
     def get_type(self):
         return self.type.name
+
+class VehicleFactory(object):
+
+    # Factory(creational) design pattern
+    def get_vehicle(self, vehicle_type, license_no, *args, **kwargs):
+        if vehicle_type == 'Small':
+            return Small(license_no, *args, **kwargs)
+        elif vehicle_type == 'Regular':
+            return Regular(license_no, *args, **kwargs)
+        elif vehicle_type == 'Large':
+            return Large(license_no, *args, **kwargs)
 
 if __name__ == '__main__':
     parking_lot_obj = ParkingLot()
