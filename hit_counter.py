@@ -48,6 +48,7 @@ class HitCounter(object):
         """
         # q is the hit array
         # each slot in this q/arr is for one second in the 5 minute window
+		# The idea is to have 300 slots each for every second(since exercise restricts time granularity to seconds).
         self.q = [(0, 0) for _ in xrange(300)]
 
     def hit(self, timestamp):
@@ -71,33 +72,8 @@ class HitCounter(object):
         :type timestamp: int
         :rtype: int
         """
-        no_of_hits = 0
-        for i in xrange(len(self.q)):
-            time, hit = self.q[i]
-            if timestamp - time < 300:
-                no_of_hits += hit
-        return no_of_hits
-
-if __name__ == '__main__':
-    counter = HitCounter()
-
-    # hit at timestamp 1.
-    counter.hit(1)
-
-    # // hit at timestamp 2.
-    counter.hit(2)
-
-    # // hit at timestamp 3.
-    counter.hit(3)
-
-    # // get hits at timestamp 4, should return 3.
-    print counter.getHits(4)
-
-    # // hit at timestamp 300.
-    counter.hit(300)
-
-    # // get hits at timestamp 300, should return 4.
-    print counter.getHits(300)
-
-    # // get hits at timestamp 301, should return 3.
-    print counter.getHits(301)
+		count = 0
+		for ts, hits in self.hit_cache:
+			if (timestamp - ts) < 300:
+				count += hits
+		return count
