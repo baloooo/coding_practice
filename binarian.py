@@ -41,7 +41,7 @@ Elements of input arrays can be modified.
 
 def binarian(arr):
     # Overall time: O(N) and Overall Space: O(N)
-    count_arr = [0]*10001
+    count_arr = [0]*100001
     # Time: O(N)
     for ele in arr:
         count_arr[ele] += 1
@@ -73,4 +73,11 @@ if __name__ == '__main__':
     arr = [1, 0, 2, 0, 0, 2]
     arr = [1, 5, 4]
     arr = [10000, 1000, 1243, 353, 2533, 546, 235, 532, 235, 666, 666, 23, 26, 233, 2323, 23, 23]
+    # arr = [0, 0, 0, 0, 1] # 2
+    # arr = [0]
+    # arr = []
+    # arr = [1, 1, 1, 1]
+    arr = [0, 10000]
+    arr = [10000, 10000]
+
     print binarian(arr)
