@@ -1,3 +1,7 @@
+"""
+Problem understanding: https://discuss.leetcode.com/topic/22395/the-description-is-wrong
+Idea is Topological sorting using DFS: https://discuss.leetcode.com/topic/22395/the-description-is-wrong
+"""
 import collections
 
 class DirectedGraphNode(object):
@@ -29,8 +33,8 @@ class Solution(object):
         graph = collections.defaultdict(DirectedGraphNode)
         
         for i in xrange(len(words)):
+            self._create_nodes(graph, words[i])
             for j in xrange(i+1, len(words)):
-                self._create_nodes(graph, words[i])
                 self._create_nodes(graph, words[j])
                 for parent_ch, child_ch in zip(words[i], words[j]):
                     # Make a directed edge parent_ch -> child_ch
@@ -72,15 +76,9 @@ class Solution(object):
         return self.toposort(graph)
 
 if __name__ == '__main__':
-	words = [
-	  "wrt",
-	  "wrf",
-	  "er",
-	  "ett",
-	  "rftt"
-	]
-        words = ["z", "x", "z"]
-        words = ["z", "z"]
-        words = ["ab", "adc"]
-        print "Expected O/P: abcd"
-	print "Got o/p: %s" % Solution().alienOrder(words)
+    words = [ "wrt", "wrf", "er", "ett", "rftt" ]
+    words = ["z", "x", "z"]
+    words = ["z", "z"]
+    words = ["ab", "adc"]
+    words = ["wlbn"]
+    print "Got o/p: %s" % Solution().alienOrder(words)
