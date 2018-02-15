@@ -1,7 +1,9 @@
 """
+Topological Sorting: A topological sort or topological ordering of a directed Acyclic graph is a linear ordering of its vertices such that for every directed edge uv from vertex u to vertex v, u comes before v in the ordering. For instance, the vertices of the graph may represent tasks to be performed, and the edges may represent constraints that one task must be performed before another.
 Problem understanding: https://discuss.leetcode.com/topic/22395/the-description-is-wrong
 Idea is Topological sorting using DFS: https://discuss.leetcode.com/topic/22395/the-description-is-wrong
 """
+
 import collections
 
 class DirectedGraphNode(object):
@@ -41,6 +43,7 @@ class Solution(object):
                     if parent_ch != child_ch:
                         graph[parent_ch].neighbors.add(graph[child_ch])
                         if graph[parent_ch] in graph[child_ch].neighbors:
+							# there's a loop so invalid graph.
                             return False
                         break
         return graph
@@ -53,7 +56,7 @@ class Solution(object):
         for neighbor in node.neighbors:
             if neighbor.visited is False:
                 self.toposort_util(neighbor, stack)
-        stack.append(node)
+        stack.append(node) # This is imp. we're pushing the node afterwards unlike regular DFS.
 
     def toposort(self, graph):
         """
@@ -63,7 +66,7 @@ class Solution(object):
         for node_key, node_object in graph.items():
             if node_object.visited is False:
                 self.toposort_util(node_object, stack)
-        return ''.join([node.val for node in reversed(stack)])
+        return ''.join([node.val for node in reversed(stack)]) # Note that we're printing in reverse as this is stack.
 
     def alienOrder(self, words):
         """
