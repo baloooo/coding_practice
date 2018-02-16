@@ -21,14 +21,18 @@ class Solution(object):
             node = Node(i)
             graph[i] = node
         for src, dest in edges:
-            graph[i].adjacent.append(graph[dest])
+            graph[src].adjacent.append(graph[dest])
         return graph
 
     def dfs(self, graph, cur, parent):
+        # If starting from root(which is passed initially to root) you were able
+        # to visit all other nodes without violating the condition of tree (adjacent!=parent)
+        # then it's a success. ONly condn now left to check would be to see whether you
+        # touched all nodes or not.
         cur.visited = True
         for adjacent in cur.adjacent:
             if adjacent.visited is not True:
-                return self.dfs(graph, adjacent, cur)
+                self.dfs(graph, adjacent, cur)
             elif adjacent != parent:
                 return False
         return True
@@ -68,7 +72,9 @@ class TestSolution(object):
         assert cur_res == result
 
 if __name__ == '__main__':
-    n, edges, result = (5, [[0, 1], [0, 2], [0, 3], [1, 4]], True)
+    # n, edges, result = (5, [[0, 1], [0, 2], [0, 3], [1, 4]], True)
+    n, edges, result = (2, [[1, 0]], True)
+    since root is 1 in this case, and no edge from 1 to 0 loop dies out.
     sol = Solution()
     cur_res = sol.validTree(n, edges)
     if cur_res == result:
