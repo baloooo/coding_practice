@@ -1,56 +1,46 @@
 '''
-1. Construct adjacency list based graph.
-2. DFS traversal marking visited node in process, the moment we encounter a node already visited and this is not the
-    parent of cur node, we've a redundant path from current node to this already visited node, which would mean
-    there is a cycle which would mean this not a Tree(DAG).
+https://leetcode.com/problems/graph-valid-tree/discuss/69020/8-10-lines-Union-Find-DFS-and-BFS
+A  graph is a Tree if it has two properties:
+    1. For n nodes there should be n-1 edges.
+    2. Graph should be acyclic
+Since we're given undirected edges instead of directed, the way we check acyclicity
+is that, either graph has n-1 edges but has a redundant edge(as in last test case) therefore
+since there are only n-1 edges graph shouldn't be connected now which is checked by our DFS
+method.
+Else if it has less than n-1 edges we know for sure it can connect all n nodes with less
+than n-1 edges and if it has more we can be sure there are redundant edges b/w nodes which
+will make a cycle and therefore acyclic property is violated.
+The way our DFS works is that we pop a key and traverse all its neighbors in dfs fashion to 
+pop their keys to this way all connected nodes should be removed by the end of dfs. And
+if by the end of DFS there're any nodes in graph it means this node was not connected to the
+rooted tree at zero and therefore this is not a tree.
 '''
 
 import pytest
 import collections
 
-class Node(object):
-    def __init__(self, val):
-        self.val = val
-        self.visited = False
-        self.adjacent = []
 
 class Solution(object):
-    def create_graph(self, n, edges):
-        graph = collections.defaultdict()
-        for i in xrange(n):
-            node = Node(i)
-            graph[i] = node
-        for src, dest in edges:
-            graph[src].adjacent.append(graph[dest])
-        return graph
-
-    def dfs(self, graph, cur, parent):
-        # If starting from root(which is passed initially to root) you were able
-        # to visit all other nodes without violating the condition of tree (adjacent!=parent)
-        # then it's a success. ONly condn now left to check would be to see whether you
-        # touched all nodes or not.
-        cur.visited = True
-        for adjacent in cur.adjacent:
-            if adjacent.visited is not True:
-                self.dfs(graph, adjacent, cur)
-            elif adjacent != parent:
-                return False
-        return True
-
-    def connected(self, graph):
-        # Makes sure all nodes of the graph are visited
-        for node in graph.values():
-            if node.visited is False:
-                return False
-        return True
+    def dfs(self, graph, cur):
+        for neighbor in graph.pop(cur, []):
+            self.dfs(graph, neighbor) 
 
     def validTree(self, n, edges):
-        if n == 0:
+        if len(edges) != n-1:
             return False
-        elif n == 1:
-            return True
-        graph = self.create_graph(n, edges)
-        return self.dfs(graph, graph[0], -1) and self.connected(graph)
+        # construct adjacency list based graph
+        # Cannot use this graph = collections.defaultdict(list)
+        graph = {}
+        for i in xrange(n):
+            graph[i] = []
+        for src, dest in edges:
+            graph[src].append(dest)
+            graph[dest].append(src)
+        # root can be defaulted to zero
+        self.dfs(graph, 0)
+        # all nodes should have been popped out of graph
+        # other words visited
+        return not graph
 
 class TestSolution(object):
 
@@ -64,6 +54,8 @@ class TestSolution(object):
         (5, [[0, 1], [0, 2], [0, 3], [1, 4]], True),
         (5, [[0, 1], [1, 2], [2, 3], [1, 3], [1, 4]], False),
         (0, [[]], False),
+        (2, [[1, 0]], True),
+        (6, [[0, 1], [0, 5], [1, 2], [1, 4], [4, 5]], False),
         ])
     def test_task(self, n, edges, result):
         sol = Solution()
@@ -74,7 +66,7 @@ class TestSolution(object):
 if __name__ == '__main__':
     # n, edges, result = (5, [[0, 1], [0, 2], [0, 3], [1, 4]], True)
     n, edges, result = (2, [[1, 0]], True)
-    since root is 1 in this case, and no edge from 1 to 0 loop dies out.
+    # since root is 1 in this case, and no edge from 1 to 0 loop dies out.
     sol = Solution()
     cur_res = sol.validTree(n, edges)
     if cur_res == result:
