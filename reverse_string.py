@@ -35,7 +35,25 @@ class Solution:
         Deals with multiple starting, and trailing spaces
         Steps:
         """
-        pass
+        self.custom_reverse(str_list, 0, len(str_list)-1)
+        store_index = i = 0
+        while i < len(str_list):
+            if str_list[i] != ' ':
+                j = i
+                if store_index != 0:
+                    str_list[store_index] = ' '
+                    store_index += 1
+                while j < len(str_list) and str_list[j] != ' ':
+                    str_list[store_index] = str_list[j]
+                    store_index += 1
+                    j += 1
+                self.custom_reverse(str_list, i, store_index-1)
+                i = j
+            else:
+                i += 1
+        # Blank out remaining part of the array
+        for index in xrange(store_index+1, len(str_list)):
+            str_list[index] = ' '
 
     def reverse_entire_string(self, s):
         '''
@@ -62,9 +80,8 @@ class TestSolution(object):
         pass
     
     @pytest.mark.parametrize("args, result", [
-        (
-            ["t","h","e"," ","s","k","y"," ","i","s"," ","b","l","u","e"],
-            ["b","l","u","e"," ","i","s"," ","s","k","y"," ","t","h","e"]),
+        (["t","h","e"," ","s","k","y"," ","i","s"," ","b","l","u","e"],
+         ["b","l","u","e"," ","i","s"," ","s","k","y"," ","t","h","e"]),
         ])
     def test_task(self, args, result):
         sol = Solution()
