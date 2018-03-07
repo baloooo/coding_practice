@@ -15,10 +15,53 @@ Problem statement:
 """
 
 
-class Solution:
+import pytest
 
-    def reverse(self, s):
-        # https://discuss.leetcode.com/topic/58719/python-3-solutions-recursive-classic-pythonic
+
+class Solution:
+    def custom_reverse(self, arr, i, j):
+        '''
+        custom reverse method that reverses arr elements [i, j]
+        '''
+        while 0 <= i < j < len(arr):
+            arr[i], arr[j] = arr[j], arr[i]
+            i += 1
+            j -= 1
+
+    def reverseWords_without_extra_space(self, str_list):
+        """
+        https://leetcode.com/problems/reverse-words-in-a-string/discuss/47740/In-place-simple-solution
+        Time: O(n), Space: O(1)
+        Deals with multiple starting, and trailing spaces
+        Steps:
+        """
+        self.custom_reverse(str_list, 0, len(str_list)-1)
+        store_index = i = 0
+        while i < len(str_list):
+            if str_list[i] != ' ':
+                j = i
+                if store_index != 0:
+                    str_list[store_index] = ' '
+                    store_index += 1
+                while j < len(str_list) and str_list[j] != ' ':
+                    str_list[store_index] = str_list[j]
+                    store_index += 1
+                    j += 1
+                self.custom_reverse(str_list, i, store_index-1)
+                i = j
+            else:
+                i += 1
+        # Blank out remaining part of the array
+        for index in xrange(store_index+1, len(str_list)):
+            str_list[index] = ' '
+
+    def reverse_entire_string(self, s):
+        '''
+        Reverses entire string without taking in account spaces, or anything else.
+        https://discuss.leetcode.com/topic/58719/python-3-solutions-recursive-classic-pythonic
+        '''
+        # As strings are immutable in python we should be provided a string in
+        # list form, so this shouldn't be necessary
         r = list(s)
         i, j = 0, len(r)-1
         while i < j:
@@ -27,19 +70,20 @@ class Solution:
             j -= 1
         return ''.join(r)
 
-if __name__ == '__main__':
-    test_cases = [
-        ('test1', 'sol1'),
-    ]
-    for test_case in test_cases:
-        res = Solution().my_func(test_case[0])
-        if res == test_case[1]:
-            print "Passed"
-        else:
-            print "Failed: Test case: {0} Got {1} Expected {2}".format(
-                test_case[0], res, test_case[1])
 
+class TestSolution(object):
 
-if __name__ == '__main__':
-    target_string = "the sky is blue"
-    print reverse_string(target_string)
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+    
+    @pytest.mark.parametrize("args, result", [
+        (["t","h","e"," ","s","k","y"," ","i","s"," ","b","l","u","e"],
+         ["b","l","u","e"," ","i","s"," ","s","k","y"," ","t","h","e"]),
+        ])
+    def test_task(self, args, result):
+        sol = Solution()
+        sol.reverseWords_without_extra_space(args) 
+        assert args== result
