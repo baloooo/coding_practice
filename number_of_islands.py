@@ -15,6 +15,8 @@ class Solution(object):
         Idea: no. of connected components
         Time: O(n)
         Space: O(size of grid + stack_depth for dfs i.e total_no_of_nodes) = O(2n) = O(n) where n = total_no_of_nodes
+        Notice that using BFS here is a more clever solution here, as BFS would take less space than
+        a DFS.
         """
         from copy import deepcopy
         grid_map = deepcopy(grid) # incase we're not allowed to modify existing grid
