@@ -30,7 +30,7 @@ class Solution:
         # initialize boundaries
         top_boundary, right_boundary, bottom_boundary, left_boundary = 0, col_len, row_len, 0
         spiral = []
-        while(True):
+        while(left_boundary <= right_boundary or top_boundary <= bottom_boundary):
             for cur_col in xrange(left_boundary, right_boundary+1):
                 spiral.append(matrix[top_boundary][cur_col])
             # bring in boundaries
