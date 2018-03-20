@@ -41,9 +41,20 @@ class Solution:
         return res
 
     def kth_row_pascal(self, k):
-        # Time: O(n^2)
-        # Idea: https://github.com/kamyu104/LeetCode/blob/master/Python/pascals-triangle-ii.py
-        pass
+        # Time: O(n^2)	
+	'''
+	Using the same logic as above but only using O(k) space and O(K^2) time
+	'''
+	res = [0 for _ in xrange(rowIndex+1)]
+        for i in xrange(rowIndex+1):
+            temp = [0 for _ in xrange(i+1)]
+            for j in xrange(i+1):
+                if j in [0, i]:
+                    temp[j] = 1
+                else:
+                    temp[j] = res[j-1] + res[j]
+            res = temp
+        return res
 
 if __name__ == '__main__':
     test_cases = [

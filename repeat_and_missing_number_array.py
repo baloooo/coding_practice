@@ -15,33 +15,56 @@ import math
 3 alternate methods
 http://www.geeksforgeeks.org/find-a-repeating-and-a-missing-number/
 Idea: https://stackoverflow.com/a/5767648/2795050
+
+called setmismatch in LC
 """
+class Solution(object):
+    def findErrorNums(self, arr):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+	https://leetcode.com/articles/set-mismatch/
+        """
+        if len(arr) <= 1: return []
+        missing, duplicate = -1, -1
+        for ele in arr:
+            if arr[abs(ele) - 1] < 0:
+                duplicate = abs(ele)
+            else:
+                arr[abs(ele)-1] *= -1
+        for i, ele in enumerate(arr):
+            if ele > 0:
+                missing = i + 1
+                break
+        return [duplicate, missing]
+
 # method 2
-A = [int(x) for x in A.split(' ')]
-n=len(A)
-xor_inp_arr = 0
-xor_num_range = 0
-combined_xor = 0
-right_most_set_bit = 0
-set_a = set_b = 0
-for ele in A:
-    xor_inp_arr^=ele
-for num in xrange(1, n+1):
-    xor_num_range^=num
-combined_xor = xor_inp_arr ^ xor_num_range
-# finding rightmost set bit in combined_xor
-right_most_set_bit = combined_xor & ~(combined_xor-1)
-# dividing numbers to two sets based on right most set bit in combined_xor
-for ele in A:
-    if ele & right_most_set_bit:
-        set_a=set_a^ele
-    else:
-        set_b=set_b^ele
-for ele in xrange(1, n+1):
-    if ele & right_most_set_bit:
-        set_a=set_a^ele
-    else:
-        set_b=set_b^ele
+def prev_method(A):
+    A = [int(x) for x in A.split(' ')]
+    n=len(A)
+    xor_inp_arr = 0
+    xor_num_range = 0
+    combined_xor = 0
+    right_most_set_bit = 0
+    set_a = set_b = 0
+    for ele in A:
+        xor_inp_arr^=ele
+    for num in xrange(1, n+1):
+        xor_num_range^=num
+    combined_xor = xor_inp_arr ^ xor_num_range
+    # finding rightmost set bit in combined_xor
+    right_most_set_bit = combined_xor & ~(combined_xor-1)
+    # dividing numbers to two sets based on right most set bit in combined_xor
+    for ele in A:
+        if ele & right_most_set_bit:
+            set_a=set_a^ele
+        else:
+            set_b=set_b^ele
+    for ele in xrange(1, n+1):
+        if ele & right_most_set_bit:
+            set_a=set_a^ele
+        else:
+            set_b=set_b^ele
 
 
 print "Missing element is %d and repeating element is %d" % (set_b, set_a)

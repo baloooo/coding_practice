@@ -28,6 +28,8 @@ class Solution:
     def max_sub_array_with_indices(self, arr):
         """
         Kadane's algorithm
+        Flip is a intresting manifestation of the logic:
+            https://discuss.leetcode.com/topic/149/flip/13
         """
         global_max = current_max = arr[0]
         start = end = 0
