@@ -19,8 +19,7 @@ class Interval:
 class Solution:
     def can_attend(self, arrive, depart):
         # https://discuss.leetcode.com/topic/20959/ac-clean-java-solution
-        pass
-
+        pass 
     def meeting_rooms(self, intervals):
         # list of sorted start intervals
         starts = []
@@ -70,37 +69,56 @@ class Solution:
                 ends_iterator += 1
         return rooms
 
-    def meeting_rooms_min_heap(self, intervals):
-        """
+# Definition for an interval.
+class Interval(object):
+    def __init__(self, s=0, e=0):
+        self.start = s 
+        self.end = e 
+    def __lt__(self, other):
+        return self.end < other.end
+    def __eq__(self, other):
+        return self.end == other.end
+
+class Solution2(object):
+    def minMeetingRooms(self, intervals):
+        """ 
+        :type intervals: List[Interval]
+        :rtype: int
         Solution using min heap
         Code: https://discuss.leetcode.com/topic/20958/ac-java-solution-using-min-heap/38
         Idea: 
-        If you look at these events in a time line one after another (like stream data), then this solution is a greedy solution.
-
-        The heap stores all conflicting events, which must be resolved by independent rooms. The heap's head is the event that has earliest end/finish time. All other events collide with each other mutually in the heap.
+        If you look at these events in a time line one after another
+        (like stream data), then this solution is a greedy solution.
+        The heap stores all conflicting events, which must be resolved
+        by independent rooms. The heap's head is the event that has
+        earliest end/finish time. All other events collide with each
+        other mutually in the heap.
 
         When a new event comes (this is the reason that we need to sort by event.start), we greedily choose the event A that finished the earliest (this is the reason that we use minheap on end time). If the new event does not collide with A, then the new event can re-use A's room, or simply extend A's room to the new event's end time.
 
         If the new event collides with A, then it must collide with all events in the heap. So a new room must be created.
 
         The reason for correctness is the invariant: heap size is always the minimum number of rooms we need so far. If the new event collides with everyone, then a new room must be created; if the new event does not collide with someone, then it must not collide with the earliest finish one, so greedily choose that one and re-use that room. So the invariant is maintained.
+
+        Notice for this to work, min heap's __lt__ method needs to be overloaded so as to
+        support sorting on `end` attribute.
         """
-        from heapq import heappush, heapreplace
+        if not intervals: return 0
         intervals.sort(key=lambda interval: interval.start)
-        for interval in intervals:
-            print 'start: %s end: %s' % (interval.start, interval.end)
-        end_times = [intervals[0]]
-        for interval in intervals[1:]:
+        end_times = [intervals[0]] # min heap
+        rooms = 1 
+        for i in xrange(1, len(intervals)):
             # if this meeting starts before the earliest meeting(meeting depicted by top of min heap) ends
-            if interval.start < end_times[0].end:
-                # we need another room for this meeting
-                # heappush(end_times, (interval.end, interval))
-                heappush(end_times, interval)
-            else:
+            if end_times[0].end <= intervals[i].start:
                 # Extend the min interval (Top of heap)
                 # heapreplace(end_times(interval.end, interval))
-                heapreplace(end_times, interval)
-        return len(end_times)
+                heapq.heapreplace(end_times, intervals[i])
+            else:
+                # we need another room for this meeting
+                # heappush(end_times, (interval.end, interval))
+                heapq.heappush(end_times, intervals[i])
+            rooms = max(rooms, len(end_times))
+        return rooms
 
 if __name__ == '__main__':
     intervals = [[8, 9], [7, 10]] # 2
