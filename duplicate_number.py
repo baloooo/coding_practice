@@ -1,6 +1,12 @@
 """
 https://leetcode.com/problems/find-the-duplicate-number/#/description
 Idea: tortoise hare strategy, diagram: https://discuss.leetcode.com/topic/25685/java-o-n-time-and-o-1-space-solution-similar-to-find-loop-in-linkedlist
+
+An extension of this can be if you're to find all multiple repeating elements like in 
+[4, 2, 3 ,3, 4]
+
+If we're allowed to modify the array we can use this:
+https://leetcode.com/problems/find-all-duplicates-in-an-array/discuss/92390/Python-O(n)-time-O(1)-space
 """
 
 

@@ -19,22 +19,3 @@ This is because the new interval [4,9] overlaps with [3,5],[6,7],[8,10].
 #         self.end = e
 
 class Solution(object):
-    def insert(self, intervals, newInterval):
-        """
-        :type intervals: List[Interval]
-        :type newInterval: Interval
-        :rtype: List[Interval]
-        """
-        # using the exact algo as merge interval
-        merged_intervals = []
-        intervals.append(newInterval)
-        intervals.sort(key=lambda interval: interval.start)
-        cur_max_end = intervals[0].end
-        merged_intervals = [[intervals[0].start]]
-        for interval in intervals[1:]:
-            if interval.start > cur_max_end:
-                merged_intervals[-1].append(cur_max_end)
-                merged_intervals.append([interval.start])
-            cur_max_end = max(cur_max_end, interval.end)
-        merged_intervals[-1].append(cur_max_end)
-        return merged_intervals

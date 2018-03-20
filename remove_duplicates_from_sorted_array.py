@@ -14,22 +14,36 @@ def remove_duplicates_generalized(arr):
         """
         Idea: https://discuss.leetcode.com/topic/7673/share-my-o-n-time-and-o-1-solution-when-duplicates-are-allowed-at-most-k-times/12
         """
-        if not arr:
-            return 0
-        k = 1 # This depicts the number of tolerable duplicates.
-        i = j = count = 1
-        while j < len(arr):
-            if arr[j] != arr[j-1]:
+        if len(arr) <= 1: return len(arr)
+        count = 1
+        unique_index = 0
+        for iter_index in xrange(1, len(arr)):
+            if arr[iter_index] != arr[unique_index]:
                 count = 1
-                arr[i] = arr[j]
-                i += 1
+                unique_index += 1
+                arr[unique_index] = arr[iter_index]
             else:
-                if count < k:
-                    arr[i] = arr[j]
-                    i += 1
+                if count < 2:
                     count += 1
-            j += 1
-        return i
+                    unique_index += 1
+                    arr[unique_index] = arr[iter_index]
+        return unique_index + 1
+        # if not arr:
+        #     return 0
+        # k = 1 # This depicts the number of tolerable duplicates.
+        # i = j = count = 1
+        # while j < len(arr):
+        #     if arr[j] != arr[j-1]:
+        #         count = 1
+        #         arr[i] = arr[j]
+        #         i += 1
+        #     else:
+        #         if count < k:
+        #             arr[i] = arr[j]
+        #             i += 1
+        #             count += 1
+        #     j += 1
+        # return i
 
 def remove_duplicates_optimized(arr):
     """
