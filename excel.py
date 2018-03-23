@@ -52,5 +52,5 @@ class Solution(object):
             like from AA to AAA you would go AA -> AZ, and then to BA -> BZ ... untill ZA ->ZZ and then AAA
             '''
             res = res * 26  
-            res = res + ch - 'A' + 1
+            res = res + ord(ch) - ord('A') + 1
         return res

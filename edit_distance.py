@@ -17,9 +17,6 @@ the beginning and therefore min. edit distance is 1 for x and y.
 
 
 class Solution1:
-    def __init__(self):
-        pass
-
     def one_edit_distance(self, str1, str2):
         if abs(len(str1) - len(str2)) > 1:
             return False
