@@ -20,6 +20,8 @@ def my_reverse(self, x):
     ans = 0
     if x >= 0:
         while x:
+            # ans*10, since one unit place was added with this iteration.
+            # x%10 to get the current tail of x
             ans = ans * 10 + x % 10
             x /= 10
         return ans if ans <= 2147483647 else 0  # Handle overflow.
