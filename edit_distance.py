@@ -17,6 +17,31 @@ the beginning and therefore min. edit distance is 1 for x and y.
 
 
 class Solution1:
+    def one_edit_distance_lc(self, s, t):
+	'''
+	Find if s and t are exact one edit distance apart not more or less.
+	'''
+	if abs(len(s)-len(t)) > 1:
+	    return False
+	one_edit_distance = False
+	i = j = 0
+	while i < len(s) and j < len(t):
+	    if s[i] != t[j]:
+		if one_edit_distance:
+		    return False
+		if len(s) < len(t):
+		    j += 1 # consider this an insert on s OR delete on t
+		elif len(s) > len(t):
+		    i += 1
+		else:
+		    i += 1
+		    j += 1
+		one_edit_distance = True
+	    else:
+		i += 1
+		j += 1
+	return one_edit_distance or abs(len(s)-len(t)) == 1 # "ab" "abc"
+
     def one_edit_distance(self, str1, str2):
         if abs(len(str1) - len(str2)) > 1:
             return False
@@ -38,7 +63,7 @@ class Solution1:
                     str2_index += 1
                 edit_distance += 1
             else:
-                # replace char at str1_index and str2_index
+                # Move both pointers ahead as str1 and str2 are same at current respective indices.
                 str1_index += 1
                 str2_index += 1
 

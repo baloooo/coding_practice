@@ -24,7 +24,7 @@ class Solution:
             if mid_square == x:
                 return mid
             elif mid_square < x:
-                left = mid + 1
+                left = mid + 1 # since solution can't be mid as we tested above, better to exclude it alogether.
             else:
                 right = mid - 1
         # For non perfect squares right will have floor(sqrt(x)) ex for 8, left: 3 right: 2

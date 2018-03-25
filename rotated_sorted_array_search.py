@@ -29,7 +29,7 @@ def search(nums, target):
         Note: take care of < and <= and for opposite sign
         '''
         # target strictly to the left, strictly as hi doesn't rest at mid but mid - 1
-        if ((nums[lo] <= nums[mid] and nums[lo] <= target < nums[mid])
+        if ((nums[lo] <= nums[mid] and nums[lo] <= target <= nums[mid])
             # OR target not in strictly right
             or (nums[lo] > nums[mid] and not(nums[mid] < target <= nums[hi]))):
                 hi = mid - 1 # go left
