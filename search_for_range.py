@@ -32,6 +32,9 @@ class Solution:
         def search(n):
             '''
             Also works for https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/description/
+            This Binary search is geared towards returning the first occurrence of a target.
+            Therefore we can just call this method twice, once with actual target and once with
+            target+1 to get left and right boundaries respectively.
             '''
             # This search method can as it is be used for search insert position logic
             lo, hi = 0, len(nums) # this should be len(nums) and not len(nums)-1 to deal w/ size 1 array.
@@ -46,9 +49,9 @@ class Solution:
                     lo = mid + 1
             return lo
         lo = search(target)
-        return [lo, search(target+1)-1] if target in nums[lo:lo+1] else [-1, -1]
-        '''
         return [lo, search(target+1)-1] if len(nums) and lo < len(nums) and target == nums[lo] else [-1, -1]
+        '''
+        return [lo, search(target+1)-1] if target in nums[lo:lo+1] else [-1, -1]
         nums[lo:lo+1] gives handles with above three conds stringed with 'AND'.'''
 
 if __name__ == '__main__':

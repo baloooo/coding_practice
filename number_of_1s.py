@@ -1,3 +1,11 @@
+def hamming_weight(n):
+    # https://leetcode.com/articles/number-1-bits/
+    count = 0
+    while n != 0:
+        count += 1
+        n = n & (n - 1)
+    return count
+
 def number_of_1s(num):
     count = 0
     while(num):

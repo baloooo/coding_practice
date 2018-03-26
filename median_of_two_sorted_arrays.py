@@ -13,7 +13,7 @@ class Solution:
         Time: O(log(min(len(x), len(y)))), Space: O(1)
         Broadly saying idea stems from the very definition of median.
         Median divides array in to two parts st.:
-            1. len(left_part)=len(right_part)
+            1. len(left_part) = len(right_part)
             2. All elements on LHS of median are <= all elements on RHS
         condition 1 is found using Binary search and condition 2 is tested with max_left_x, ... variables.
         once both conditions are satisfied we note the position of all the variables and depending on

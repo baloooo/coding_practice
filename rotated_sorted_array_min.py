@@ -18,7 +18,7 @@ def min_element(arr):
         mid = l + (r-l)/2
         # given that there is rotation, where is rotation
         # l > r but l < mid this means l to mid is sorted with anchor somewhere after mid
-        if arr[l] <= arr[mid]:
+        if arr[l] <= arr[mid]: #Note: equal sign here is important, for test case [2, 1]
             l = mid + 1
         else:
             r = mid

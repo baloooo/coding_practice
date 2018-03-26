@@ -1,5 +1,9 @@
 class Solution(object):
     def reverse_bits_optimized(self, num):
+        https://articles.leetcode.com/reverse-bits/
+        pass
+
+    def reverse_bits2(self, num):
         lsb = 1
         msb = 1 << 31
         reversed_num = 0
