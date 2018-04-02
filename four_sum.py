@@ -1,7 +1,7 @@
 #latest
 class Solution(object):
     def n_sum(self, arr, n, start_index, target, cur, res):
-        if n < 2 or target < arr[0]*n or target > arr[-1]*n: # powerful optimization for pruning
+        if n < 2 or target < arr[start]*n or target > arr[-1]*n: # powerful optimization for pruning
             return
         if n == 2:
             start, end = start_index, len(arr)-1
@@ -9,7 +9,10 @@ class Solution(object):
                 cur_sum = arr[start] + arr[end]
                 if cur_sum == target:
                     res.append(cur+[arr[start], arr[end]])
-                    start += 1 # don't forget this step
+                    '''Note: don't forget this step, else this will go in to infinite loop,
+                    since once cond'n is met there is nothing to move start/end pointers and now since
+                    we forcefully move start, we'll have to compare it with start-1 in next step.'''
+                    start += 1 
                     '''Note: This comparison has to be b/w start and start-1 and not start+1 since, we
                     just incremented start in previous step so we're already on one unknown location.
                     We want to compare this with last known location therfore start and start-1.'''
@@ -78,7 +81,7 @@ class Solution(object):
 	than making copies of arrays at each recursive step.
 	Time: O(n3)
         """
-	arr.sort()
+        arr.sort()
         self.result, cur = [], []
         self.n_sum(arr, 4, 0, target, cur)
         return self.result

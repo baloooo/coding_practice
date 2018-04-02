@@ -23,10 +23,12 @@ included multiple times in the final outp
 """
 
 
-def get_intersection(arr1, arr2):
+def get_intersection_sorted_arrays(arr1, arr2):
     '''
-    can also be done using dict in O(n) time and space :https://discuss.leetcode.com/topic/46822/a-dictionary-based-solution-in-python
-    time: O(nlogn)
+    time: O(n), space: O(1)
+    Alternate sol.n: can also be done using dict in O(n) time and space :https://discuss.leetcode.com/topic/46822/a-dictionary-based-solution-in-python
+    If arrays are sorted: https://articles.leetcode.com/here-is-phone-screening-question-from/
+
     '''
     common_elements = []
     i = j = 0
