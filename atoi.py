@@ -16,7 +16,7 @@ class Solution(object):
         val = 0
         for c in s:
             if c.isdigit():
-                val = val*10 + ord(c) - ord('0') # assumes there're no invalid chars in given string
+                val = val*10 + ord(c) - ord('0') # c is bound to be a digit
         return sign*val
 
     def myAtoi(self, s):

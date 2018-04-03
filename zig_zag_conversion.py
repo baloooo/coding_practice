@@ -4,7 +4,7 @@ https://leetcode.com/problems/zigzag-conversion/#/description
 class Solution(object):
     def convert_optimized(self, s, num_rows):
         # Idea: https://discuss.leetcode.com/topic/34573/python-o-n-solution-in-96ms-99-43/16
-	zig_zag = [[] for _ in xrange(num_rows)]
+        zig_zag = [[] for _ in xrange(num_rows)]
         step = (num_rows == 1) - 1
         idx = 0
         for c in s:

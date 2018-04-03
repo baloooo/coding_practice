@@ -37,6 +37,8 @@ class Solution(object):
                 # Each octet in IPv6 has exactly 4 hex digits
                 if 1 <= len(octet) <= 4:
                     # Compare each digit contrary to entire number we used to in IPv4
+                    # if not all(ch in string.hexdigits for ch in octet):
+                    #     return False
                     for c in octet:
                         if c not in string.hexdigits:
                             return False

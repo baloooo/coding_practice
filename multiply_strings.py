@@ -33,6 +33,30 @@ class Solution(object):
             cur_pos += 1
         return ''.join(map(str, product[cur_pos:])) or '0'
 
+	def multiply(self, num1, num2):
+        """
+		Time: O(n^2), space: O(n1 + n2), where n1 is len(num1) and n2 is len(num2)
+		Another way to implement the same idea, but without explicitly reversing num1 and num2,
+		rather just iterating from tail to start.
+		Seems cleaner this way + more efficient since we're not reversing anything
+        """
+        product = [0]*(len(num1)+len(num2))
+        product_pos = len(product) - 1
+        for i in xrange(len(num1)-1, -1, -1):
+            pos = product_pos
+            for j in xrange(len(num2)-1, -1, -1):
+                cur_prod = int(num1[i]) * int(num2[j])
+                product[pos] += cur_prod
+                product[pos-1] += product[pos]/10
+                product[pos] = product[pos] % 10
+                pos -= 1
+            product_pos -= 1
+        # Remove leading zeros and stringify ints + concatenate them to make a string.
+        for msb in xrange(len(product)):
+            if product[msb] != 0:
+                break
+        return ''.join(map(str, product[msb:]))
+
 if __name__ == '__main__':
     test_cases = [
         # (('22', '22'), '484'),

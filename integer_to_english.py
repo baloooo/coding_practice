@@ -1,6 +1,10 @@
 import pytest
 
 class Solution():
+    '''
+    Idea is to start from LSB and keep converting last three digits to english words
+    and move towards MSB.
+    '''
     # Note: Where each of the lists start from.
     LESS_THAN_20 = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven",
                     "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen",
