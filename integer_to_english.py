@@ -32,7 +32,7 @@ class Solution():
         """
         convert num to english words where num < 1000
         """
-        if num == 0:
+        if num == 0:  # prevents adding rendundant spaces ex: num = 50
             return ""
         if num < 20:
             return self.LESS_THAN_20[num] + " "
