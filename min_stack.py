@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 """
+Todo: Complete this using g4g link and extend the same approach for max stack too.
+
+
 Design a stack that supports push, pop, top, and retrieving the minimum element
 in constant time.
 

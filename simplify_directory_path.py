@@ -32,4 +32,5 @@ if __name__ == '__main__':
     path = '/home/'
     path = '/'
     path = "/home//foo/"
+    path = "/..."
     print simplified_directory_path(path)
