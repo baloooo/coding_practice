@@ -42,11 +42,13 @@ class Solution:
         # This kind of approach is better for understanding.
         mid, end_ptr= self.find_mid(head)
         frst_hlf = self.reverse(head, mid)
-	if end_ptr is not None:
-	    scnd_hlf = mid.next
-	else:
-	    scnd_hlf = mid
-        while frst_hlf != mid and scnd_hlf is not None:
+        if end_ptr is not None:
+            scnd_hlf = mid.next
+        else:
+            scnd_hlf = mid
+        # can use any one of frst/scnd_hlf as both will reach at None simultaneously since
+        # find mid makes sure of that.
+        while scnd_hlf is not None:
             if frst_hlf.val != scnd_hlf.val:
                 return False
             frst_hlf = frst_hlf.next

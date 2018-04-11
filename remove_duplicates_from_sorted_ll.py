@@ -22,6 +22,17 @@ class Solution(object):
             else:
                 head = head.next
         return orig_head
+
+    def deleteDuplicates(self, head):
+        orig_head = cur = ListNode(None)
+        while head and head.next:
+            if head.val != head.next.val:
+                cur.next = head
+                cur = cur.next
+            head = head.next
+        cur.next = head
+        return orig_head.next
+
 """
 Extension of above
 Given a sorted linked list, delete all nodes that have duplicate numbers,

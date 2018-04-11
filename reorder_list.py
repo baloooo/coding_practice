@@ -32,7 +32,7 @@ class Solution:
         # Merge in-place; Note : the last node of second is None now since we reverted the second half.
         first, second = orig_head, prev
         while second.next:
-            first.next, first = second, first.next
+            first.next, first = second, first.next # Note: first, first.next doesn't work for LHS
             second.next, second = first, second.next 
         return
 

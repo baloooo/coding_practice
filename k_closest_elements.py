@@ -19,18 +19,16 @@ class Solution:
     def k_closest_elements(self, arr, k, x):
         # Time: O(logn + k), logn for bisect and k for expanding left and right boundary for k length
         import bisect
-        # lands you on first occurrence of x (incase of duplicates)
-        # left = right = self.bisect_left(arr, x)
+        # lands you on first occurrence of x (incase of duplicates), bisect_right lands you on last occurnce
         left = right = bisect.bisect_left(arr, x)
-        print left
         # start from the x as center and expand in both directions till you reach k radius
         while right - left < k:
-            if left == 0:
+            if left == 0: # since left indicates what has already been included in the final list(unlike right which indicates right border which may/maynot be included), if we've reached 0 we cannot go anywhere left than this so we can just take k elements starting from the start of the list.
                 return arr[:k]
             elif right == len(arr):
                 return arr[-k:]
             '''notice (left-1) as in current test case when x is not in list.
-            we get back and index that is on first number over x which is correctly returned
+            we get back an index that is on first number over x which is correctly returned
             by bisec_left as the index where you can insert x if it's not already there.
             So in first iteration left-1 gives you actual prev index and right has already the
             index of number just greater than x.  '''

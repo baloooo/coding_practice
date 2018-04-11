@@ -42,9 +42,7 @@ def reverse_linked_list_with_params(head, m, n):
 
 def reverse_linked_list_optimized(A):
     # Most optimized solution
-    last = None
-    cur = A
-    nxt = A.next
+    last, cur, nxt = None, A, None
     while cur is not None:
         nxt = cur.next
         cur.next = last
