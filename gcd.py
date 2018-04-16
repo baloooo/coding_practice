@@ -14,6 +14,7 @@ GCD(m, n) : 3
 """
 class Solution(object):
     def gcd(self, x, y):
+        # https://www.youtube.com/watch?v=JUzYl1TYMcU
         if x == 0:
             return y
         if y == 0:

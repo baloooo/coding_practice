@@ -17,6 +17,11 @@ class Solution(object):
     def fractionToDecimal(self, num, denom):
         """
         This is latest and most efficient solution.
+        Algorithm is to maintain a dictionary of remainder to their index position in decimal
+        representation and the moment we see a remainder we've seen before, we carve out the
+        recurring part using the value for the key matched in dictionary.
+        The logic for finding signs, quotient before the decimal, and division of the decimal
+        part is just the regular division algorithm.
 	    Time: O(digits in quotient) 
 	    This solution contains less gotchas and therefore less chances of making silly mistakes.
         There're lot of small things to do in fractionToDecimal_old
@@ -25,7 +30,7 @@ class Solution(object):
         """
         # step 1: Get sign
         decimal = []
-        if num * denom < 0:
+        if num * denom < 0: # can cause overflows, so have to be carefull.
             num = abs(num)
             denom = abs(denom)
             decimal.append('-')
@@ -37,12 +42,14 @@ class Solution(object):
             return ''.join(decimal)
         decimal.append('.')
         # seen is the mapping of past seen remainders to their index as in when laid out in array
-        # so when you encounter a seen remainder you can get the index to carve out the part before it using the index
-        seen_rem = {rem: len(decimal)}
+        # so when you encounter a seen remainder you can get the index to carve out the part before
+        # it using the index
+        seen_rem = {rem: len(decimal)} # Notice this is len(decimal) and not len(decimal)-1 b'coz of adding
+        # one extra character that is '.'
         while rem != 0:
             rem = rem * 10
             quot, rem = divmod(rem, denom)
-            decimal.append(str(quot))
+            decimal.append(str(quot)) # Note: We add quot before checking remainder not after.
             if rem in seen_rem:
                 index = seen_rem[rem]
                 return ''.join(decimal[:index]) + '(' + ''.join(decimal[index:]) + ')'

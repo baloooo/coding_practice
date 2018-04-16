@@ -8,9 +8,64 @@ class Point(object):
         self.y = b
 
 class Solution:
+	def max_points_optimized(self, points):
+		'''
+		https://www.geeksforgeeks.org/count-maximum-points-on-same-line/
+        Idea:
+			Main idea is to calculate slope for each combination of points in the list.
+			and check which slope as the maximum number of points on it. Notice that since
+			slope here is calculate
+			Gotchas: Deal with duplicate points.
+			Deal with points on x-axis and y-axis.
+
+			If two point are (x1, y1) and (x2, y2) then their slope will be
+			(y2 – y1) / (x2 – x1) which can be a double value and can cause precision
+			problems. To get rid of the precision problems, we treat slope as pair
+			((y2 – y1), (x2 – x1)) instead of ratio and reduce pair by their gcd before
+			inserting into map. In below code points which are vertical or repeated are
+			treated separately.
+        :rtype: int
+		'''
+        from fractions import gcd
+        if len(points) <= 1: return len(points)
+        slopes = collections.defaultdict(int)
+        maxp = 0
+        for i in xrange(len(points)):
+            overlapping_points = vertical_points = cur_max = 0
+            base_point = points[i]
+
+            for j in xrange(i+1, len(points)):
+                cur_point = points[j]
+                # check if duplicate points
+                if base_point.x == cur_point.x and base_point.y == cur_point.y:
+                    overlapping_points += 1
+                elif base_point.x == cur_point.x:
+                    vertical_points += 1
+                else:
+                    ydiff = cur_point.y - base_point.y
+                    xdiff = cur_point.x - base_point.x
+
+                    g = gcd(xdiff, ydiff)
+                    ydiff = ydiff/g
+                    xdiff = xdiff/g
+
+                    slopes[(ydiff, xdiff)] += 1
+
+                    cur_max = max(cur_max, slopes[(ydiff, xdiff)])
+				 # notice this in outside for block since vertical points can reach here.
+                cur_max = max(cur_max, vertical_points)
+			 # total points are whatever maximum we've found till now
+			 # + overlapping points for the base point + base point itself.
+            maxp = max(maxp, cur_max + overlapping_points + 1)
+            slopes.clear()
+        return maxp
+
+
     def max_points(self, points):
         '''
         Bruteforce would be to [calculate slope for all the other points combinations for each point in points]
+		and then iterate over all of them each time to check if slope exists. Time complexity would be O(n^3) as for each O(n^2) iteration we would go over all the n points slopes to check match.
+
         Idea: Got the idea here but not sure if/why (dx/dvs, dy/dvs) == slope ? https://discuss.leetcode.com/topic/18447/16ms-28ms-c-solutions-with-explanations/7
         below implementation: https://discuss.leetcode.com/topic/21896/python-68-ms-code/6
         Time: O(n^2)

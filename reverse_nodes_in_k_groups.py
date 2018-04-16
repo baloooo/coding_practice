@@ -13,6 +13,11 @@ Given this linked list: 1->2->3->4->5
 For k = 2, you should return: 2->1->4->3->5
 
 For k = 3, you should return: 3->2->1->4->5
+
+Idea:
+	Step1: verify if k nodes exist, and get a pointer to next group's head in the same loop.
+	Step2: reverse k nodes
+	Step3: link head of this group to next group and tail of this group to head of prev group
 """
 # Definition for singly-linked list.
 class ListNode(object):
@@ -21,6 +26,37 @@ class ListNode(object):
         self.next = None
 
 class Solution(object):
+	def reverseKGroup(self, head, k):
+        if not head or not head.next: return head
+        orig_head = prev_grp_head = ListNode('dummy')
+        orig_head.next = nxt_grp_head =  head
+        while nxt_grp_head:
+			# Step1
+            # Traverse k node ahead, to check if k nodes available and place the pointer at next group head.
+            for _ in xrange(k):
+                if nxt_grp_head is not None:
+                    nxt_grp_head = nxt_grp_head.next
+                else:
+                    break
+			# Step2
+            # reverse current group
+			'''Notice that prev is set to nxt_grp_head cleverly to deal with situations where
+			k is not an integral multiple of length of the LL. In that situation we've already
+			linked the tail of current grp to head of remaining part of the LL sucessfully,
+			and therefore we an return directly whenever traverse k nodes above exits prematurely.'''
+            prev, cur, next_p = nxt_grp_head, head, None
+            while cur != nxt_grp_head:
+                next_p = cur.next
+                cur.next = prev
+                prev = cur
+                cur = next_p
+			# Step3
+            # Link cur group with previous group and move to next group
+            prev_grp_head.next = prev # prev variable is on tail of cur_group
+            prev_grp_head = head # move head is on cur grp's head, so advancing prev_grp_head accordingly
+            head = nxt_grp_head # move head to next grp head
+        return orig_head.next
+
     def reverseKGroup(self, head, k):
         """
         verify if k nodes exist, and get a pointer to next group's head in the same loop.i

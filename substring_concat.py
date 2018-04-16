@@ -3,7 +3,8 @@ https://leetcode.com/problems/substring-with-concatenation-of-all-words/descript
 """
 import collections
 
-    def findSubstring2(self, s, words):
+
+def findSubstring2(self, s, words):
         """
         :type s: str
         :type words: List[str]
@@ -39,13 +40,24 @@ import collections
         return res
 
 
-def substring_concat_orig(base_str, word_list):
+def substring_concat_basic(base_str, word_list):
     '''
+    Idea is to make a frequency map of word_list(which would serve two purposes:
+        a. Look up in O(1) time.
+        b. can deal with duplicates, which can't be done in set)
+    and traverse base_str and from each index there try to run thru word_list distance
+    and populating a cur_word_freq_map, and see if after running till word_list distance
+    if cur_word_freq_map == base_word_list_freq_map, if so, store the base_str index, and repeat
+    the same process for next index in word_list.
+
     Time: O(len(base_str) * len(word_list) * word_len)
-    Space: O(2 * len(word_list) * len(word_list[0]))
+    Space: O(2 * len(word_list) * len(word_list[0])) # Two dictionaries
+
     Idea:https://discuss.leetcode.com/topic/17943/naive-c-solution-using-two-unordered_map-about-20-lines/20?page=1
     check Two pointer sol.n: https://github.com/kamyu104/LeetCode/blob/master/Python/substring-with-concatenation-of-all-words.py#L31
     '''
+    if not base_word or not word_list:
+        return []
     word_len, word_freq_map = len(word_list[0]), collections.defaultdict(int)
     word_list_len = word_len*len(word_list)
     start_indices = []
