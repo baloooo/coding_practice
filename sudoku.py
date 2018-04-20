@@ -17,6 +17,9 @@ class Solution(object):
         For ex: for row=1 base_row_index would be 0 and not 1 which you would get if you cancel
         3's.
         base_col_index = 3*(col/3)
+        Offset are dealt so b'coz row_offset only moves forward but just with slow pace,
+        whereas col_offset wobbles between [index, index+2] 3 times before moving to the next
+        3*3 box.
         row_offset = index / 3
         col_offset = index % 3 since column will only be in [index, index+2]
         """
@@ -29,7 +32,7 @@ class Solution(object):
     def solve_sudoku(self, board, start_row, start_col):
         for cur_row in xrange(start_row, len(board)):
             start_col = 0
-            for cur_col in xrange(start_col, len(board)):
+            for cur_col in xrange(start_col, len(board[0])):
                 if board[cur_row][cur_col] == '.':
                     for cur_num in '123456789':
                         if self.is_valid(board, cur_row, cur_col, cur_num):

@@ -25,10 +25,10 @@ class Solution(object):
         while (arr[i] == arr[i+1])
              i++
         """
-	res = []
-        # start is initialized as 1 since these are the values of arr [1, 2, 3, 4] not the indexes
-	self.backtrack(n, k, 1, [], res)
-	return res
+        res = []
+            # start is initialized as 1 since these are the values of arr [1, 2, 3, 4] not the indexes
+        self.backtrack(n, k, 1, [], res)
+        return res
         
         
 # class Solution():
