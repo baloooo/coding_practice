@@ -6,11 +6,7 @@ import collections
 
 def findSubstring2(self, s, words):
         """
-        :type s: str
-        :type words: List[str]
-        :rtype: List[int]
         More efficient, uses min string window technique.
-        Todo: why start only goes until w_len and not untill s_len-w_len_total
         https://discuss.leetcode.com/topic/35676/accepted-java-solution-12ms-with-explanation
 
         """
