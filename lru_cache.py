@@ -35,7 +35,10 @@ Input :
          get(10)       returns -1
          set(6, 14)    this pushes out key = 5 as LRU is full.
          get(5)        returns -1
-Idea:
+"""
+
+"""
+Idea 1:
 
 We need a Doubly LL b'coz given just head and tail of a linked list, to 
 remove a node or move a node to end would require O(n) time.
@@ -47,8 +50,10 @@ Add node when no node present.
 Add node when capacity is already full(pop node from head first)
 Its always a good idea to modularize code as much as possible so when code base grows
 its still manaegable, also you can get the zist of the logic just from method names.
-"""
 
+Time: 
+Space: 
+"""
 
 class DoublyLinkListNode:
     def __repr__(self):
@@ -171,16 +176,71 @@ if __name__ == '__main__':
             out_index += 1
 
 
+class LRUCache_naive(object):
+	'''
+	Idea 2: Use DEQUE (storing just keys) along with hash map for key: val mappings
+	'''
+
+    def __init__(self, capacity):
+        """
+        :type capacity: int
+        """
+        self.cache = {}
+        self.q = collections.deque()
+        self.capacity = capacity
+        
+
+    def get(self, key):
+        """
+        :type key: int
+        :rtype: int
+		Time: O(n) since removing an ele from deque requires O(n), this is improved in Idea 1 where
+		reference to DLL nodes are stored instead in cache thereby allowing O(1) removal of nodes.
+        """
+        if key not in self.cache:
+            return -1
+        # remove and add it just so as to place this key in the very rear of queue(DLL) so as to prevent it's eviction.
+        self.q.remove(key)
+        self.q.append(key)
+        return self.cache[key]
+        
+
+    def put(self, key, value):
+        """
+        :type key: int
+        :type value: int
+        :rtype: void
+		O(n) since if key is already in cache updation would require deleting key from deque
+		which is a O(n) operation
+        """
+        if key in self.cache:
+            self.q.remove(key)
+        elif len(self.cache) == self.capacity:
+            remove_key = self.q.popleft()
+            del self.cache[remove_key]
+            
+        self.q.append(key)
+        self.cache[key] = value
+        
+# Your LRUCache object will be instantiated and called as such:
+# obj = LRUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
+
+
 # 188ms LCode: Alternate implementation
 class LRUCache(object):
 
     '''
+    Idea 3:
+    This is actually a bad idea, Idea 2 is similar to this and a better version of this so this
+    should never be used. This is kept just for logging purposes
     The idea is to store a tuple (key, val, access_time) in queue and for every access
     add a new entry to queue with updated access time (when capacity is reached old (k,v,a_time)
     tuple will be flushed out by delete_old_entries method
     Cons:
-        Storage of stale (key,value,access_time) tuples in queue for maintaining LRU contract.
-        Though dictionary self.cache will always have latest values.
+        Storage of stale (key,value,access_time) tuples in queue for maintaining LRU contract,
+        though dictionary self.cache will always have latest values.
     '''
 
     def __init__(self, capacity):
@@ -209,6 +269,10 @@ class LRUCache(object):
         """
         :type key: int
         :rtype: int
+        Time: O(1)
+        since get only changes access times which would only change which entry would
+        be evicted in case someone now try to add an entry, we don't need to call delete_old_entries
+        since the count of entries is still the same.
         """
         try:
             value, _ = self.cache[key]
@@ -224,6 +288,8 @@ class LRUCache(object):
         :type key: int
         :type value: int
         :rtype: void
+        Time: O(n), n being total number of get operations. As each new get(x) will generate a new
+        tuple which will not be flushed out untill first put operation.
         """
         self.time_stamp += 1
         self.cache[key] = (value, self.time_stamp)

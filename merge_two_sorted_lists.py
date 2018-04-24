@@ -32,11 +32,9 @@ def merge_two_sorted(head1, head2):
             original_head.next = head2
             head2 = head2.next
         original_head = original_head.next
-    if head1 is not None:
-        original_head.next = head1
-    if head2 is not None:
-        original_head.next = head2
-    return original_head_backup
+
+    orig_head.next = head1 or head2
+    return original_head_backup.next
 
 if __name__ == '__main__':
     # lists = [[5, 8, 20], [4, 11, 15]]
