@@ -35,6 +35,11 @@ After calling your function, the tree should look like:
 
 def next_right_pointer_optimized(root):
     """
+    Idea is to do a level order traversal, but instead of joining next pointers while on a level,
+    we join nodes a level below us, which afterwards we can just ride on for traversing in level
+    order fashion. Notice that we're able to do this b'coz next pointers are needed by the end of the
+    day we're just repurposing it for our level order traversal.
+
     Space: O(1) Time: O(n)
     Explanation: @mmozum https://discuss.leetcode.com/topic/1106/o-1-space-o-n-complexity-iterative-solution/37
     """
@@ -52,9 +57,11 @@ def next_right_pointer_optimized(root):
         root = nxt_lvl_head.next
 
 def next_right_pointer(root):
-    #  Time: O(n), Space: O(width of binary tree)
+    '''Idea is to use level order traversal and link node on each level while populating next_levels
+    Time: O(n), Space: O(width of binary tree)
+    '''
     if not root: return
-        cur_lvl = [root]
+    cur_lvl = [root]
     while cur_lvl:
         nxt_lvl = []
         for index, node in enumerate(cur_lvl):
