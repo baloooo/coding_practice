@@ -34,3 +34,33 @@ class Solution(object):
         path_sums = []
         self.path_sum_helper(root, target_sum, [], path_sums)
         return path_sums
+
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def preorder(self, root, target_sum, cur, paths):
+        if root is None: return 0
+        if root.left is None and root.right is None and target_sum == root.val:
+            cur.append(root.val)
+            paths.append(cur[:])
+            cur.pop()
+            return
+        cur.append(root.val)
+        self.preorder(root.left, target_sum-root.val, cur, paths)
+        self.preorder(root.right, target_sum-root.val, cur, paths)
+        cur.pop()
+
+    def pathSum(self, root, target_sum):
+        """
+        :type root: TreeNode
+        :type sum: int
+        :rtype: List[List[int]]
+        """
+        paths = []
+        self.preorder(root, target_sum, [], paths)
+        return paths

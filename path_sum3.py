@@ -6,23 +6,7 @@
 #         self.right = None
 
 class Solution(object):
-    def find_sum(self, root, target_sum):
-        # find target_sum with this root as the root of the sub-tree
-        if root:
-            # since values can be negative or zero, this will ensure we add 1 every time we hit our target_sum
-            return (
-		(target_sum == root.val) +
-		self.find_sum(root.left, target_sum-root.val) +
-		self.find_sum(root.right, target_sum-root.val))
-        else:
-            return 0
-        
-
-    def pathSum(self, root, target_sum):
-        """
-        :type root: TreeNode
-        :type sum: int
-        :rtype: int
+    '''
 	Idea: https://discuss.leetcode.com/topic/65100/python-solution-with-detailed-explanation
 	Brute Force Solution
 
@@ -51,24 +35,32 @@ Using the first node as root, we scan N items
 Using the second node as root, we scan N-1 items
 
 For all nodes as potential roots or start points, we have: N + (N-1) + (N-2) +... = N^2
-        """
+    '''
+    def find_sum(self, root, target_sum):
+        # find target_sum with this root as the root of the sub-tree
         if root:
+            # since values can be negative or zero, this will ensure we add 1 every time we hit our target_sum
             return (
-		self.find_sum(root, target_sum) +
-		self.pathSum(root.left, target_sum) +
-		self.pathSum(root.right, target_sum))
+                int(target_sum == root.val) +
+                self.find_sum(root.left, target_sum-root.val) +
+                self.find_sum(root.right, target_sum-root.val))
         else:
             return 0
         
-# Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
-import collections
-
-class Solution(object):
+    def pathSum_bruteforce(self, root, target_sum):
+        """
+        :type root: TreeNode
+        :type sum: int
+        :rtype: int
+        """
+        if root:
+            return (
+                self.find_sum(root, target_sum) +
+                self.pathSum_bruteforce(root.left, target_sum) +
+                self.pathSum_bruteforce(root.right, target_sum))
+        else:
+            return 0
+        
     def find_sum(self, root, target_sum, sum_until_now, prefix_sum):
         if not root: return
         sum_until_now = sum_until_now + root.val
@@ -81,13 +73,19 @@ class Solution(object):
         prefix_sum[sum_until_now] -= 1
             
 
-    def pathSum(self, root, target_sum):
+    def pathSum_optimized(self, root, target_sum):
         """
+        Time:
+        Idea: Idea is to have a running sum of nodes(or arr values) and at each step check
+        if (target-running_sum) is already in prefix_sum_to_count map.
+        Notice this idea can be easily extended to find a subarray with target sum which would
+        generally be O(n^2) but with this hash_map strategy would be O(n) time and O(n) space.
         Idea: https://discuss.leetcode.com/topic/65100/python-solution-with-detailed-explanation/10
         """
         if not root: return 0
         self.paths = 0
-        prefix_sum = collections.defaultdict(int)  # {prefix_sum untill this node: number of paths that have the same sum}
+        # {prefix_sum untill this node: number of paths that have the same sum}
+        prefix_sum = collections.defaultdict(int)
         sum_until_now = 0
         # Note: Adding this is very crucial, since when you start from a sub-tree,
         prefix_sum[0] = 1

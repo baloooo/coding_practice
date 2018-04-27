@@ -6,11 +6,38 @@
 #         self.right = None
 
 class Solution(object):
+    '''
+    Couple of solutions for the exercise
+    https://leetcode.com/problems/binary-tree-right-side-view/solution/
+    '''
+
+    def dfs(root, cur_depth, view):
+        if cur_depth > self.max_depth:
+            view.append(root.val)
+            self.max_depth = cur_depth
+        self.dfs(root.right, cur_depth+1, view)
+        self.dfs(root.left, cur_depth+1, view)
+
     def rightSideView(self, root):
         """
-        :type root: TreeNode
-        :rtype: List[int]
-	Idea: level order traversal
+		Idea: DFS with visiting right node before than left node, and adding the first visited node
+		at every new depth.
+		Notice we can just change the traversal behavior for left and then right to get the 
+		left view
+		Time: O(n)
+		Space: O(n) stack space for tree traversal (which is kind of mandatory), depends on the structure
+		of tree.
+        """
+        view = []
+        self.max_depth = -1
+        self.dfs(root, 0, view)
+        return view
+
+    def rightSideView(self, root):
+        """
+        Idea: level order traversal
+		Time: O(n)
+		Space: O(n), width of the tree
         """
         if root is None:
             return []
