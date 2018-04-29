@@ -40,6 +40,13 @@ a factor of 3. Thus, for 7 digits, you have 37 words, and for a phone number of 
         for digit in digits:
             cur_str = num_map[digit]
             combinations = [prefix+suffix for prefix in combinations for suffix in cur_str]
+			# above is similar to this, it just alleivates handling of temp array which
+			# list comprehension takes care of.
+            # temp = []
+            # for prefix in combs:
+            #     for suffix in cur_str:
+            #         temp.append(prefix+suffix)
+            # combs = temp
         return combinations
 
 class Solution(object):

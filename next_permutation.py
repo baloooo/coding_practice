@@ -16,11 +16,9 @@ https://discuss.leetcode.com/topic/15216/a-simple-algorithm-from-wikipedia-with-
 
 
 class Solution:
-    def __init__(self):
-        pass
-
     def next_permutation(self, arr):
-        # Step: 1 Find inflexion point
+        ''' https://leetcode.com/articles/next-permutation/  '''
+        # Step: 1 Find inflexion point k
         # since we require largest index, trick is to start from the end
         for index in xrange(len(arr)-2, -1, -1):
             if arr[index] < arr[index+1]:

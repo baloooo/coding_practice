@@ -36,10 +36,10 @@ class Solution():
         '''
         checks cur row, cur col, 45 and 135 degree for collisions.
         '''
-        for cur_row in xrange(row):
-            if queens[cur_row][col] == 'Q': return False
-        for cur_col in xrange(col):
-            if queens[row][cur_col] == 'Q': return False
+        # check row and col
+        for i in xrange(len(board)):
+			if board[row][i] == 'Q': return False
+            if board[i][col] == 'Q': return False
         for cur_row, cur_col in zip(xrange(row-1, -1, -1), xrange(col+1, len(queens[0]))): # 135 degree
             if queens[cur_row][cur_col] == 'Q': return False
         for cur_row, cur_col in zip(xrange(row-1, -1, -1), xrange(col-1, -1, -1)):
@@ -66,6 +66,51 @@ class Solution():
         res = []
         queens = [['.' for _ in xrange(n)] for _ in xrange(n)]
         self.get_nqueens(queens, res, 0)
+        return res
+
+class Solution(object):
+	'''
+	Alternate solution with the same idea, only thing different is the way of implementation,
+	as this is how sudoku is implemented can be more intutive.
+	'''
+    def is_valid(self, board, row, col):
+        # check row and col
+        for i in xrange(len(board)):
+			if board[row][i] == 'Q': return False
+            if board[i][col] == 'Q': return False
+        # check diagnols and anti-diagnols upwards from this [row][col]
+        orig_row, orig_col = row, col
+        while row >= 0 and col >= 0:
+            if board[row][col] == 'Q': return False
+            row -= 1
+            col -= 1
+        row, col = orig_row, orig_col
+        while row >= 0 and col < len(board[0]):
+            if board[row][col] == 'Q': return False
+            row -= 1
+            col += 1
+        return True
+    
+    def solve(self, board, start_row, start_col, res):
+        if start_row == len(board):
+            res.append([''.join(row) for row in board])
+            return
+        for i in xrange(start_row, len(board)):
+            for j in xrange(start_col, len(board[0])):
+                if self.is_valid(board, i, j):
+                    board[i][j] = 'Q'
+                    self.solve(board, i+1, 0, res)
+                board[i][j] = '.'
+            return
+    
+    def solveNQueens(self, n):
+        """
+        :type n: int
+        :rtype: List[List[str]]
+        """
+        board = [['.' for _ in xrange(n)] for _ in xrange(n)]
+        res = []
+        self.solve(board, 0, 0, res)
         return res
 
 if __name__ == '__main__':

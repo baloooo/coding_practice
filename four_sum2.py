@@ -12,7 +12,9 @@ class Solution(object):
         Idea: https://discuss.leetcode.com/topic/67658/simple-java-solution-with-explanation
         http://www.geeksforgeeks.org/find-four-elements-sum-given-value-set-3-hashmap/
         Time: O(n^2) n being the number of elements in "each" array.
-        Space: O(2n)
+        Space: O(n^2)
+
+        https://www.geeksforgeeks.org/count-quadruples-four-sorted-arrays-whose-sum-equal-given-value-x/
         """
         from collections import defaultdict
         two_sum_map, count = defaultdict(int), 0

@@ -41,7 +41,7 @@ class Solution:
             for j in xrange(n):
                 if board[i][j] != '.':
                     num = int(board[i][j])-1  # need -1 becasue the index of array is 0~8
-                    k = i/3*3+j/3
+                    k = i/3*3 + j/3
                     '''
                     i, j, k are the row numbers for which we are testing cur_num presence
                     where box's row is got from row and col numbers as follows

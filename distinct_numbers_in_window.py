@@ -27,9 +27,13 @@ So, we return an array [2, 3, 3, 2].
 def distinct_number_in_window(inp_arr, window_size):
     '''
     http://www.geeksforgeeks.org/count-distinct-elements-in-every-window-of-size-k/
-    The idea is to create a hash map that stores elements of current widow.
+    The idea is to create a hash map that stores elements of current widow to their frequencies.
     When we slide the window, we remove an element from hash and add an element.
     We also keep track of distinct elements
+    for each new element follow these steps:
+        decrement freq (remove if freq == 0 now) for element that went off the window
+        add new element in to freq_map
+        take the len of freq_map
     '''
     from collections import defaultdict
     # {number: number_count}

@@ -17,7 +17,11 @@ class Solution(object):
         return single_max 
         '''Note: We're returning single_arm_max and not max_untill now since singel_max is the
         one which ends at root, max_until_now extends to the other side so cannot be used by parent of 
-        current root.'''
+        current root.
+        Also note that we don't need to consider a case where only left subtree excluding cur root
+        is compared since at any root it's current left subtree has already been completely dealt
+        and max saved with so we don't need to bother with that at root.
+        '''
 
     def maxPathSum(self, root):
         """

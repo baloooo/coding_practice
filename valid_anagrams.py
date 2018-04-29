@@ -1,4 +1,8 @@
 class Solution(object):
+    '''
+    https://leetcode.com/problems/valid-anagram/solution/
+    '''
+
     def isAnagram(self, s, t):
         """
         Tech1: create frequency maps for both and compare these maps.

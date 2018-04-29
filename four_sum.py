@@ -1,7 +1,7 @@
 #latest
 class Solution(object):
     def n_sum(self, arr, n, start_index, target, cur, res):
-        if n < 2 or target < arr[start]*n or target > arr[-1]*n: # powerful optimization for pruning
+        if len(arr) == 0 or target < arr[start]*n or target > arr[-1]*n: # powerful optimization for pruning
             return
         if n == 2:
             start, end = start_index, len(arr)-1

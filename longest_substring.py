@@ -29,8 +29,13 @@ def longest_substring_without_rep(s):
     char_to_index_map, start, max_window_size = {}, 0, 0
     for (index, char) in enumerate(s):
     	if char in char_to_index_map:
-    	    '''New start will be max of older start and one character ahead of this repeating char
-    	    s='abca' and index = 3 which will force start to be 1 and skip the initial a and later char_to_index_map will also
+    	    '''
+            Why max() and not just char_to_index_map[char]+1.
+            ->There can be situations where char_to_index_map[char] points to a char far behind than cur start
+            For those edge cases we use max
+            Ex: New start will be max of older start and one character ahead of this repeating char
+    	    s='abca' and index = 3 which will force start to be 1 and
+            skip the initial a and later char_to_index_map will also
     	    be updated to add the correct index of 'a' 
             This is the most important step'''
     	    start = max(start, char_to_index_map[char]+1)

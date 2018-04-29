@@ -16,6 +16,10 @@ given array S = {-1 0 1 2 -1 -4}, A solution set is:
 
 def get_three_sum_zero(arr):
     """
+    For all the methods to acheive this:
+        https://www.geeksforgeeks.org/find-triplets-array-whose-sum-equal-zero/
+
+
     Idea: https://discuss.leetcode.com/topic/8107/share-my-ac-c-solution-around-50ms-o-n-n-with-explanation-and-comments
     """
     arr.sort()

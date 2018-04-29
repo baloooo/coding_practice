@@ -19,82 +19,6 @@ Space: O(n) for values + O(1) for bookeeping or should be said as O(1) since spa
 input from user shouldn't be in extra space used for computation.'''
 
 
-class MinStackOptimized:
-    '''
-    This implementation is currently flawed and doesn't pass all test cases on leetcode.
-    Use http://www.geeksforgeeks.org/design-a-stack-that-supports-getmin-in-o1-time-and-o1-extra-space/  and implement it here instead of this.
-    The idea is to store difference (cur_ele - min seen till now) in the stack, this serves us with
-    the advantage that now in one shot we can tell:
-    1. min number till cur_index by seeing self.min
-    2. cur element by adding self.min to TOS.
-    3. when cur_min is popped next minimum can be regenerated from tos(cur_ele being popped) and current min
-       which is kind of the main requirement to get the running min incase of consecutive popping and 
-       eventually popping of current minimum.
-    '''
-    def __init__(self):
-        self.stack = []
-        self.min = sys.maxint
-
-    def push(self, x):
-        if not self.stack:
-            # stack is empty therefore directly add
-            self.stack.append(x)
-            self.min = x
-        else:
-            # directly add (x-self.min) to the stack
-            # This also ensures anytime we have negative number on the stack is
-            # when x was less than existing mininum recorded thus far.
-            self.stack.append(x-self.min)
-            if x < self.min:
-                # Update x to new min
-                self.min = x
-
-    def pop(self):
-        x = self.stack.pop()
-        if x < 0:
-            """
-            if popped element was negative therefore this was the minimum
-            element, whose actual value is in self.min but stored value is what
-            contributes to get the next min., value stored during push was
-            (x - self.old_min) and self.min = x therefore we need to backtrack
-            these steps self.min(current) - stack_value(x) actually implies to
-                x (self.min) - (x - self.old_min)
-            which therefore gives old_min back and therefore can now be set
-            back as current self.min.
-            """
-            self.min = self.min - x
-
-    def top(self):
-        x = self.stack[-1]
-        if x < 0:
-            """
-            As discussed above anytime there is a negative value on stack, this
-            is the min value so far and therefore actual value is in self.min,
-            current stack value is just for getting the next min at the time
-            this gets popped.
-            """
-            return self.min
-        else:
-            """
-            if top element of the stack was positive then it's simple, it was
-            not the minimum at the time of pushing it and therefore what we did
-            was x(actual) - self.min(min element at current stage) let's say `y`
-            therefore we just need to reverse the process to get the actual
-            value. Therefore self.min + y, which would translate to
-                self.min + x(actual) - self.min, thereby giving x(actual) back
-            as desired.
-            """
-            return x + self.min
-
-    def getMin(self):
-        # Always self.min variable holds the minimum so for so easy peezy.
-        return self.min
-
-
-# Time:  O(n)
-# Space: O(n) for actual values and O(n) for bookkeeping.
-
-
 class MinStack:
     def __init__(self):
         self.stack = []
@@ -131,20 +55,106 @@ class MinStack:
             # can implement any custom behavior for getMin on empty stack
             return -1
 
+class MinStack2(object):
+    '''
+    Time: O(n), Space: O(1) as in no extra space apart from storing actual numbers pushed
+    Idea: https://www.geeksforgeeks.org/design-a-stack-that-supports-getmin-in-o1-time-and-o1-extra-space/
+
+    When element to be inserted is less than minEle, we insert “2x – minEle”.
+    The important thing to notes is, 2x – minEle will always be less than x (proved below),
+    i.e., new minEle and while popping out this element we will see that something unusual
+    has happened as the popped element is less than the minEle. So we will be updating minEle.
+
+        How 2*x - minEle is less than x in push()? 
+        x < minEle which means x - minEle < 0
+
+        // Adding x on both sides
+        x - minEle + x < 0 + x 
+
+        2*x - minEle < x 
+
+        We can conclude 2*x - minEle < new minEle 
+        If we term x as new_min since then only we'll initiate this sequence, we can say:
+            pushed_ele = 2*new_min - old_min (1)
+        where pushed_ele is the element we'll finally push in to the stack and since from the proof
+        above it's clear that this pushed element will be less than min_ele we'll keep track of, while
+        popping when we encounter the popped element to be less than min_ele we'll use the same
+        relation (1) to get back old_min.
+            pushed_ele = 2*new_min - old_min (1)
+            old_min = pushed_ele - 2*new_min, where pushed_ele is the element that was pushed and
+            is now popped and new_min is the element we termed as minimun back then so the element
+            in the self.min variable.
+        
+    '''
+
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.stack = []
+        self.min = float('inf')
+        
+
+    def push(self, x):
+        """
+        :type x: int
+        :rtype: void
+        """
+        if not self.stack:
+            self.stack.append(x)
+            self.min = x
+        elif x < self.min:
+            # pushed_ele = 2*new_min - old_min
+            pushed_ele = 2*x - self.min
+            self.stack.append(pushed_ele)
+            self.min = x
+        else:
+            self.stack.append(x)
+
+    def pop(self):
+        """
+        :rtype: void
+        """
+        pushed_ele = self.stack.pop()
+        if pushed_ele < self.min: # A min is being popped, find next min
+            self.min = 2*self.min - pushed_ele
+            
+    def top(self):
+        """
+        :rtype: int
+        """
+        tos = self.stack[-1]
+        if tos < self.min:
+            return self.min
+        else:
+            return tos
+        
+
+    def getMin(self):
+        """
+        :rtype: int
+        """
+        return self.min
+
+
 if __name__ == '__main__':
-    # my_stack = MinStack()
-    my_stack = MinStackOptimized()
-    my_stack.push(780809279)
-    my_stack.getMin()
-    my_stack.push(57337424)
-    my_stack.push(998849637)
-    my_stack.top()
-    my_stack.pop()
-    my_stack.push(514381243)
-    my_stack.pop()
-    my_stack.top()
-    my_stack.top()
-    my_stack.pop()
-    my_stack.top()
-    my_stack.push(814651044)
+    my_stack = MinStack2()
+    # my_stack = MinStackOptimized()
+    print my_stack.push(2147483646)
+    print my_stack.push(2147483646)
+    print my_stack.push(2147483647)
+    print my_stack.top()
+    print my_stack.pop()
     print my_stack.getMin()
+    print my_stack.pop()
+    print my_stack.getMin()
+    print my_stack.pop()
+    print my_stack.push(2147483647)
+    print my_stack.top()
+    print my_stack.getMin()
+    print my_stack.push(-2147483648)
+    print my_stack.top()
+    print my_stack.getMin()
+    print my_stack.pop()
+    print my_stack.getMin()
+    ###3

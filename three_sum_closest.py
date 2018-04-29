@@ -1,10 +1,15 @@
 """
+# Key points:
+#    Logic: two pointers, closest refers to absolute distance between current sum and target
+# Time complexity: O(nlogn) + O(n^2) = O(n^2)
+
 Given an array S of n integers, find three integers in S such that the sum is closest to a given number, target. Return the sum of the three integers. You may assume that each input would have exactly one solution.
 
     For example, given array S = {-1 2 1 -4}, and target = 1.
 
     The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
 """
+
 class Solution(object):
     def nsum(self, arr, n, start_index, target, cur):
         if n < 2: # don't add all the other conditions since we need CLOSEST not EXACT.
@@ -27,7 +32,7 @@ class Solution(object):
                 else:
                     end -= 1
         else:
-            for i in xrange(start_index, len(arr)-2):
+            for i in xrange(start_index, len(arr)-n):
                 if i == start_index or arr[i] != arr[i-1]:
                     if self.nsum(arr, n-1, i+1, target-arr[i], cur+[arr[i]]):
                         return True

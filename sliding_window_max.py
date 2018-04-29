@@ -7,9 +7,10 @@ def sliding_window_max(arr, k):
     :rtype: List[int]
     Idea: http://www.geeksforgeeks.org/maximum-of-all-subarrays-of-size-k/
     We create a Dequeue, Qi of capacity k, that stores only useful elements of current window of k elements. An element is useful if it is in current window and is greater than all other elements on left side of it in current window. We process all array elements one by one and maintain Qi to contain useful elements of current window and these useful elements are maintained in sorted order. The element at front of the Qi is the largest and element at rear of Qi is the smallest of current window
-    There're two kind of pops here, one is to remove all elements smaller than element to be added from the rear of the queue.
-    Second is while adding each element after the first k elements pop all elements from the front of the queue that went
-    outside the k window size.
+    There're two kind of pops here, one is to remove all elements smaller than element
+    to be added from the rear of the queue.
+    Second is while adding each element after the first k elements pop all elements
+    from the front of the queue that went outside the k window size.
     """
     from collections import deque
     if not arr:

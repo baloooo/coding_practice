@@ -7,29 +7,34 @@ import collections
 def findSubstring2(self, s, words):
         """
         More efficient, uses min string window technique.
+        Todo: why start only goes until w_len and not untill s_len-w_len_total
+        Time: O(len(words)) * O(w_len)
+        Space: O(len(word_list)), same as basic algo
+        Todo: start only goes until w_len and not untill s_len-w_len_total, b'coz
+        w_len * (w_len_total/wlen), means the same thing.
         https://discuss.leetcode.com/topic/35676/accepted-java-solution-12ms-with-explanation
 
         """
         s_len, w_len = len(s), len(words[0])
         w_len_total = len(words) * w_len
-        counter = {}
+        need_to_find = {}
         for word in words:
-            counter[word] = counter.get(word, 0) + 1
-        curr = {}
+            need_to_find[word] = need_to_find.get(word, 0) + 1
+        have_found = {}
         res = []
         for start in range(w_len):
-            curr = {}
+            have_found = {}
             end = start
             while start + w_len_total <= s_len:
-                sub = s[end:end+w_len]
+                cur_word = s[end:end+w_len]
                 end += w_len
-                if sub not in counter:
-                    curr = {}
+                if cur_word not in need_to_find:
+                    have_found = {}
                     start = end
                 else:
-                    curr[sub] = curr.get(sub, 0) + 1
-                    while curr[sub] > counter[sub]:
-                        curr[s[start: start+w_len]] -= 1
+                    have_found[cur_word] = have_found.get(cur_word, 0) + 1
+                    while have_found[cur_word] > need_to_find[cur_word]:
+                        have_found[s[start: start+w_len]] -= 1
                         start += w_len
                     if start + w_len_total == end:
                         res.append(start)

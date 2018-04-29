@@ -15,7 +15,38 @@ Given "paper", "title", return true.
 Note:
 You may assume both s and t have the same length.
 """
+import collections
+import itertools
+
 class Solution(object):
+    def isIsomorphic2(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: bool
+        n = size of s or t
+        Time: O(n)
+        Space: O(n)
+        Idea is to just maintain a mapping b/w unique chars in s and unique chars in t with a common
+        index, so whenever a char already visited is encountered we can see if there is an existing
+        mapping in which case the val(index used earlier for this char) should be same.
+
+        https://leetcode.com/problems/isomorphic-strings/discuss/57796/My-6-lines-solution
+        """
+        s_to_idx = collections.defaultdict(int)
+        t_to_idx = collections.defaultdict(int)
+
+        idx = 1 # Gotcha: start from 1 as 0 is the default value and can be matched by an new string.
+        for ch1, ch2 in itertools.izip(s, t):
+            if s_to_idx[ch1] != t_to_idx[ch2]:
+                return False
+            else:
+                s_to_idx[ch1] = t_to_idx[ch2] = idx
+                
+            idx += 1
+        return True
+
+
     def isIsomorphic(self, base, target):
         """
         Algo:
@@ -46,3 +77,6 @@ class Solution(object):
                 else:
                     return False
         return True
+
+if __name__ == '__main__':
+	print Solution().isIsomorphic2("ab", "aa")

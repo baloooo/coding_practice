@@ -37,3 +37,20 @@ class Solution(object):
         if root is None: return True
         # As root is always symmetric bisect from start
         return self.check(root.left, root.right)
+
+class Solution(object):
+    def get_symmetric(self, left, right):
+        if left is None or right is None:
+            return left == right
+        else:
+            return (
+		left.val == right.val and
+		self.get_symmetric(left.left, right.right) and
+		self.get_symmetric(left.right, right.left))
+            
+    def isSymmetric(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        return self.get_symmetric(root, root)

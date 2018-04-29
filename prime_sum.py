@@ -7,7 +7,7 @@ class Solution:
     '''
     def find_prime_numbers(self, A):
         '''
-        Seive of Erato: O(n(logn)(loglogn))
+        Seive of Erato: O(n(loglogn))
         '''
         prime_numbers = []
         num_range = [False]*(A-1)
@@ -43,7 +43,7 @@ class Solution:
         prime_numbers = self.find_prime_numbers(A)
         '''
         once you have prime numbers, problem breaks down to finding two numbers whose sum is x
-        can be done w/ O(n^2) and constant space or O(n) time with hashing.
+        can be done w/ O(nlogn) and constant space or O(n) time with O(n) space hashing.
         '''
         for index, prime1 in enumerate(prime_numbers):
             for prime2 in prime_numbers[index:]:

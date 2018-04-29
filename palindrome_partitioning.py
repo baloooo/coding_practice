@@ -29,18 +29,30 @@ class Solution(object):
                     cut[high + 1] = min(cut[high + 1], cut[low] + 1)
                     low -= 1
                     high += 1
-        return cut[-1] 
+        return cut[-1]
 
-    def is_palindrome(self, target_str, start_index, end_index):
-        front, back = start_index, end_index
-        while front < back:
-            if target_str[front] != target_str[back]:
-                break
-            front += 1
-            back -= 1
-        else:
-            return True
-        return False
+    def is_palindrome(self, s, start, end):
+        while start < end:
+            if s[start] != s[end]:
+                return False
+            start += 1
+            end -= 1
+        return True
+
+    def dfs(self, s, start, end):
+        if start == end: return 0
+        if self.is_palindrome(s, start, end):
+            return 0
+        min_cut = float('inf')
+	for k in xrange(start, end):
+            min_cut = min(min_cut, 1 + self.dfs(s, start, k) + self.dfs(s, k+1, end))
+        return min_cut
+
+    def min_cut_recursion(self, s):
+	# Time: Perhaps O(2^n) since it try to put cut at every place in n locations b/w start and end.
+        return self.dfs(s, 0, len(s)-1)
+
+
 
     def get_palindromic_parts(self, start, given_str):
         if start == len(given_str):
@@ -74,3 +86,7 @@ class Solution(object):
         self.palindromic_parts = []
         self.get_palindromic_parts(0, given_str)
         return self.palindromic_parts
+
+
+if __name__ == '__main__':
+    print Solution().min_cut_recursion("aab")
