@@ -3,7 +3,14 @@
 class Solution:
     def vertical_order(self, root):
         '''
-	http://www.geeksforgeeks.org/print-a-binary-tree-in-vertical-order-set-3-using-level-order-traversal/
+        One idea is to use a dictionary with mapping of distance from root node to list of nodes at
+        that distance. And then run a tree traversal (preorder) on the whole tree finally 
+        ort the keys and return it.
+
+        The only catch here is that nodes on same distance from root will be ordered from bottom to top.
+        If you want it to be top to bottom, you can use BFS for tree traversal, both ideas would
+        provide left to right ordering though.
+        http://www.geeksforgeeks.org/print-a-binary-tree-in-vertical-order-set-3-using-level-order-traversal/
         '''
         from collections import defaultdict
         from collections import deque
