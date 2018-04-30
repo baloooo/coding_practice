@@ -33,7 +33,7 @@ class Solution(object):
         # Note: Never use the conditional: if end < 0 or start >= len(arr):
         if start > end:
             return None
-        mid = start + int(math.ceil((end-start)/2.0))
+        mid = start + (end-start)/2
         mid_node = TreeNode(arr[mid])
         mid_node.left = self.get_bst(arr, start, mid-1)
         mid_node.right = self.get_bst(arr, mid+1, end)
@@ -44,9 +44,9 @@ class Solution(object):
         :type nums: List[int]
         :rtype: TreeNode
         """
-        if not len(arr):
-            return []
         return self.get_bst(arr, 0, len(arr)-1)
+
+####################################################################################################
 
     def get_ll_len(self, head):
         count = 0
@@ -55,7 +55,7 @@ class Solution(object):
             count += 1
         return count
 
-    def construct_bst2(self, start, end):
+    def construct_bst_optimized(self, start, end):
         """
         constructing bst using more intutive mid terminology
         http://articles.leetcode.com/convert-sorted-list-to-balanced-binary
@@ -66,7 +66,7 @@ class Solution(object):
         mid = start + (end-start)/2
         # sort of inorder
         left = self.ll_to_bst(start, mid-1)
-        root = TreeNode(self.head.val)
+        root = TreeNode(self.head.val) # Notice that we assign root before moving forward the hea
         self.head = self.head.next
         right = self.ll_to_bst(mid+1, end)
         root.left = left

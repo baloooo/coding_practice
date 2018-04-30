@@ -12,7 +12,8 @@ class Solution(object):
         where search continues excluding stop index similar to xrange, we always use one index extra
         as in root.left recursive call used root_index and not root_index-1 also from buildTree similar thing.
         '''
-        if inorder_start >= inorder_end or self.preorder_index > len(preorder)-1: return None
+        if inorder_start >= inorder_end:
+            return None
         root = TreeNode(preorder[self.preorder_index])
         root_index = inorder.index(preorder[self.preorder_index], inorder_start, inorder_end)
         self.preorder_index += 1

@@ -25,22 +25,31 @@ class Solution:
         for index in xrange(left_in, right_in+1, 1):
             if inorder[index] == target:
                 return index
-        print 'target: {0} not found within left: {1} right: {2} in inorder'.format(target, left_in, right_in)  # noqa
 
-    def build_tree(self, inorder, postorder, left_in, right_in, post_index):
-        print 'left_in: {0} right_in: {1} post_index: {2}'.format(left_in, right_in, post_index)  # noqa
-        if left_in == right_in:
-            return Node(inorder[left_in])
-        post_index -= 1
-        target = postorder[post_index]
-        target_index = self.find_target_index(
-            inorder, target, left_in, right_in)
-        root = Node(target)
-        root.right = self.build_tree(
-            inorder, postorder, target_index+1, right_in, self.post_index)
-        root.left = self.build_tree(
-            inorder, postorder, left_in, target_index-1, self.post_index)
+    def get_tree(self, inorder, postorder, in_start, in_end):
+        if in_start > in_end:
+            return None
+        root = TreeNode(postorder.pop()) # this is O(1)
+        # in_root = inorder.index(root.val)
+	in_root = self.find_target_index(inorder, root.val, in_start, in_end)
+
+        root.right = self.get_tree(inorder, postorder, in_root+1, in_end)
+        root.left = self.get_tree(inorder, postorder, in_start, in_root-1)
         return root
+    
+    def buildTree(self, inorder, postorder):
+        """
+        :type inorder: List[int]
+        :type postorder: List[int]
+        :rtype: TreeNode
+	Idea is to get the order of traversal from postorder/preorder and the structure of
+	division of tree from inorder traversal.
+	Also notice that in postorder right needs to be dealt with first and then left and 
+	vice-versa in preorder/inorder combination
+        Also be sure to use popping techique for postorder array as using an index is a little
+        more tricky.
+        """
+        return self.get_tree(inorder, postorder, 0, len(inorder)-1)
 
 # Definition for a binary tree node.
 # class TreeNode(object):

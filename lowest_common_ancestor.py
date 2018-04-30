@@ -31,6 +31,7 @@ class Solution(object):
             return root
         # Otherwise check if left subtree or right subtree is LCA
         return left if left else right
+	# return left or right 
 
 """
 LCA for Binary Search Tree
@@ -53,3 +54,13 @@ class Solution(object):
                 root = root.left
             else:
                 return root
+
+    def lowestCommonAncestor(self, root, p, q):
+        while root:
+	    # If root is one of p or q or leaf node. or if root divides p,q in separate brances.
+            if root in [p, q, None] or (p.val <= root.val <= q.val) or (p.val >= root.val >= q.val):
+                return root
+            if root.val < p.val:
+                root = root.right
+            else:
+                root = root.left

@@ -7,7 +7,6 @@ def k_smallest_naive(k):
     """
      1. inorder O(n)
      2. find element by arr[-k] O(1)
-     3. find in bst O(logn)
      Total: Time: O(n), space: O(n)
     """
     pass
@@ -33,17 +32,22 @@ class Solution(object):
 
     def kthSmallest(self, root, k):
         """
-        Time: O(max(h,k))
-        Space: O(h)
-        https://discuss.leetcode.com/topic/17810/3-ways-implemented-in-java-python-binary-search-in-order-iterative-recursive/75
         Strategy:
         
+        Idea is to keep a counter in the #logic area of inorder traversal and the moment it
+        reaches target(depending you're decrementing to 1 or incremting to k) you can start
+        returning the node.val.
+
         Regular inorder, Basic idea is to Go left, decrement k, Go right
         
         At any stage if k == 1, meaning we found our target keep returning that val back.
         If there are multiple insertion/deletion of nodes and we need to calculate kthsmallest frequently, we should
         start storing count of nodes in left subtree at every nodes, which can easiliy be maintained while creation/deletion
         and easy to access too.
+
+        Time: O(max(h,k))
+        Space: O(h)
+        https://discuss.leetcode.com/topic/17810/3-ways-implemented-in-java-python-binary-search-in-order-iterative-recursive/75
         """
         self.k = k
         return self.inorder(root)
