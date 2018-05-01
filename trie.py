@@ -1,4 +1,7 @@
 """
+https://leetcode.com/articles/implement-trie-prefix-tree/
+
+
 Idea: https://discuss.leetcode.com/topic/14202/ac-python-solution/7
 Also contains info on time complexity for insert and search
 http://www.geeksforgeeks.org/trie-insert-and-search/

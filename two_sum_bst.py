@@ -1,37 +1,6 @@
 # coding: utf-8
 """
-Given a binary search tree T, where each node contains a positive integer, and
-an integer K, you have to find whether or not there exist two different nodes A
-and B such that A.value + B.value = K.
-
-Return 1 to denote that two such nodes exist. Return 0, otherwise.
-
-Notes
-- Your solution should run in linear time and not take memory more than
-    O(height of T).
-- Assume all values in BST are distinct.
-
-Example :
-
-Input 1:
-
-T :       10
-         / \
-        9   20
-
-K = 19
-
-Return: 1
-
-Input 2:
-
-T:        10
-         / \
-        9   20
-
-K = 40
-
-Return: 0
+https://leetcode.com/problems/two-sum-iv-input-is-a-bst/solution/
 """
 # Definition for a binary tree node.
 # class TreeNode(object):
@@ -83,27 +52,31 @@ class Solution(object):
                 cur_max = self.next_max()
         return False
 
-    def findTarget_old(self, root, k):
+	def findTarget_bfs(self, root, target):
         """
-        :type root: TreeNode
-        :type k: int
-        :rtype: bool
         Time: O(n) Space: O(n)
-        Idea: similar to array two sum
+        Idea: similar to array two sum, but doesn't benefits from the fact that the tree is BST
         """
-        vals = set() # set is suffice rather than dict here since we only need to return boolean and not the actual nodes.
-        nodes = [root]
-        index = 0
-        # it's not safe to use for loop here:
-        # https://stackoverflow.com/questions/3752618/python-adding-element-to-list-while-iterating
-        while index < len(nodes):
-            cur = nodes[index]
-            if k - cur.val in vals:
-                return True
-            vals.add(cur.val)
-            if cur.left:
-                nodes.append(cur.left)
-            if cur.right:
-                nodes.append(cur.right)
-            index += 1
-        return  False
+        seen = set()
+        queue = [root]
+        while queue:
+            nxt_level = []
+            while queue:
+                cur = queue.pop()
+                if target - cur.val in seen:
+                    return True
+                else:
+                    if cur.left is not None:
+                        nxt_level.append(cur.left)
+                    if cur.right is not None:
+                        nxt_level.append(cur.right)
+                seen.add(cur.val)
+            queue = nxt_level
+        return False
+
+	def findTarget_naive(self, root, target):
+		'''
+		Idea is to do an inorder traversal of BST and store results in an array.
+		And in the next step do a two pointer search from start and end of the array for the sum
+		Time: O(n) space: O(n)
+		'''

@@ -6,6 +6,55 @@ class TrieNode(object):
         self.is_word = False
 
 class WordDictionary(object):
+	'''
+	Logic is same as below with the only difference that dfs now uses indices rather than slices
+	of array which take more space therefore this implementation is more optimized.
+	'''
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.root = TrieNode()
+        
+
+    def addWord(self, word):
+        """
+        Adds a word into the data structure.
+        :type word: str
+        :rtype: void
+        """
+        cur_root = self.root
+        for ch in word:
+            cur_root = cur_root.children[ch]
+        cur_root.is_word = True
+
+    def dfs(self, cur_root, word, index):
+        if len(word) == index:
+            return cur_root.is_word
+        if word[index] in cur_root.children:
+            return self.dfs(cur_root.children[word[index]], word, index+1)
+        elif word[index] == '.':
+            for ch in cur_root.children:
+                if self.dfs(cur_root.children[ch], word, index+1):
+                    return True
+        return False
+        
+    def search(self, word):
+        """
+        Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter.
+        :type word: str
+        :rtype: bool
+        """
+        return self.dfs(self.root, word, 0)
+
+########################################################################################################
+class TrieNode(object):
+    def __init__(self):
+        self.children = collections.defaultdict(TrieNode)
+        self.is_word = False
+
+class WordDictionary(object):
 
     def __init__(self):
         """
