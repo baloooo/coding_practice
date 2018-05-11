@@ -1,9 +1,6 @@
 
 
 class Solution:
-    def __init__(self):
-        pass
-
     def best_time_to_sell_stocks_k(self, prices, k):
         '''
         Time: O(k.n^2)

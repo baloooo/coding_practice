@@ -4,17 +4,6 @@ https://discuss.leetcode.com/topic/79071/knapsack-problem-java-solution-with-thi
 
 
 class Solution:
-    def __init__(self):
-        pass
-
-    def ways_to_coin_change(self, coins, total_sum):
-        # total_ways = self.count_recursive(coins, 0, total_sum)
-        # print 'total_ways using just recursion', total_ways
-        total_ways = self.count_dp(coins, total_sum)
-        print 'total_ways using DP', total_ways
-        # total_ways = self.count_dp_optimized(coins, total_sum)
-        return total_ways if total_ways else -1
-
     def count_recursive(self, coins, index, total_sum):
         # no more coins left
         if index == len(coins):
@@ -72,6 +61,8 @@ class Solution:
 
     def count_dp_optimized(self, coins, total_sum):
         """
+        Idea:
+        https://leetcode.com/problems/combination-sum-iv/discuss/85036/1ms-java-dp-solution-with-detailed-explanation
         Optimizes on space
         m = len(coins), n = total_sum
         Space: O(total_sum)
@@ -82,6 +73,14 @@ class Solution:
             for cur_sum in xrange(cur_coin, total_sum+1):
                 dp[cur_sum] += dp[cur_sum-cur_coin]
         return dp[-1]
+
+    def ways_to_coin_change(self, coins, total_sum):
+        # total_ways = self.count_recursive(coins, 0, total_sum)
+        # print 'total_ways using just recursion', total_ways
+        total_ways = self.count_dp(coins, total_sum)
+        print 'total_ways using DP', total_ways
+        # total_ways = self.count_dp_optimized(coins, total_sum)
+        return total_ways if total_ways else -1
 
 if __name__ == '__main__':
     test_cases = [
