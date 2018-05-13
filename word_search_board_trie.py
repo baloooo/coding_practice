@@ -58,3 +58,40 @@ if __name__ == '__main__':
     board = [list(each) for each in board]
     words = [list(each) for each in words]
     print Solution2().findWords(board, words)
+
+class Solution(object):
+    def dfs(self, board, word, index, row, col):
+        if row < 0 or col < 0 or row >= len(board) or col >= len(board[0]):
+            return
+        # success case
+        #print index, row, col
+        if board[row][col] == word[index]:
+            board[row][col] = '.'
+            if index == len(word)-1:
+                board[row][col] = word[index]
+                return True
+            elif (self.dfs(board, word, index+1, row+1, col) or
+                    self.dfs(board, word, index+1, row, col+1) or 
+                    self.dfs(board, word, index+1, row-1, col) or
+                    self.dfs(board, word, index+1, row, col-1)):
+                board[row][col] = word[index]
+                return True
+            else:
+                board[row][col] = word[index]
+                
+    def findWords_naive(self, board, words):
+        """
+	Gets TLE
+        """
+        found_words = set()
+        words = {word for word in words}
+        for cur_word in words:
+            # print cur_word
+            for i in xrange(len(board)):
+                for j in xrange(len(board[0])):
+                    if self.dfs(board, cur_word, 0, i, j):
+                        found_words.add(cur_word)
+                        break
+            # print board
+        return list(found_words)
+        

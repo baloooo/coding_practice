@@ -3,13 +3,14 @@ class Solution(object):
         """
 	Time: O(n^2)
 	Space: O(n)
+        This to get the general idea: https://www.youtube.com/watch?v=YDf982Lb84o&t=316s
+        This has the detail approach:
 	https://discuss.leetcode.com/topic/8398/dp-solution-in-6-lines-with-explanation-f-i-n-g-i-1-g-n-i/79
-	https://www.youtube.com/watch?v=YDf982Lb84o&t=316s
         """
         dp = [0]*(n+1)
         dp[0] = dp[1] = 1
-        for i in xrange(2, n+1):
-            for j in xrange(1, i+1):
+        for i in xrange(2, n+1): # This is the G(n)
+            for j in xrange(1, i+1): # This is the f(n)
                 dp[i] += dp[j-1] * dp[i-j]
         return dp[n]
 

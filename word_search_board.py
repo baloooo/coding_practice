@@ -53,6 +53,35 @@ class Solution(object):
         return False
 
 
+class Solution(object):
+    def dfs(self, board, word, index, row, col):
+        if (row < 0 or col < 0 or row >= len(board) or col >= len(board[0]) or board[row][col] == '.'
+                or board[row][col] != word[index]):
+            return
+        board[row][col] = '.'
+        if index == len(word)-1:
+            return True
+        elif (self.dfs(board, word, index+1, row+1, col) or
+                self.dfs(board, word, index+1, row, col+1) or 
+                self.dfs(board, word, index+1, row-1, col) or
+                self.dfs(board, word, index+1, row, col-1)):
+            return True
+        else:
+            board[row][col] = word[index]
+    
+    def exist(self, board, word):
+        """
+	If allowed to modify the board, we can use this implementation also.
+	Idea is same as above
+        """
+        for i in xrange(len(board)):
+            for j in xrange(len(board[0])):
+                if self.dfs(board, word, 0, i, j):
+                    return True
+        return False
+        
+
+
 class Solution:
     def dfs_optimized(self, board, row, col, word, visited, word_index):
         if word_index == len(word):

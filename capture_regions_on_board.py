@@ -31,6 +31,17 @@ class Solution:
         c) At last,alter all the '1' to 'O'
 
     """
+    def dfs(self, board, row, col):
+	'''
+	below bfs can be replaced by this relatively simple dfs too.
+	'''
+        if not(0 <= row < len(board) and 0 <= col < len(board[0])) or board[row][col] != 'O':
+            return
+        board[row][col] = '1'
+        self.dfs(board, row+1, col)
+        self.dfs(board, row-1, col)
+        self.dfs(board, row, col+1)
+        self.dfs(board, row, col-1)
 
     def bfs(self, board, row, col):
         from Queue import Queue
@@ -82,6 +93,8 @@ class Solution:
             for col in xrange(len(board[0])):
                 if board[row][col] == '1':
                     board[row][col] = 'O'
+
+################################################################################################################
 
     def solve(self, board):
         """

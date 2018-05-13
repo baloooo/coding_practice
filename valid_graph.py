@@ -41,6 +41,72 @@ class Solution(object):
         # all nodes should have been popped out of graph
         # other words visited
         return not graph
+#################################################################################
+'''This is just a Disjoint set union datastructure implementation of the idea, where we try to add
+all nodes to the disjoint set datastructure and if at any point we get a merge happening between
+nodes of same parent we know it's not a tree. Also most importantly we can check if number of 
+edges is exactly n-1
+'''
+
+class DSJNode(object):
+    def __init__(self, val):
+        self.val = val
+        self.rank = 0
+        self.parent = None
+        
+class DSU(object):
+    def __init__(self):
+        self.node_graph = {}
+        
+    def add_node(self, data):
+        if data not in self.node_graph:
+            node = DSJNode(data)
+            node.parent = node
+            self.node_graph[data] = node
+        return self.node_graph[data]
+    
+    def find_parent_node(self, node):
+        if node.parent == node:
+            return node
+        else:
+            node.parent = self.find_parent_node(node.parent)
+        return node.parent
+    
+    def merge(self, data1, data2):
+        node1 = self.node_graph[data1]
+        node2 = self.node_graph[data2]
+        node1_parent = self.find_parent_node(node1)
+        node2_parent = self.find_parent_node(node2)
+        
+        # trying to join two nodes from the same forest will create a cycle, therefore not a tree
+        if node1_parent == node2_parent:
+            return False
+        
+        if node1_parent.rank >= node2_parent.rank:
+            if node1_parent.rank == node2_parent.rank:
+                node1_parent.rank += 1
+            node2_parent.parent = node1_parent
+        else:
+            node1_parent.parent = node2_parent
+        return True
+    
+class Solution(object):
+    def validTree(self, n, edges):
+        """
+        :type n: int
+        :type edges: List[List[int]]
+        :rtype: bool
+        """
+        if len(edges) != n-1:
+            return False
+        dsu = DSU()
+        for i in xrange(n):
+            dsu.add_node(i)
+        for node1, node2 in edges:
+            if not dsu.merge(node1, node2):
+                return False
+        return True
+        
 
 class TestSolution(object):
 

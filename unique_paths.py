@@ -110,7 +110,7 @@ class Solution(object):
                     obstacle_grid[cur_row][cur_col] = obstacle_grid[cur_row-1][cur_col] + obstacle_grid[cur_row][cur_col-1]  # noqa
         return obstacle_grid[row_len-1][col_len-1]
 
-    def uniquePathsWithObstacles_optimized(self, obstacleGrid):
+    def uniquePathsWithObstacles_1(self, obstacleGrid):
         """
         :type obstacleGrid: List[List[int]]
         :rtype: int
@@ -145,6 +145,26 @@ class Solution(object):
                 else:
                     obstacleGrid[row][col] = obstacleGrid[row-1][col] + obstacleGrid[row][col-1]
         return obstacleGrid[row_n-1][col_n-1]
+
+    def uniquePathsWithObstacles_optimized(self, grid):
+        """
+        :type obstacleGrid: List[List[int]]
+        :rtype: int
+        """
+        grid[0][0] = int(not grid[0][0])
+        for j in xrange(1, len(grid[0])):
+            grid[0][j] = grid[0][j-1] if grid[0][j] != 1 else 0
+        for i in xrange(1, len(grid)):
+            grid[i][0] = grid[i-1][0] if grid[i][0] != 1 else 0
+        
+        for i in xrange(1, len(grid)):
+            for j in xrange(1, len(grid[0])):  
+                if grid[i][j] == 1:
+                    grid[i][j] = 0
+                else:
+                    grid[i][j] = grid[i-1][j] + grid[i][j-1]
+        
+        return grid[-1][-1]
 
 if __name__ == '__main__':
     # print Solution().unique_paths(3, 3)

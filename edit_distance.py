@@ -1,4 +1,5 @@
 """
+Note: All operations are done on one string s1(or s2).
 Check if edit distance between two strings is one
 An edit between two strings is one of the following changes.
 
@@ -52,10 +53,10 @@ class Solution1:
                 if edit_distance == 1:
                     return False
                 if len(str1) > len(str2):
-                    # Can be treated as insertion in str2 or deletion at str1
+                    # Delete in str1
                     str1_index += 1
                 elif len(str1) < len(str2):
-                    # Can be treated as insertion in str1 or deletion at str2
+                    # Insert in str1
                     str2_index += 1
                 else:
                     # replace char at str1_index and str2_index

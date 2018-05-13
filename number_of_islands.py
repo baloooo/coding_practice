@@ -1,8 +1,10 @@
+https://leetcode.com/articles/number-of-islands/
+
 class Solution(object):
     def dfs(self, grid, row, col):
-        if row < 0 or row >= len(grid) or col < 0 or col >= len(grid[0]) or grid[row][col]!='1': return
+        if row < 0 or row >= len(grid) or col < 0 or col >= len(grid[0]) or grid[row][col]!='0': return
         # mark all adjacent connected nodes as 0
-        grid[row][col] = 0
+        grid[row][col] = '0'
         self.dfs(grid, row+1, col)
         self.dfs(grid, row, col+1)
         self.dfs(grid, row, col-1)
@@ -28,35 +30,39 @@ class Solution(object):
                     islands += 1
         return islands
 
-class Solution(object):
-  def numIslands_optimized(self, grid):
-    """
-    :type grid: List[List[str]]
-    :rtype: int
-    Need to go over this
-    """
-    if not grid or not grid[0]:
-            return 0
-        
-    root = []
-
-    m, n = len(grid), len(grid[0])
-    res = 0
-    for i in xrange(m):
-        for j in xrange(n):
-            if grid[i][j] == '1':
-                flag = True
-                if i > 0 and grid[i-1][j] != '0':
-                    flag = False
-                    grid[i][j] = root[grid[i-1][j]]
-                if j > 0 and grid[i][j-1] != '0':
-                    if flag:
-                        grid[i][j] = root[grid[i][j-1]]
-                    else:
-                        root[grid[i][j-1]] = grid[i][j]
-                    flag = False
-                if flag:
-                    grid[i][j] = res
-                    root.append(res)
-                    res += 1
-    return sum(root[i] == i for i in xrange(len(root)))
+    def bfs(self, grid, row, col):
+        from Queue import Queue
+        bfs_q = Queue()
+        bfs_q.put((row, col))
+        grid[row][col] = '0'
+        while not bfs_q.empty():
+            for _ in xrange(len(bfs_q.queue)):
+                cur_row, cur_col = bfs_q.get()
+                # grid[cur_row][cur_col] = '0'
+                if 0 <= cur_row+1 < len(grid) and grid[cur_row+1][cur_col] == '1':
+                    bfs_q.put((cur_row+1, cur_col))
+		    # Note: mark them invalid right here, so no one else tries to traverse it.
+                    grid[cur_row+1][cur_col] = '0'
+                if 0 <= cur_row-1 < len(grid) and grid[cur_row-1][cur_col] == '1':
+                    bfs_q.put((cur_row-1, cur_col))
+                    grid[cur_row-1][cur_col] = '0'
+                if 0 <= cur_col+1 < len(grid[0]) and grid[cur_row][cur_col+1] == '1':
+                    bfs_q.put((cur_row, cur_col+1))
+                    grid[cur_row][cur_col+1] = '0'
+                if 0 <= cur_col-1 < len(grid[0]) and grid[cur_row][cur_col-1] == '1':
+                    bfs_q.put((cur_row, cur_col-1))
+                    grid[cur_row][cur_col-1] = '0'
+                    
+    def numIslands_bfs(self, grid):
+        """
+	This is space efficient as the max queue size in bfs can be of min(m, n) with grid m*n dimension.
+	We will get a queue with all diagnols(which can be of size min(m,n)) when there are all
+	one's in the grid.
+        """
+        islands = 0
+        for i in xrange(len(grid)):
+            for j in xrange(len(grid[0])):
+                if grid[i][j] == '1':
+                    self.bfs(grid, i, j)
+                    islands += 1
+        return islands

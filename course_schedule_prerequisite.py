@@ -1,4 +1,5 @@
 """
+Always be wary of duplicate edges, which might be excluded in some exercises here.
 PS:
 There are a total of n courses you have to take, labeled from 0 to n - 1.
 
@@ -45,7 +46,12 @@ class Solution:
         Space: O(E) in a complete graph
         """
         from collections import defaultdict
-        # self.adjacency_list = {node_num: [adjacent_node1, adjacent_node2,]}
+        '''
+        self.adjacency_list = {node_num: [adjacent_node1, adjacent_node2,]}
+        Notice that since this is a defaultdict and we track indegrees using a 
+        separate list, even if a node doesn't have a mapping(prerequisite) we'll still
+        scan it since for scanning nodes are picked from indegree_list and not adjacency_list
+        '''
         self.adjacency_list = defaultdict(list)
         # self.indegree_list = [0, 1, 5, 0, ...] where index depicts node_num
         # and value at index depicts
@@ -58,7 +64,8 @@ class Solution:
             self.indegree_list[destination] += 1
 
     def can_finish(self, num_courses, prerequisite_list):
-        # Kahn's algo for topological sorting: http://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
+        # Kahn's algo for topological sorting:
+        # http://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
         # prerequisite_list[destination, source]
         self.make_graph(num_courses, prerequisite_list)
         # populate zero_indegree_q

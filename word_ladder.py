@@ -158,6 +158,8 @@ class Solution:
         This graph is realized using neighbor_dict which is just a mapping
         of a word to (:) all words that are in one edit distance of this
         word.
+        {u'hot': [u'dot', u'lot'], u'hit': [u'hot'], u'dot': [u'dog'], u'lot': [u'log'], u'dog': [u'cog']}
+        {u'hit': [u'hot'], u'log': [u'cog'], u'dog': [u'cog'], u'hot': [u'dot', u'lot'], u'lot': [u'log'], u'dot': [u'dog']}
         neighbor_dict = {
             'dog': ['cog'],
             'dot': ['dog'],

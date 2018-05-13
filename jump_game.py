@@ -22,6 +22,12 @@ class Solution:
         return 0 
 
     """
+    The idea is to stand on an index, with last_max_reach. Now iterate untill last_max_reach
+    and keep updating cur_max_reach which will tell how far can I jump from where you were
+    standing last, as wherever you were standing last you can jump to any of these indexes
+    currently scanned in one jump. Now after reaching to last_max_reach, increment jumps by 
+    1 and update cur_max_reach to last_max_reach. Notice that in each jump we'll go as
+    far as possible therefore essentially taking as minimum jumps as possible.
     Both exercises are of Greedy type
     https://discuss.leetcode.com/topic/11761/easy-python-greedy-solution-with-explanation
     """

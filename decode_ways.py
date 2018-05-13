@@ -8,14 +8,61 @@ space optimized form implemented in decode_optimized method here.
 
 class Solution:
     def decode_ways(self, s, n):
-        if n == 0 or n == 1:
+        #if n == 0 or n == 1: This can be used with line 32 too
+        #    return 1
+	if n == 0:
             return 1
+        if n == 1:
+            if s[n-1] == '0':
+                return 0
+            else:
+                return 1
         count = 0
         if s[n-1] != '0':
             count = self.decode_ways(s, n-1)
         if s[n-2] == '1' or (s[n-2] == '2' and '0' <= s[n-1] <= '6'):
             count += self.decode_ways(s, n-2)
         return count
+
+    def numDecodings(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        # if len(s) >= 1 and s[0] == '0': return 0
+        return self.decode_ways(s, len(s))
+
+############################################################################################################
+
+    def decode_optimized(self, s):
+        """
+        Time: O(len(s))
+        Space optimized: O(1)
+        """
+        if not s or s[0] == '0':
+            return 0
+        if len(s) == 1:
+            return 1
+	# since we've already established that s[0] and s[1] are valid integers we can
+	# initialize prev, prev_prev with 1 and then let loop deal with the rest
+        prev_prev = 1
+        prev = 1
+	# notice the loop goes one over so as to calculate #f ways till s[n-1]
+        for i in xrange(2, len(s)+1): 
+            """
+            Notice similar to dp, you start with base line at start
+            of every iteration therefore remember to revert back cur to zero
+            and update it's value based on values fetched from previous steps
+            """
+            cur = 0 # Note: This is the most important step. You need to bring cur back to zero at every iter
+            if s[i-1] != '0':
+                cur += prev
+            if '10' <= s[i-2:i] <= '26':
+                cur += prev_prev
+            prev, prev_prev = cur, prev
+        return cur
+
+############################################################################################################
 
     def decode_recursion(self, s)
         """
@@ -40,31 +87,6 @@ class Solution:
         return self.decode_ways(s, len(s)) # For string lenght > 1
         
 
-    def decode_optimized(self, s):
-        """
-        Time: O(len(s))
-        Space optimized: O(1)
-        """
-        if not s or s[0] == '0':
-            return 0
-        if len(s) == 1:
-            return 1
-        cur = 0
-        prev_prev = 1
-        prev = 1 if s[0] != '0' else 0
-        for i in xrange(2, len(s)+1):
-            """
-            Notice similar to dp, you start with base line at start
-            of every iteration therefore remember to revert back cur to zero
-            and update it's value based on values fetched from previous steps
-            """
-            cur = 0 # Note: This is the most important step. You need to bring cur back to zero at every iter
-            if s[i-1] != '0':
-                cur += prev
-            if '10' <= s[i-2:i] <= '26':
-                cur += prev_prev
-            prev, prev_prev = cur, prev
-        return cur
 
     def decode(self, s):
         """

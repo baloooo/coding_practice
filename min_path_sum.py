@@ -1,5 +1,9 @@
 """
 Idea:
+    The path to reach (m, n) must be through one of the 3 cells: (m-1, n-1) or (m-1, n) or (m, n-1). So minimum cost to reach (m, n) can be written as “minimum of the 3 cells plus cost[m][n]”.
+
+    minCost(m, n) = min (minCost(m-1, n-1), minCost(m-1, n), minCost(m, n-1)) + cost[m][n]
+
     https://discuss.leetcode.com/topic/15269/10-lines-28ms-o-n-space-dp-solution-in-c-with-explanations
     can be optimized to O(m) space rather than O(m*n) space.
 """
@@ -9,6 +13,7 @@ class Solution:
     def min_path_recursion(self, grid, i, j):
         if i < 0 or j < 0:
             return float('inf')
+        # This step is very crucial since this marks the valid start point for the recursion
         elif i == 0 and j == 0:
             return grid[i][j]
         return grid[i][j] + min(self.min_path(grid, i-1, j), self.min_path(grid, i, j-1))

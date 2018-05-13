@@ -1,10 +1,15 @@
 """
+https://nullwords.wordpress.com/2013/03/13/the-bk-tree-a-data-structure-for-spell-checking/
+is used for spell checking which is a combination of BK-trees and edit distance technique.
+
+Contains info on time/space complexity for each operation + possible real world use cases.
 https://leetcode.com/articles/implement-trie-prefix-tree/
 
 
 Idea: https://discuss.leetcode.com/topic/14202/ac-python-solution/7
 Also contains info on time complexity for insert and search
 http://www.geeksforgeeks.org/trie-insert-and-search/
+
 Time: O(n) where n is the length of word to be searched.
 Space: O(mnk) where m is the total number of words each of lenght n, and k is the size of character set
 since at each node this character set resides pointing to nodes in it's children

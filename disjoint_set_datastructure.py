@@ -1,6 +1,6 @@
 """
 The idea of disjoint datastructures is more clearly shown with the help of implementation of 
-kruskal algorithm where we break each node in the graph to individual nodes and then pick
+kruskal algorithm where we break graph to individual nodes and then pick
 minimum weight edge and see if it help join two different forests and not nodes with in the same
 forest as our end goal is to have minimum number of edges that can join all the nodes in the graph.
 Here disjoint set helps in:
@@ -8,8 +8,11 @@ Helping find if this min. weight edge joins two nodes of already connected graph
 
 In computer science, a disjoint-set data structure, also called a union–find data structure or merge–find set, is a data structure that keeps track of a set of elements partitioned into a number of disjoint (non-overlapping) subsets. It provides near-constant-time operations (bounded by the inverse Ackermann function) to add new sets, to merge existing sets, and to determine whether elements are in the same set. In addition to many other uses (see the Applications section), disjoint-sets play a key role in Kruskal's algorithm for finding the minimum spanning tree of a graph.
 
-Disjoint set data structure using path compression (for better find complexity)
-and union by rank.
+https://leetcode.com/articles/redundant-connection/
+Time and space complexity: Amortized O(1) https://en.wikipedia.org/wiki/Disjoint-set_data_structure#Time_complexity
+
+Note that the implementation as disjoint-set forests doesn't allow the deletion of edges, even without path compression or the rank heuristic.
+
 """
 
 
@@ -53,6 +56,7 @@ class DisjointSet(object):
         if cur_node.parent == cur_node:
             return cur_node
         else:
+            # This step is path compression where we assign parent of a node, to the parent of the forest
             cur_node.parent = self.find_parent_node(cur_node.parent)
         return cur_node.parent
 
@@ -64,6 +68,10 @@ class DisjointSet(object):
         node2 = self.data_node_map[data2]
         node1_parent = self.find_parent_node(node1)
         node2_parent = self.find_parent_node(node2)
+        ''' combining two forests based on their rank is a optimization tehnique,
+        as in later stages when find_parent_node is called on this combined forest.
+        Less number of nodes will have to change their parent(rather if we've choosen one randomly)
+        as larger rank(or node with more followers) was made the rank of combined forest'''
         if node1_parent == node2_parent:
             # Both are part of the same set
             return
