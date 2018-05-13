@@ -1,4 +1,4 @@
-Head first Design Patterns
+Design patterns skim
 
 https://github.com/donnemartin/system-design-primer#object-oriented-design-interview-questions-with-solutions
 

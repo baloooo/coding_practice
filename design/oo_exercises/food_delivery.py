@@ -17,3 +17,4 @@ Please refer to below Code Repository for more details:
 
 
 https://github.com/gmershad/FoodDeliveryApp
+https://www.c-sharpcorner.com/article/food-delivery-application-using-with-design-patterns/
