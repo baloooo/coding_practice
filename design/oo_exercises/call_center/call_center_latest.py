@@ -96,6 +96,9 @@ class CallCenter(object):
         self.supervisors = supervisors
         self.directors = directors
         self.queued_calls = deque()
+        # when calls complete shove them over to completed calls list, so as to have
+        # them for Internal quality check log or similar.
+        self.completed_calls = []
 
     def dispatch_call(self, call):
         if call.rank not in (Rank.OPERATOR, Rank.SUPERVISOR, Rank.DIRECTOR):
@@ -171,3 +174,18 @@ if __name__ == '__main__':
     call_center = CallCenter(operators, supervisors, directors)
     for _ in xrange(5):
         call_center.dispatch_call(Call())
+
+    '''
+    Start small and expand gradually.
+    Create Abstract class employee, and child classes (Operator, Superivisor, Director) with their respective
+    ranks.
+    Create a call center and create queued_calls and completed calls queue. All incoming calls go to
+    queued_calls queue and a periodic method should try to go over all queued calls and assign it to
+    requested employees. Employees themselves can have two separate lists (available, busy) so that we can get an     available employee with O(1).Calls themselves will hold the state of the call, operators
+    assigned(possibly as as list) and other relevant info.
+    Each employee can define their own escalate call methods which would put the call back in queue with desired
+    employee rank as one higher than the current or as requested by the call.
+    Things like call states, Employee ranks should be made Enums.
+    Employee base class should be a metaclass and define some abstract methods like escalate_call, receive_call
+    etc.
+    '''

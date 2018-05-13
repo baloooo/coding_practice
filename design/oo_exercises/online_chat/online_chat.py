@@ -140,8 +140,8 @@ class GroupChat(Chat):
         message_id = self.get_message_id()
         message = Message(message_id, message_text, user)
         # stored in message history of group
-        self.messages.append(message)
-        self.notifyObserver(message)
+        self.messages.append(message) # Every group chat will have it's own message queue
+        self.notifyObserver(message) # Notifies(drops message in inboxes for) all group chat participants
 
     def registerObserver(self, user):
         '''

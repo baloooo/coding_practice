@@ -12,6 +12,8 @@ class Solution:
         """
         only difference is usage of defaultdict, therefore less explicit
         intializations.
+        This solution works regardless of the duplicates in node values since we 
+        use node object as keys not node values.
         """
         if orig_root is None:
             return

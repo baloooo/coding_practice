@@ -40,6 +40,8 @@ class Solution:
                 left = right = 0
         return maxans
 
+########################################################################################################
+
     def longestValidParentheses(self, s):
         """
         Time: O(n) space: O(n)
@@ -60,6 +62,57 @@ class Solution:
                 else:
                     maxans = max(maxans, index  - stack[-1]) # Notice stack[-1] is not the char that matched (as it's already popped) it's the index before that.
         return maxans
+
+########################################################################################################
+
+	def is_valid(self, paran_str, start, end):
+        stack = []
+        for i in xrange(start, end):
+            if paran_str[i] == '(':
+                stack.append('(')
+            else:
+                try:
+                    stack.pop()
+                except IndexError:
+                    return False
+        return False if stack else True
+
+    def longestValidParentheses_bruteforce(self, paran_str):
+        """
+		Good for getting the intution of the exercise.
+        """
+        max_valid = 0
+        for start in xrange(len(paran_str)):
+            for end in xrange(start+2, len(paran_str)+1, 2):
+                if self.is_valid(paran_str, start, end):
+                    max_valid = max(max_valid, end-start)
+
+        return max_valid
+
+########################################################################################################
+
+def longestValidParentheses_dp(self, paran_str):
+        """
+        :type s: str
+        :rtype: int
+        """
+        dp = [0]*len(paran_str)
+        max_len = 0
+
+        for i in xrange(1, len(paran_str)):
+            if paran_str[i] == ')':
+                if paran_str[i-1] == '(':
+                    if i >= 2:
+                        dp[i] = dp[i-2] + 2
+                    else:
+                        dp[i] = 2
+                elif (i-dp[i-1] > 0) and paran_str[i-dp[i-1]-1] == '(':
+                    if i - dp[i-1] >= 2:
+                        dp[i] = dp[i-1] + dp[i-dp[i-1]-2] + 2
+                    else:
+                        dp[i] = dp[i-1] + 2
+                max_len = max(max_len, dp[i])
+        return max_len
 
 if __name__ == '__main__':
     test_cases = [

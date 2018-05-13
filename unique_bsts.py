@@ -14,12 +14,38 @@ class Solution(object):
                 dp[i] += dp[j-1] * dp[i-j]
         return dp[n]
 
-    # Definition for a binary tree node.
-    # class TreeNode(object):
-    #     def __init__(self, x):
-    #         self.val = x
-    #         self.left = None
-    #         self.right = None
+    def generate_subtrees(self, start, end):
+        if (start, end) in self.dp:
+            return self.dp[(start, end)]
+        if start > end:
+            return [None]
+
+        trees = []
+        for root_idx in xrange(start, end+1):
+            left_subtrees = self.generate_subtrees(start, root_idx-1)
+            right_subtrees = self.generate_subtrees(root_idx+1, end)
+
+            for left_subtree in left_subtrees:
+                for right_subtree in right_subtrees:
+                    root = TreeNode(root_idx)
+                    root.left = left_subtree
+                    root.right = right_subtree
+                    trees.append(root)
+
+        self.dp[(start, end)] = trees
+        return trees
+
+    def generateTrees_optimized(self, n):
+        """
+		# Time:  O(4^n / n^(3/2)) ~= Catalan numbers
+		# Space: O(4^n / n^(3/2)) ~= Catalan numbers
+		https://leetcode.com/problems/unique-binary-search-trees-ii/discuss/31508/Divide-and-conquer.-F(i)-G(i-1)-*-G(n-i)
+		This implementation is more inline with numTrees implementation, therefore more intutive
+		Also this implementation caches subtrees which improves performance
+        """
+        if n == 0: return []
+        self.dp = {}
+        return self.generate_subtrees(1, n)
 
     def generate_subtrees(self, start, end):
         trees = []
@@ -35,8 +61,6 @@ class Solution(object):
 
     def generateTrees(self, n):
         """
-	# Time:  O(4^n / n^(3/2)) ~= Catalan numbers
-	# Space: O(4^n / n^(3/2)) ~= Catalan numbers
 	https://discuss.leetcode.com/topic/15886/should-be-6-liner/24
 	https://discuss.leetcode.com/topic/8410/divide-and-conquer-f-i-g-i-1-g-n-i
         """

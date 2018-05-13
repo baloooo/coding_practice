@@ -25,3 +25,14 @@ class Solution(object):
                 nums[i-1] = max(nums[i]+1, nums[i-1])
    
         return sum(nums)
+
+
+    def distributeCandies(self, candies):
+        """
+		The main idea is that one can only get max half of the total candies so as to 
+		preserve the fairness of distributing candies equally by number.
+		Secondly this will decrease and depend directly on the number of unique candies we have
+		https://leetcode.com/problems/distribute-candies/solution/
+        """
+        uniqe_candies = set(candies)
+        return min(len(candies)/2, len(uniqe_candies))
