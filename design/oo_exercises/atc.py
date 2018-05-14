@@ -9,6 +9,7 @@ Todo:
     * Allow interested airplanes to land/takeoff
 """
 import Queue
+import functools
 from enum import Enum
 
 plane_attribute_map = {
@@ -52,6 +53,7 @@ class ATC(object):
         self.queue.put(airplane)
 
 
+@functools.total_ordering
 class Airplane(object):
     """
     Todo:
@@ -65,7 +67,7 @@ class Airplane(object):
 
     Place to start:
         https://stackoverflow.com/questions/28465411/priority-queue-doesnt-recognize-cmp-function-in-python?rq=1
-    https://stackoverflow.com/questions/28435104/queue-with-multi-field-sorting-on-priority-and-time
+        https://stackoverflow.com/questions/28435104/queue-with-multi-field-sorting-on-priority-and-time
     """
     def __init__(self, plane_type, plane_size, arrival_time):
         self.type = plane_type
@@ -84,18 +86,14 @@ class Airplane(object):
         else:
             return False
 
-    # def __eq__(self, other):
-    #     # if (self.type == other.type and self.size == other.size and
-    #     #         self.arrival_time == other.arrival_time):
-    #     #     return True
-    #     if self.type != other.type:
-    #         return False
-    #     elif self.size != other.size:
-    #         return False
-    #     elif self.arrival_time != other.arrival_time:
-    #         return False
-    #     else:
-    #         return True
+    def __eq__(self, other):
+        """
+        Compare based on plane types, if plane types are same comparison based
+        on plane sizes. Lastly the plane which comes first departs first,
+        if everything else is same.
+        """
+        return (self.type == other.type and self.size == other.size and 
+                self.arrival_time == other.arrival_time)
 
     def __str__(self):
         return "Airplane with type: %s, size: %s, and arrival_time: %s" % (

@@ -1,7 +1,7 @@
 '''
 Adds drivers to Uber service.
 Take requests from customers and serve them.
-    Find nearby drivers (R-data structure)
+    Find nearby drivers Some algos: wiki search for (Nearest neighbor search, k-d data structure)
     Send notifications to drivers
     Send routing info to driver to reach customer, and then to their destination
     Generate bill for the trip, charge the customer and pay the driver.

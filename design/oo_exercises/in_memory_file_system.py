@@ -9,8 +9,6 @@ Ex:
     ['b']
     ipdb> fs.ls('/a/b')
     ['c']
-    ipdb> fs.ls('/'))
-    *** SyntaxError: invalid syntax (<stdin>, line 1)
     ipdb> fs.ls('/')
     ['a']
     ipdb> fs.cd('/a')
