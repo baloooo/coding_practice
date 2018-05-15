@@ -50,12 +50,10 @@ class ParkingSpace(object):
         """
         First preference to floor level, second to spot number within a level
         """
-        if self.level < other.level:
-            return 1
-        if self.spot_number < other.spot_number:
-            return 1
-        return 0
-
+        if self.level != other.level:
+            return self.leve < other.level
+        elif self.spot_number != other.spot_number:
+            return self.spot_number < other.spot_number
 
 class ParkingLot(object):
     """
@@ -69,8 +67,7 @@ class ParkingLot(object):
     Spot number are assigned as distance from entrance/exit increases and
     up the levels, so can be used as priority in the priority queue
     Todo:
-        * Add billing system(Assign tickets on entry and bill on exit)
-        * Also it might be a good idea to have separate priority queues for each type
+        * It might be a good idea to have separate priority queues for each type
           of parking spaces instead of popping and putting back loops also this would
           break it to constant time task as number of parking types is very small constant.
     """
@@ -147,6 +144,9 @@ class VehicleType(Enum):
 class Vehicle(object):
     __metaclass__ = abc.ABCMeta
 
+    def __init__(self, license_no):
+        self.license_no = license_no
+
     # Forces derived classes to implement this
     @abc.abstractmethod
     def get_type(self):
@@ -163,7 +163,7 @@ class Small(Vehicle):
     # other info with each vehicle type like number of spots it consumes or
     # whether it fits on to a ParkingSpot etc
     def __init__(self, license_no, parking_type='Regular'):
-        self.license_no = license_no
+        super(Small, self).__init__(license_no)
         self.type = VehicleType.Small
         self.parking_spot = None
         self.parking_type = parking_type
@@ -177,7 +177,8 @@ class Regular(Vehicle):
     # other info with each vehicle type like number of spots it consumes or
     # whether it fits on to a ParkingSpot etc
     def __init__(self, license_no, parking_type='Regular'):
-        self.license_no = license_no
+        super(Small, self).__init__(license_no)
+        self.type = VehicleType.Small
         self.type = VehicleType.Regular
         self.parking_spot = None
         self.parking_type = parking_type
@@ -191,7 +192,7 @@ class Large(Vehicle):
     # other info with each vehicle type like number of spots it consumes or
     # whether it fits on to a ParkingSpot etc
     def __init__(self, license_no, parking_type='Regular'):
-        self.license_no = license_no
+        super(Small, self).__init__(license_no)
         self.type = VehicleType.Large
         self.parking_spot = None
         self.parking_type = parking_type

@@ -79,12 +79,17 @@ class Airplane(object):
         Compare based on plane types, if plane types are same comparison based
         on plane sizes. Lastly the plane which comes first departs first,
         if everything else is same.
+        Note: Do notice that if we create a priorityQueue of this we'll get minimum priority
+        plance at the top since the default priorityQueue for python Queue module is min priority,
+        one can negate the values at input and negate them again at usage to replicate a max queue
+        behavior though
         """
-        if (self.type < other.type or self.size < other.size or
-                self.arrival_time < other.arrival_time):
-            return True
-        else:
-            return False
+        if self.type != other.type:
+            return self.type < other.type
+        elif self.size != other.size:
+            return self.size < other.size
+        elif self.height != other.height:
+            return self.height < other.height
 
     def __eq__(self, other):
         """
@@ -111,7 +116,7 @@ if __name__ == '__main__':
     """
     stream = [(3, 3, 2), (3, 1, 1), (3, 3, 1), (1, 3, 10), (3, 3, 1)]
     for plane in stream:
-        queue.put(Airplane(plane[0], plane[1], plane[2]))
+        queue.put(Airplane(-plane[0], -plane[1], -plane[2]))
     while not queue.empty():
         cur_plane = queue.get()
         print cur_plane

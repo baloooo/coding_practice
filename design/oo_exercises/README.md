@@ -2,6 +2,7 @@ Design patterns skim: design_patterns/
 
 https://github.com/donnemartin/system-design-primer#object-oriented-design-interview-questions-with-solutions
 
+ParkingLot
 FoodDeliveryApp
     UberBackend
     GarbageCollector
