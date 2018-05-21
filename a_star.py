@@ -1,6 +1,18 @@
 """
 https://www.youtube.com/watch?v=eSOJ3ARN5FM
 http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
+Time: O(E), Space: O(V), its worst case is similar to BFS/DFS but ideally should be far better than this due to the heuristic we include in our strategy for finding the next best node that would lead us to our goal.
+
+A* is a best first search algorithm(with BFS type queue, though in practice it uses a PriorityQueue).
+Notice that the 
+A* selects the path that minimizes f(n)=g(n)+h(n)
+where n is the last node on the path, g(n) is the cost of the path from the start node to n, and h(n) is a heuristic that estimates the cost of the cheapest path from n to the goal.
+The heuristic is problem-specific. For the algorithm to find the actual shortest path, the heuristic function must be admissible, meaning that it never overestimates the actual cost(minimum cost in path finding) to get to the goal node.
+It's guaranteed to find the path, if a path exists but how quickly it does so depends on some extent to chance(b'coz we can pick any node from a set of nodes that have the same f(n)) but very much on the quality of our heuristics.Ideally the heuristic distances should be as close to the actual remaining distances to the goal, but not    greater.
+If the heuristic estimates are too small, frontier will expand unneccessarily and A* will waste time in exploring unfavorale nodes. In fact if heuristic for all nodes are zero, A* will traverse all nodes which is what dijkistra's algo does.
+On the other hand if heuristics are overestimated, A* will find a path to goal but that may not be the shortest
+path to goal node.
+Finding the heuristics is very critical to A*, and very much depends on the nature of the problem
 """
 
 import heapq
