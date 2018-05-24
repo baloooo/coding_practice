@@ -61,6 +61,30 @@ class Solution:
     def cloneGraph(self, orig_root):
         return self.new_bfs(orig_root)
 
+############################################################################################################
+class Solution:
+	'''
+	Just an alternate implementation with DFS instead of BFS.
+	'''
+    def dfs(self, node, graph, visited):
+        if node is None or node in visited: return 
+        visited.add(node)
+        if node not in graph:
+            graph[node] = UndirectedGraphNode(node.label)
+
+        for neighbor in node.neighbors:
+            if neighbor not in graph:
+                graph[neighbor] = UndirectedGraphNode(neighbor.label)
+            graph[node].neighbors.append(graph[neighbor])
+            self.dfs(neighbor, graph, visited)
+
+    def cloneGraph(self, node):
+        graph = {None: None}
+        self.dfs(node, graph, set())
+        return graph[node]
+
+
+
 if __name__ == '__main__':
     a = UndirectedGraphNode('a')
     b = UndirectedGraphNode('b')

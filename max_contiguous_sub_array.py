@@ -41,9 +41,7 @@ class Solution:
                 else:
                     end += 1
                 global_max = current_max
-        print 'arr: ', arr
-        print 'start: {0}, end: {1}, sum: {2}'.format(
-            start, end, global_max)
+
         return global_max, start, end
 
 if __name__ == '__main__':
