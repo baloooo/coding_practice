@@ -40,6 +40,21 @@ class Solution:
                     res[i].append(res[i-1][j-1] + res[i-1][j])
         return res
 
+	def generate(self, numRows):
+        """
+        :type numRows: int
+        :rtype: List[List[int]]
+        """
+        if numRows == 0: return []
+        pascal = [1]
+        for row in xrange(numRows-1):
+            cur_row = []
+            for i, j in zip(xrange(len(pascal), xrange(1, len(pascal)))):
+                cur_row = pascal[-1][i] + pascal[-1][j]
+            pascal.append([1] + cur_row + [1])
+        return pascal
+
+
     def kth_row_pascal(self, k):
         # Time: O(n^2)	
 	'''

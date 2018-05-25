@@ -13,6 +13,18 @@ Another possible answer : [4, 1, 3, 2]
 
 
 class Solution:
+
+    def wave_arr(self, arr):
+		'''
+		Idea is same as below, but execution is much more straight forward just run
+		two loops in parallell with zip
+		'''
+		arr.sort()
+		for i, j in zip(xrange(len(arr), 2), xrange(1, len(arr), 2)):
+			arr[i], arr[j] = arr[j], arr[i]
+
+		return arr
+
     def wave_arr_optimized(self, arr):
         '''
         Idea: http://www.geeksforgeeks.org/sort-array-wave-form-2/

@@ -22,6 +22,10 @@ def largest_number(arr):
     """
     nums = [str(x) for x in arr]
     # https://docs.python.org/3/howto/sorting.html#the-old-way-using-the-cmp-parameter
+    '''
+    That function should take two arguments to be compared and then return a negative value for
+    less-than, return zero if they are equal, or return a positive value for greater-than
+    '''
     # b'coz you need larger number first, therefore y+x first
     nums.sort(cmp=lambda x,y: cmp(y+x, x+y))
     return ''.join(nums).lstrip('0') or '0'
