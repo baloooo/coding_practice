@@ -71,9 +71,35 @@ class Solution:
             base = (base * base) % mod_no
         return result
 
+    def b_mul(self, base, power):
+        if power == 0:
+            return 1
+        half = self.b_mul(base, power/2)
+        if power % 2 == 0:
+            return half * half
+        else:
+            return base * half * half
+
+    def power_function_alternate(self, base, power):
+        """
+        :type x: float
+        :type n: int
+        :rtype: float
+        Idea is that if we know (base)^(n/2) we can just double it to get base ^ n, so we initially find 
+		Same as below but more intutive, although due to recursion takes O(logn) space too
+        """
+        res = self.b_mul(base, abs(power))
+        if power < 1:
+            return 1/(res*1.0)
+        else:
+            return res
+
+
     def power_function(self, base, power):
         """
         https://leetcode.com/problems/powx-n/#/description
+        The idea is to make only logn operations for getting the power(x, n) instead of O(n),
+        which can be got if we do operations on cue from binary representation of power.
         Idea: https://discuss.leetcode.com/topic/40546/iterative-log-n-solution-with-clear-explanation
         """
         abs_power = abs(power)

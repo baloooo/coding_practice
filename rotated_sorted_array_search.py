@@ -31,6 +31,7 @@ def search(nums, target):
         # target strictly to the left, strictly as hi doesn't rest at mid but mid - 1
         if ((nums[lo] <= nums[mid] and nums[lo] <= target <= nums[mid])
             # OR target not in strictly right
+            # or (arr[mid] <= arr[right] and not (arr[mid] < target <= arr[end]) # This is the same thing too
             or (nums[lo] > nums[mid] and not(nums[mid] < target <= nums[hi]))):
                 hi = mid - 1 # go left
         else:

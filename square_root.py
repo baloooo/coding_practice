@@ -18,7 +18,7 @@ class Solution:
         # https://discuss.leetcode.com/topic/8680/a-binary-search-solution/52
         left = 1
         right = x
-        while left <= right:
+        while left <= right: # Note: Notice the equal sign(ex: x=8)
             mid = left + (right - left)/2
             mid_square = mid * mid
             if mid_square == x:
@@ -29,7 +29,6 @@ class Solution:
                 right = mid - 1
         # For non perfect squares right will have floor(sqrt(x)) ex for 8, left: 3 right: 2
         # as loop breaked when left went over whereas right went to the floor side of sqrt
-        print left, right
         return right
 
 

@@ -3,6 +3,8 @@ import pytest
 class Solution():
     '''
     https://leetcode.com/problems/search-a-2d-matrix-ii/solution/
+	We can start from top right also using the same broad approach:
+	https://leetcode.com/problems/search-a-2d-matrix-ii/discuss/66139/6-9-lines-C++Python-Solutions-with-Explanations
     '''
     def search_matrix(self, matrix, target):
         if matrix in [[[]], []] or not (matrix[0][0] <= target <= matrix[len(matrix)-1][len(matrix[0])-1]):
@@ -17,6 +19,52 @@ class Solution():
             else:
                 col += 1
         return False
+
+############################################################################################################
+
+	def binary_search(self, matrix, target, start, vertical):
+        lo = start
+        hi = len(matrix[0])-1 if vertical else len(matrix)-1
+
+        while hi >= lo:
+            mid = (lo + hi)//2
+            if vertical: # searching a column
+                if matrix[start][mid] < target:
+                    lo = mid + 1
+                elif matrix[start][mid] > target:
+                    hi = mid - 1
+                else:
+                    return True
+            else: # searching a row
+                if matrix[mid][start] < target:
+                    lo = mid + 1
+                elif matrix[mid][start] > target:
+                    hi = mid - 1
+                else:
+                    return True
+        
+        return False
+
+    def searchMatrix_lessoptimal(self, matrix, target):
+		'''
+		https://leetcode.com/articles/search-a-2d-matrix-ii/
+		An alternate way of solving by just riding on problem statement.
+		O(log(n!)) or nlogn(proof https://stackoverflow.com/questions/2095395/is-logn-%CE%98n-logn)
+		'''
+        # an empty matrix obviously does not contain `target`
+        if not matrix:
+            return False
+
+        # iterate over matrix diagonals starting in bottom left.
+        for i in range(min(len(matrix), len(matrix[0]))): # As the shorter dimension define the len of diagonal
+            vertical_found = self.binary_search(matrix, target, i, True)
+            horizontal_found = self.binary_search(matrix, target, i, False)
+            if vertical_found or horizontal_found:
+                return True
+        
+        return False
+
+############################################################################################################
 
 class TestSolution(object):
 

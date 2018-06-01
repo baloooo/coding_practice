@@ -14,9 +14,8 @@ class Solution(object):
         rows, cols = len(matrix)-1, len(matrix[0])-1
         start, end = 0, rows
         while start < end: # Find the row number
-            # Notice that we'll have to use ceil value for mid here since our binary search is a little different here
-            # as explained below. Therefore to prevent infinite loop in case of rows having only one column we use the ceil
-            # values for mid.
+            # Notice that we'll have to use ceil value for mid since our binary search is a little different here
+            # as explained below. Therefore to prevent infinite loop in case of rows having only one column we use the ceil values for mid.
             mid = start + int(math.ceil((end-start)/2.0))
             if matrix[mid][0] == target:
                 return True

@@ -35,6 +35,7 @@ class Solution:
             self.custom_reverse(str_list, start, i-1)
             i += 1
 
+########################################################################################################
     def sanitize(self, str_list):    
         i, j = 0, 0
         while j < len(str_list):
@@ -51,7 +52,7 @@ class Solution:
 
     def reverseWords_w_spaces(self, s):
         """
-	reverse_words when there can be multiple spaces at start, beginning or in middle.
+        reverse_words when there can be multiple spaces at start, beginning or in middle.
         :type str: str
         :rtype: str
         https://leetcode.com/problems/reverse-words-in-a-string/discuss/47720/Clean-Java-two-pointers-solution-(no-trim(-)-no-split(-)-no-StringBuilder)
@@ -70,6 +71,39 @@ class Solution:
             self.custom_reverse(str_list, start, i-1)
             i += 1
         return ''.join(str_list[:i-1])
+########################################################################################################
+
+    def custom_reverse(self, s, start, end):
+        while start < end:
+            s[start], s[end] = s[end], s[start]
+            start += 1
+            end -= 1
+
+    def reverseWords_w_spaces(self, s):
+        """
+		Seems better than using sanitize method
+        """
+        s = list(s)
+        self.custom_reverse(s, 0, len(s)-1)
+        base, start, end = 0, 0, 0
+        while end < len(s):
+            if s[end] != ' ':
+                start = end 
+                while end < len(s) and s[end] != ' ':
+                    end += 1
+                self.custom_reverse(s, start, end-1)
+                if base != 0:  # For adding one space before every word(except first)
+                    s[base] = ' '
+                    base += 1
+                while start < end: # copy reversed list over to correct spot, delimetered by base
+                    s[base] = start
+                    base += 1
+                    start += 1
+                
+            else:
+                end += 1
+
+        return ''.join(s[:base])
 
 
 class TestSolution(object):
