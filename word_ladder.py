@@ -156,7 +156,7 @@ class Solution:
         """
         BFS for constructing graph.(BFS ends up making neighbor_dict)
         This graph is realized using neighbor_dict which is just a mapping
-        of a word to (:) all words that are in one edit distance of this
+        of a word to (:) all* words that are in one edit distance of this
         word.
         {u'hot': [u'dot', u'lot'], u'hit': [u'hot'], u'dot': [u'dog'], u'lot': [u'log'], u'dog': [u'cog']}
         {u'hit': [u'hot'], u'log': [u'cog'], u'dog': [u'cog'], u'hot': [u'dot', u'lot'], u'lot': [u'log'], u'dot': [u'dog']}
@@ -208,6 +208,10 @@ class Solution:
                             neighbor_dict[cur_word].append(candidate_word)
                             # This can be neighbor_dict[candidate_word].append(cur_word)
                             # but then dfs algo would change, as key: value mappings changed
+            '''V.Imp step, as this prevents a key to be processed again and therefore to add nodes that are at larger distances
+            For ex: lot: log won't be added since this breaks our minimum distance criteria.
+            Ex: "a", "c", ["a", "b", "c"] When you can go from a: [b, c] you shouldn't be adding b and c as keys as coming up to a should be enough
+            any more keys and that will not be shortest distance'''
             unvisited -= visited
         # DFS for each possible paths
         # here we start from the goal word and try to reach source_word

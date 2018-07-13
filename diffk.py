@@ -7,11 +7,31 @@ Notice that tricky part in this exercise is to deal with k = 0
 import pytest
 
 class Solution(object):
+    def find_paris_hash_optimized(self, arr, k):
+		'''
+		Time and space: O(n)
+		'''
+		if not nums or k < 0: return 0
+        count = 0
+        ele_freq_map = collections.defaultdict(int)
+        for num in nums:
+            ele_freq_map[num] += 1
+        for ele in ele_freq_map:
+            if k == 0:
+                if ele_freq_map[ele+k] >= 2:
+                    count += 1
+            else:
+                if ele+k in ele_freq_map:
+                    count += 1
+
+        return count
+
     def findPairs_hash(self, arr, k):
         """
         a - b = k, can be written as a = b + k
         b - a = k, can be written as b = a + k
-        Therefore we're indirectly searching for a and b below, using the other element and k similar to two sum logic
+        Therefore we're indirectly searching for a and b below, using the other element and k
+        similar to two sum logic
 
         Time: O(n), space: O(n)
         """

@@ -1,3 +1,57 @@
+'''
+Alien order with BFS Toposorting and straightforward adjacency list rather than nodes.
+'''
+
+class Solution(object):
+    def add_nodes(self, word):
+        for ch in word:
+            if ch not in self.graph:
+                self.graph[ch] = set()
+                self.indegree[ch] = 0
+            
+    def make_graph(self, words):
+        
+        for i in xrange(len(words)):
+            self.add_nodes(words[i])
+            for j in xrange(i+1, len(words)):
+                self.add_nodes(words[j])
+                for parent_ch, child_ch in zip(words[i], words[j]):
+                    if parent_ch != child_ch:
+                        # since set can take care of the duplicate part for mapping but indegree gets double bumped up.
+                        if child_ch not in self.graph[parent_ch]:
+                            self.graph[parent_ch].add(child_ch)
+                            self.indegree[child_ch] += 1
+                        break
+        
+    def alienOrder(self, words):
+        """
+        This seems better than DFS based approach in terms of logic and time/space complexity.
+        Notice that we need to check if len(indegree_map nodes) == len(topo) to make sure every node in indegree was traversed
+        Also note that if there is a unconnected node, this will not be a part of toposort we return as we can't say anything
+        about it's ordering.
+        """
+        from Queue import Queue
+        self.graph = {}
+        self.indegree = {}
+        self.make_graph(words)
+        bfs_q = Queue()
+        for node, indegree_val in self.indegree.items():
+            if indegree_val == 0:
+                bfs_q.put(node)
+                
+        topo = []
+        while not bfs_q.empty():
+            cur = bfs_q.get()
+            topo.append(cur)
+            for adjacent in self.graph[cur]:
+                self.indegree[adjacent] -= 1
+                if self.indegree[adjacent] == 0:
+                    bfs_q.put(adjacent)
+        print topo
+        return ''.join(topo) if len(topo) == len(self.indegree) else ""
+
+#######################################################################################################################
+
 """
 Always be wary of duplicate edges, which might be excluded in some exercises here.
 Topological Sorting: A topological sort or topological ordering of a directed Acyclic graph is a linear ordering of its vertices such that for every directed edge uv from vertex u to vertex v, u comes before v in the ordering. For instance, the vertices of the graph may represent tasks to be performed, and the edges may represent constraints that one task must be performed before another.
@@ -36,6 +90,8 @@ class Solution(object):
         graph = collections.defaultdict(DirectedGraphNode)
         
         for i in xrange(len(words)):
+            '''Remember to create all nodes before hand, so as to alleivate the problem of duplicate single words like
+            dict passed being ["z", "z"] '''
             self._create_nodes(graph, words[i])
             for j in xrange(i+1, len(words)):
                 self._create_nodes(graph, words[j])
@@ -68,6 +124,9 @@ class Solution(object):
     def toposort(self, graph):
         """
         returns a toposort of the given graph.
+        Idea is to start from any random node and do a dfs to find all nodes connected to this node and add this node to
+        a shared stack only when all it's neighboring nodes have been explored. This ensures that a node is added only after
+        all it's dependencies are already in stack. Notice this would require usage of visited set.
         """
         stack = []
         for node_key, node_object in graph.items():
@@ -93,50 +152,3 @@ if __name__ == '__main__':
     # words = ["ab", "adc"]
     # words = ["wlbn"]
     print "Got o/p: %s" % Solution().alienOrder(words)
-##############################################################################################################
-Alien order with BFS Toposorting and straightforward adjacency list rather than nodes.
-class Solution(object):
-    def add_nodes(self, word):
-        for ch in word:
-            if ch not in self.graph:
-                self.graph[ch] = set()
-                self.indegree[ch] = 0
-            
-    def make_graph(self, words):
-        
-        for i in xrange(len(words)):
-            self.add_nodes(words[i])
-            for j in xrange(i+1, len(words)):
-                self.add_nodes(words[j])
-                for parent_ch, child_ch in zip(words[i], words[j]):
-                    if parent_ch != child_ch:
-                        # since set can take care of the duplicate part for mapping but indegree gets double bumped up.
-                        if child_ch not in self.graph[parent_ch]:
-                            self.graph[parent_ch].add(child_ch)
-                            self.indegree[child_ch] += 1
-                        break
-        
-    def alienOrder(self, words):
-        """
-        :type words: List[str]
-        :rtype: str
-        """
-        from Queue import Queue
-        self.graph = {}
-        self.indegree = {}
-        self.make_graph(words)
-        bfs_q = Queue()
-        for node, indegree_val in self.indegree.items():
-            if indegree_val == 0:
-                bfs_q.put(node)
-                
-        topo = []
-        while not bfs_q.empty():
-            cur = bfs_q.get()
-            topo.append(cur)
-            for adjacent in self.graph[cur]:
-                self.indegree[adjacent] -= 1
-                if self.indegree[adjacent] == 0:
-                    bfs_q.put(adjacent)
-        print topo
-        return ''.join(topo) if len(topo) == len(self.indegree) else ""

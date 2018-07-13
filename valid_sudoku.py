@@ -22,10 +22,6 @@ class Solution:
         "BOOLEAN" O(3*(n^2)) space.
         '''
         if not board:return False
-        for row in board:
-            for ele in row:
-                print ele,
-            print
         m,n=len(board),len(board[0])
         '''
         three 2d array to check each row, col and sub box

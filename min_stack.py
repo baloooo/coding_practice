@@ -81,7 +81,7 @@ class MinStack2(object):
         popping when we encounter the popped element to be less than min_ele we'll use the same
         relation (1) to get back old_min.
             pushed_ele = 2*new_min - old_min (1)
-            old_min = pushed_ele - 2*new_min, where pushed_ele is the element that was pushed and
+            old_min = 2*new_min - pushed_ele, where pushed_ele is the element that was pushed and
             is now popped and new_min is the element we termed as minimun back then so the element
             in the self.min variable.
         

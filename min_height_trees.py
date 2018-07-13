@@ -1,5 +1,7 @@
 # coding: utf-8
 '''
+The idea is to start from leaf and root node(s) and keep adding nodes in a BFS way, as we're starting from extreme ends(leaves
+and root) the place we meet has to be the mid way between.
 https://leetcode.com/problems/minimum-height-trees/discuss/76055/Share-some-thoughts
 The problem is stated it is “a undirected graph with tree characteristics” which means all vertexes is connected
 
@@ -29,7 +31,8 @@ class Solution:
 
         # Loop until total vertex remains less than 2
         while n > 2:
-            # As we can pop a max of n-2 nodes from n after which we should end up with our root(s).
+            # Note: As we can pop a max of n-2 nodes from n after which we should end up with our root(s).
+            # This step is very crucial as this takes care of when to terminate the loop
             n -= len(leaves)
             new_leaves = []
             for leaf_index in leaves:

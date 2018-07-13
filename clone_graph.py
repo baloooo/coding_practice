@@ -83,6 +83,31 @@ class Solution:
         self.dfs(node, graph, set())
         return graph[node]
 
+	def dfs2(self, root, node_map, visited):
+        if root in visited:
+            return
+        else:
+            if root not in node_map:
+                node_map[root] = UndirectedGraphNode(root.label)
+            visited.add(root)
+            for adj in root.neighbors:
+                if adj not in node_map:
+                    node_map[adj] = UndirectedGraphNode(adj.label)
+                node_map[root].neighbors.append(node_map[adj])
+                self.dfs(adj, node_map, visited)
+    
+
+    # @param node, a undirected graph node
+    # @return a undirected graph node
+    def cloneGraph2(self, node):
+		'''
+		Seems more straight forward then above(without None checking )
+		'''
+        if node is None: return
+        node_map = {}
+        self.dfs(node, node_map, set())
+        return node_map[node]
+
 
 
 if __name__ == '__main__':

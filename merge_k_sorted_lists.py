@@ -15,7 +15,8 @@ class Solution(object):
         :type lists: List[ListNode]
         if there are k lists each with n elements. Total elements:nk
         Time: klogk (create min_heap) + (nk-k)logk (for pushing elements) + nklogk (for popping all elements)
-        total: nklogk
+
+        Total time: nklogk
         Space: O(k) for min_heap
         """
         from heapq import heappop, heapify, heapreplace
@@ -31,6 +32,8 @@ class Solution(object):
             cur_node.next = node
             cur_node = cur_node.next
         return head.next
+
+########################################################################################################
 
     def merge_two_linklist(head1, head2):
         cur = original = ListNode(None)
@@ -72,6 +75,8 @@ class Solution(object):
             right -= 1
         return sorted_ll_lists[0]
 
+
+########################################################################################################
 
 def merge_k_sorted_lists_naive(list_head):
     # Time: O(nk) where k is the number of lists, with each list having n nodes

@@ -31,7 +31,7 @@ class Solution:
             return None
         root = TreeNode(postorder.pop()) # this is O(1)
         # in_root = inorder.index(root.val)
-	in_root = self.find_target_index(inorder, root.val, in_start, in_end)
+        in_root = self.find_target_index(inorder, root.val, in_start, in_end)
 
         root.right = self.get_tree(inorder, postorder, in_root+1, in_end)
         root.left = self.get_tree(inorder, postorder, in_start, in_root-1)

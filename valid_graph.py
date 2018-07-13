@@ -3,11 +3,11 @@ https://leetcode.com/problems/graph-valid-tree/discuss/69020/8-10-lines-Union-Fi
 A  graph is a Tree if it has two properties:
     1. For n nodes there should be n-1 edges.
     2. Graph should be acyclic
-Since we're given undirected edges instead of directed, the way we check acyclicity
+Since we're given undirected edges instead of directed, the way we check cyclicity
 is that, either graph has n-1 edges but has a redundant edge(as in last test case) therefore
 since there are only n-1 edges graph shouldn't be connected now which is checked by our DFS
 method.
-Else if it has less than n-1 edges we know for sure it can connect all n nodes with less
+Else if it has less than n-1 edges we know for sure it can't connect all n nodes with less
 than n-1 edges and if it has more we can be sure there are redundant edges b/w nodes which
 will make a cycle and therefore acyclic property is violated.
 The way our DFS works is that we pop a key and traverse all its neighbors in dfs fashion to 
@@ -26,10 +26,17 @@ class Solution(object):
             self.dfs(graph, neighbor) 
 
     def validTree(self, n, edges):
+        '''
+        Essentially heart of the problem is to check:
+            Has n-1 edges and is acyclic.
+            Has n-1 edges and is connected.  
+        Now n-1 edges can be checked in the very first line very straight forward. And for the part
+        '''
         if len(edges) != n-1:
             return False
         # construct adjacency list based graph
-        # Cannot use this graph = collections.defaultdict(list)
+        # Cannot use this graph = collections.defaultdict(list), b'coz we need all nodes in graph irrespective of if they
+        # have an edge.
         graph = {}
         for i in xrange(n):
             graph[i] = []

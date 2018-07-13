@@ -14,6 +14,8 @@ def findSubstring2(self, s, words):
         w_len * (w_len_total/wlen), means the same thing.
         https://discuss.leetcode.com/topic/35676/accepted-java-solution-12ms-with-explanation
 
+        The idea is to use a sliding window over "s"
+
         """
         s_len, w_len = len(s), len(words[0])
         w_len_total = len(words) * w_len

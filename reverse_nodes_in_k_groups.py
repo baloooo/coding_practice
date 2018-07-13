@@ -25,8 +25,50 @@ class ListNode(object):
         self.val = x
         self.next = None
 
+	def get_len(self, head):
+		count = 0
+		while head:
+			head = head.next
+			count += 1
+		return count
+
+    def reverseKGroup_2(self, head, k):
+        """
+		More optimized than _1 since we don't have to do step 1
+        :type head: ListNode
+        :type k: int
+        :rtype: ListNode
+        Step1: Get len of LL
+        Step 2: Reverse group of k nodes
+        Step 3: cur_head.next, prev_grp_head.next = cur, prev
+        """
+        if head is None or head.next is None: return head
+        n = self.get_len(head)
+        if k > n: return head
+        rep = n / k # Notice this makes sure we only run the loop when we have k nodes to reverse
+        orig_head = prev_grp_head = ListNode(-1)
+        cur_head = head
+        while rep > 0:
+        	# Reverse k nodes
+        	prev, cur = None, cur_head
+        	count = 0
+        	while count < k:
+        		next = cur.next
+        		cur.next = prev
+        		prev = cur
+        		cur = next
+        		count += 1
+        	# Stich prev head with reversed list's head.
+        	cur_head.next, prev_grp_head.next = cur, prev
+			# Readjust pointers for next iteration
+        	cur_head, prev_grp_head = cur, cur_head
+        	rep -= 1
+
+        return orig_head.next
+
+
 class Solution(object):
-	def reverseKGroup(self, head, k):
+	def reverseKGroup_1(self, head, k):
         if not head or not head.next: return head
         orig_head = prev_grp_head = ListNode('dummy')
         orig_head.next = nxt_grp_head =  head

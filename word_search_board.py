@@ -24,6 +24,8 @@ class Solution(object):
     has TC 4^L as at each step in DFS, we have max 4 choices and there are at max L steps where L is the 
     number of words in word to be searched
     https://discuss.leetcode.com/topic/37162/what-is-the-time-complexity-for-the-dfs-solution/11
+    Note: I think we should just use trie as in word_search_board2 as it's time complexity is m*n*L if space
+    is not an issue, as trie takes O(L*p) space where p is the size of each word and L #f words
     '''
     def dfs(self, board, row, col, word, index, visited):
         if index == len(word): return True

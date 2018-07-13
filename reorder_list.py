@@ -75,6 +75,40 @@ class Solution:
         # head_next = head.next
         # head.next = slow_pre
         # import ipdb; ipdb.set_trace()
+class Solution(object):
+	def find_mid(self, head):
+		slow = fast = prev_tail = head
+		while fast and fast.next:
+			prev_tail = slow
+			slow = slow.next
+			fast = fast.next.next
+		prev_tail.next = None
+		return slow
+
+	def reverse(self, cur):
+		prev = None
+		while cur:
+			next = cur.next
+			cur.next = prev
+			prev = cur
+			cur = next
+		return prev
+
+	def reorder(self, left_head, right_head):
+		while left_head and right_head:
+			left_head.next, left_head, left_head_copy = right_head, left_head.next, left_head
+			if left_head is None:
+				return
+			right_head.next, right_head = left_head, right_head.next
+		
+    def reorderList(self, head):
+        """
+		Alternate way, a little more modular
+        """
+        right_half_head = self.find_mid(head)
+        right_half_head = self.reverse(right_half_head)
+        self.reorder(head, right_half_head)
+
 
 if __name__ == '__main__':
     test_cases = [
