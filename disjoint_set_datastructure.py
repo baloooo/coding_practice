@@ -49,14 +49,14 @@ class DisjointSet(object):
     def find_parent_node(self, cur_node):
         """
         finds the representative of the set recursively and
-        does the path compression as well.
+        does the `path compression` as well.
         @Accepts: node
         @Returns: node
         """
         if cur_node.parent == cur_node:
             return cur_node
         else:
-            # This step is path compression where we assign parent of a node, to the parent of the forest
+            # This step is `path compression` where we assign parent of a node, to the parent of the forest
             cur_node.parent = self.find_parent_node(cur_node.parent)
         return cur_node.parent
 
