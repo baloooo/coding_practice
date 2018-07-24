@@ -33,9 +33,8 @@ class Solution(object):
 
     def fourSum(self, arr, target):
         """
-        :type nums: List[int]
-        :type target: int
-        :rtype: List[List[int]]
+        We get all pairs in O(n^2) and for each pair find the remaining two elements with O(n)
+        2 sum hash map technique, thereby giving O(n^3) overall time complexity
         I think, This is O(n^3) solution. If allowed for space http://www.geeksforgeeks.org/find-four-elements-sum-given-value-set-3-hashmap/
         is more efficient O(n^2Logn) and O(n^2) space.    
         """

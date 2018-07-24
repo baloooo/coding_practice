@@ -36,6 +36,11 @@ class GraphWithWeights:
         return self.edges.get((from_node, to_node))
 
     def dijkistra_search(self, source, destination):
+        '''
+        There seems to be some parts missing here like visited set and the likes so,
+        check network_delay_time for the accurate version of dijkistra,
+        only part missing there is the came_from dict which can be added pretty easily
+        '''
         frontier = PriorityQueue()
         frontier.put(0, source)
         came_from = {}

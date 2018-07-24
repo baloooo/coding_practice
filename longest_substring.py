@@ -43,6 +43,26 @@ def longest_substring_without_rep(s):
     	char_to_index_map[char] = index
     return max_window_size
 
+def lengthOfLongestSubstring_alternate(self, s):
+        """
+	Just an alternate way.
+	Biggest difference is how and when max_w updated, above in each step but in this only when
+	duplicate is found, this is also the reason we have to calculate max_w once after the for loop
+	since we might not have found duplicate at the end of string in which case last max_w is still
+	to be calculated.
+        """
+        if len(s) in [0, 1]: return len(s)
+        ch_idx_map = {}
+        start = max_w = 0
+        for idx, ch in enumerate(s):
+            if ch in ch_idx_map:
+                max_w = max(max_w, idx-start)
+                start = max(start, ch_idx_map[ch] + 1)
+            ch_idx_map[ch] = idx
+            
+        max_w = max(max_w, idx-start+1 if ch in ch_idx_map else idx-start)
+        return max_w
+
 if __name__ == '__main__':
     target = "abcabcbb"
     # target = "bbbbbbbb"

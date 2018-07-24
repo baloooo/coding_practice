@@ -35,7 +35,7 @@ class Solution:
             return ''
         need_to_find, have_found = collections.defaultdict(int), collections.defaultdict(int)
         min_window_len, min_window_start = float('inf'), 0
-		# start is the current running start
+        # start is the current running start
         start, end, count = 0, 0, 0  # count keeps track of already matched chars of T
         for c in t:
             need_to_find[c] += 1
@@ -58,11 +58,11 @@ class Solution:
                 encounter characters that are not in need_to_find /(t) so these will just be set to freq zero
                 in both dicts. The otherway would be to a have bunch of if-else to check initially if character
                 is in t and then compare their frequencies.
-				Notice that once count is equal to len(t) or we've found a window that contains t,
-				we never leave it, we just prune out extra chars of t we have in window. Therefore
-				the condition is have_found >(strictly greater) need_to_find so as soon as they're
-				equal or exact size of window we break.
-				'''
+                Notice that once count is equal to len(t) or we've found a window that contains t,
+                we never leave it, we just prune out extra chars of t we have in window. Therefore
+                the condition is have_found >(strictly greater) need_to_find so as soon as they're
+                equal or exact size of window we break.
+                '''
                 while have_found[s[start]] > need_to_find[s[start]] or need_to_find[s[start]] == 0:
                     if have_found[s[start]] > need_to_find[s[start]]:
                         have_found[s[start]] -= 1

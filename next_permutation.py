@@ -38,12 +38,15 @@ class Solution:
             start += 1
             end -= 1
 
+        return arr
+
 if __name__ == '__main__':
     test_cases = [
         # ([1, 2, 3], [1, 3, 2]),
         # ([1, 3, 2], [2, 1, 3]),
         # ([5, 4, 7, 5, 3, 2], [5, 5, 2, 3, 4, 7]),
-        ([769, 533], [533, 769]),
+        # ([769, 533], [533, 769]),
+        ([1, 2, 3, 4, 7, 5, 6], [1, 2, 3, 4]),
     ]
     for test_case in test_cases:
         res = Solution().next_permutation(test_case[0][:])

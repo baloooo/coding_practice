@@ -1,3 +1,8 @@
+'''
+The broad idea is to treat the conversion as converting string integer to integer or vice versa with
+the difference being, we're dealing with a base 26 number rather than 10
+Idea: https://discuss.leetcode.com/topic/6245/python-solution-with-explanation
+'''
 class Solution(object):
     '''
     Given a positive integer, return its corresponding column title as appear in an Excel sheet.
@@ -50,6 +55,9 @@ class Solution(object):
             '''
             As everytime you go one place more you have covered order of 26 items
             like from AA to AAA you would go AA -> AZ, and then to BA -> BZ ... untill ZA ->ZZ and then AAA
+            Also the logic is similar to converting a string number to integer, the only difference is
+            in integers with one unit place number are increased by an order of 10 instead of 26 as in
+            this case for alphabets.
             '''
             res = res * 26  
             res = res + ord(ch) - ord('A') + 1

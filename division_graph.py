@@ -1,7 +1,7 @@
 '''
 If there's a Negative cycle made out of graph formed from equations we can't use Warshalls algo.
 https://cs.stackexchange.com/questions/14248/what-is-the-significance-of-negative-weight-edges-in-a-graph/14262
-Floyd warshall: https://www.youtube.com/watch?v=4OQeCuLYj-4
+Floyd warshall: https://www.youtube.com/watch?v=4OQeCuLYj-4 (not the best explanation of the algo)
 In our exercise it is explicitly said numbers are all positive so there can't be any
 negative cycles.
 Also there can't be multiple ways to reach a destination, therefore equations a/c cannot have two values
@@ -54,13 +54,21 @@ class Solution:
 	table is populated all queries can be answered in O(1), whereas use DFS O(V + E) if
 	no. of queries are not so large also you won't have to look out for negative edge cycle
 	as in floyd warshall'l algo.
+        Tushar warshal: https://www.youtube.com/watch?v=LwJdNfdLF9s
+        Broad idea is dynamic programming, basically we go over all the nodes(k-> 1 to n) and check
+        if for going from i to j (where i and j themselves will be all the pair of nodes possible)
+        do we have a shorter distance path via k than the original direct path i to j. Where all
+        paths will be updated b/w all given nodes and all the other can default to infinity.
 	Time: O(V^3)
 	'''
 	quot = self.build_graph(equations, values)
 	for k in quot:
 	    for i in quot[k]:
 		for j in quot[k]:
-		    quot[i][j] = quot[i][k] * quot[k][j]
+		    # quot[i][j] = quot[i][k] * quot[k][j]
+                    dist_via_k = quot[i][k] + quot[k][j]
+                    if quot[i][j] > dist_via_k:
+                        quot[i][j] = dist_via_k
 	return [quot[num].get(den, -1.0) for num, den in queries]
 
 if __name__ == '__main__':

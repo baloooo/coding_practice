@@ -106,7 +106,7 @@ def permute_recursive_heap_naive(arr):
     return permutations
 
 if __name__ == '__main__':
-    arr = [1, 2, 3, 4]
+    arr = [1, 2, 3, 4, 5, 6, 7]
     for x in permute_recursive_best_naive(arr):
         print x
     # for x in permute_recursive_heap_naive(arr):

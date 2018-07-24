@@ -1,4 +1,4 @@
-https://discuss.leetcode.com/topic/4417/possibly-simplest-solution-with-o-n-time-complexity/35?page=1
+# https://discuss.leetcode.com/topic/4417/possibly-simplest-solution-with-o-n-time-complexity/35?page=1
 class Solution:
     def max_product_subarray(self, arr):
         '''
@@ -31,12 +31,33 @@ class Solution:
             max_so_far = max(max_so_far, max_ending_here)
         return max_so_far
 
+    def maxProduct(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+	Can't initialize with float('inf') since float('inf')*0 is NaN and cannot be played with
+	https://stackoverflow.com/questions/36016266/how-to-get-a-floating-point-infinity-that-when-multiplied-by-zero-gives-zero
+        """
+        if len(nums) == 1:
+            return nums[0]
+        max_product = sys.float_info.max
+        cur_max, cur_min = -sys.float_info.max, sys.float_info.max
+        for num in nums:
+            
+            if num < 0:
+                cur_max, cur_min = cur_min, cur_max
+            cur_max = max(cur_max*num, num)
+            cur_min = min(cur_min*num, num)
+            max_product = max(max_product, cur_max)
+        return max_product
+
 if __name__ == '__main__':
     test_cases = [
-        ([2, 3, -2, 4], 6),
-        ([-2, 3, -4], 24),
+        # ([2, 3, -2, 4], 6),
+        # ([-2, 3, -4], 24),
         ([0, 2], 2),
     ]
+    res = Solution().maxProduct([0, 2])
     for test_case in test_cases:
         res = Solution().max_product_subarray(test_case[0])
         if res == test_case[1]:

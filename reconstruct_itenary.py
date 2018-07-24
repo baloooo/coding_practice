@@ -7,12 +7,14 @@ import collections
 
 class Solution():
     '''
-    As every path in the itineary needs to be included(w/ added requirement of correct order)
+    As every path in the itineary needs to be included(exactly once w/ added requirement of correct order)
     this models the Eulerian path exercise.
     '''
 
     def visit(self, graph, route, airport):
         # https://www.geeksforgeeks.org/hierholzers-algorithm-directed-graph/
+        # PQ blocks if get() is called on empty queue untill something is put in so don't loop directly
+        # on PQ get() call
         while not graph[airport].empty():
             self.visit(graph, route, graph[airport].get())
         route.append(airport)

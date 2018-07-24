@@ -1,5 +1,7 @@
 from math import sqrt
 
+https://www.geeksforgeeks.org/efficient-program-print-number-factors-n-numbers/
+Number of factors of a number can be calculated thru number of distinct prime factors of the number
 
 def calc_factors(A):
     small_factors = [1]
