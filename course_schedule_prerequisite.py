@@ -63,19 +63,23 @@ class Solution:
             self.adjacency_list[source].append(destination)
             self.indegree_list[destination] += 1
 
-    def can_finish(self, num_courses, prerequisite_list):
-        # Kahn's algo for topological sorting:
-        # http://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
-        # prerequisite_list[destination, source]
-        self.make_graph(num_courses, prerequisite_list)
+    def get_indegree_zero_nodes(self):
         # populate zero_indegree_q
         from Queue import Queue
         zero_indegree_q = Queue()
         for node_num, indegree in enumerate(self.indegree_list):
             if indegree == 0:
                 zero_indegree_q.put(node_num)
+        return zero_indegree_q
+
+    def can_finish(self, num_courses, prerequisite_list):
+        # Kahn's algo for topological sorting:
+        # http://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
+        # prerequisite_list[destination, source]
+        self.make_graph(num_courses, prerequisite_list)
         visited_count = 0
         topo_sort = []
+        zero_indegree_q = self.get_indegree_zero_nodes()
         while not zero_indegree_q.empty():
             cur_node = zero_indegree_q.get()
             """
@@ -91,6 +95,36 @@ class Solution:
         return True if visited_count == num_courses else False
         # if topo sort needs to be returned
         # return topo_sort if visited_count == num_courses else False
+
+    def is_cyclic(self, graph, cur_course, color):
+        color[cur_course] = 'GREY'
+        for adj in graph[cur_course]:
+            if color[adj] == 'GREY':
+                return True
+            if color[adj] == 'WHITE' and self.is_cyclic(graph, adj, color):
+                return True
+
+        color[cur_course] = 'BLACK'
+        return False
+
+    def canFinish_alternate(self, num_courses, prerequisite_list):
+        '''
+        Alternate way to find cycle in a directed graph
+        using dfs to find cycle, notice this can detect a cyclic dependency and therefore the condition
+        where all courses cannot be completed
+        white: courses not took yet
+        gray: courses taking right now
+        black: courses completed along with their pre-requisites
+        '''
+        color = ['WHITE']*num_courses
+        graph = collections.defaultdict(list)
+        for destination, source in prerequisite_list:
+            graph[source].append(destination)
+        for cur_course in xrange(num_courses):
+            if color[cur_course] == 'WHITE':
+                if self.is_cyclic(graph, cur_course, color):
+                    return False
+        return True
 
 
 if __name__ == '__main__':

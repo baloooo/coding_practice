@@ -1,5 +1,7 @@
 # coding: utf-8
 """
+Todo: https://www.geeksforgeeks.org/tarjan-algorithm-find-strongly-connected-components/
+
 Find all articulation points in a graph.
 
 Implementation of Tarjan’s algorithm for finding articulation points
@@ -60,6 +62,10 @@ class Graph:
                     of it's ancestors and therefore removing this node will
                     disconnect subtree rooted at cur_node from rest of the
                     graph.
+                    or
+                    cur_node is the critical node between one of its adjacent node(s) and
+                    its parents as none of it's adjacent following that branch were able
+                    to reach a node higher up than cur_node.
                     """
                     articulation_point = True
                 else:

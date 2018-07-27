@@ -2,6 +2,8 @@ from collections import defaultdict
 from bisect import bisect_left, insort
 
 """
+graph or tree
+
 https://leetcode.com/articles/design-search-autocomplete-system/
 Performance Analysis
 

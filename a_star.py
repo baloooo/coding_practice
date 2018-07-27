@@ -71,11 +71,12 @@ class GraphWithWeights:
                 """
                 calculate new_cost to all adjacent nodes from current node
                 to check if we can find a smaller weight path.
+                TIP: Compare and contrast with the dijkistra implementation in network_delay_time
                 """
                 new_cost = cost_so_far[current] + self.cost(current, adjacent)
                 if new_cost < cost_so_far[adjacent]:
                     cost_so_far[adjacent] = new_cost
-                    priority = new_cost + self.heuristic(destination, adjacent)
+                    priority = new_cost + self.heuristic(destination, adjacent) # This step sets apart astar from dijkistra
                     frontier.put(adjacent, priority)
                     came_from[adjacent] = current
         return came_from, cost_so_far
