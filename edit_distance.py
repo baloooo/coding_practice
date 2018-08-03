@@ -22,7 +22,7 @@ class Solution1:
 	'''
 	Find if s and t are exact one edit distance apart not more or less.
 	'''
-	if abs(len(s)-len(t)) > 1:
+	if abs(len(s)-len(t)) > 1: # This is a very nice optimization
 	    return False
 	one_edit_distance = False
 	i = j = 0
@@ -118,7 +118,7 @@ class Solution2:
         if str2_index == len(str2):
             return len(str1)-str1_index
         if str1[str1_index] == str2[str2_index]:
-            return self.edit_distance(str1, str2, str1_index+1, str2_index + 2)
+            return self.edit_distance(str1, str2, str1_index+1, str2_index + 1)
         # else:
         return 1+min(
             self.edit_distance(str1, str2, str1_index+1, str2_index),  # noqa Insert/Delete in str2
@@ -160,11 +160,13 @@ if __name__ == '__main__':
         # ('abcdefg', 'abcdeab', False),
         # ('aa', 'a', True),
         # ('gfg', 'gf', True),
-        ('saturday', 'sunday', 3)
+        # ('saturday', 'sunday', 3)
+        ('teacher', 'tache', False)
     ]
     for test_case in test_cases:
         # res = Solution2().edit_distance_dp(test_case[0], test_case[1], 0, 0)
-        res = Solution2().edit_distance_dp(test_case[0], test_case[1])
+        # res = Solution2().edit_distance_dp(test_case[0], test_case[1])
+        res = Solution1().one_edit_distance_lc(test_case[0], test_case[1])
         if res == test_case[2]:
             print "Passed"
         else:

@@ -72,7 +72,7 @@ class Solution:
 
         A = [3,2,1,0,4], return false.
         Algo: The idea is to have a reachable variable that essentially is a
-        yard stick to know what is the maximum index we can reach from any
+        yard stick to know what is the maximum index ahead of us, we can reach from any
         given index. And just the fact that you can reach a index is a measure
         that this is reachable using some jump at previous index and you can
         just add current index to current jump length to know max reach from
@@ -84,7 +84,7 @@ class Solution:
             max jump from any of the previous indexes cannot reach till
             this index so nothing moving forward (including this) is reachable
             """
-            if cur_index > reachable:
+            if cur_index > reachable: # Also notice that reachable cond'n is checked first thing in, not later.
                 return False
             if reachable == len(arr) - 1:
                 return True

@@ -1,13 +1,5 @@
 """
-You are a professional robber planning to rob houses along a street. Each house
-has a certain amount of money stashed, the only constraint stopping you from
-robbing each of them is that adjacent houses have security system connected and
-it will automatically contact the police if two adjacent houses were broken
-into on the same night.
 
-Given a list of non-negative integers representing the amount of money of each
-house, determine the maximum amount of money you can rob tonight without
-alerting the police.
 """
 
 
@@ -25,6 +17,32 @@ class Solution:
             max_n_1 = cur_max
 
         return max_n_1
+
+########################################################################################################################
+
+    def get_max_sum(self, nums, cur, start):
+        if start >= len(nums):
+            return cur
+        cur_max = 0
+        for idx in xrange(start, len(nums)):
+            #cur_max = max(self.get_max_sum(nums, cur + nums[idx], idx+2), self.get_max_sum(nums, cur, idx+1))
+            take_cur_val = self.get_max_sum(nums, cur + nums[idx], idx+2)
+            skip_cur_val = self.get_max_sum(nums, cur, idx+1)
+
+            cur_max = max(cur_max, take_cur_val, skip_cur_val)
+            
+        return cur_max
+
+
+    def rob_recursive(self, nums):
+        """
+		TLE: recursive slow implementation
+
+        :type nums: List[int]
+        :rtype: int
+        [2,1,1,2]
+        """
+        return self.get_max_sum(nums, 0, 0)
 
 if __name__ == '__main__':
     test_cases = [

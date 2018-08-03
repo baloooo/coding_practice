@@ -47,6 +47,8 @@ class Solution:
 if __name__ == '__main__':
     # arr = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
     arr = [100, -3, -4, -5, -2, 2]
+    arr = [2, 4, -1, 5]
+    arr = [10, 20, -5, -5, -5, -5, -5, -5, 5, 30]
     # arr = [-1, -2, -3, -4]
     print Solution().max_sub_array(arr)
     print Solution().max_sub_array_with_indices(arr)

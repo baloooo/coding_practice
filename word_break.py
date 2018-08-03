@@ -3,7 +3,7 @@ import collections
 class Solution:
     def word_break_latest(self, target, word_list):
         '''
-        This is seems to be more optimized than all the other solutions for word_break1. Also this
+        This seems to be more optimized than all the other solutions for word_break1. Also this
         solution is more intutive than other solutions. On top of that this logic is very similar to
         the one we use in word_break2 so that's also a plus point.
         '''
@@ -26,6 +26,31 @@ class Solution:
                 if dp[-1] is True:
                     return True
         return dp[-1]
+
+
+#################################################################################################
+    def word_break(self, start, word_set, target):
+        if start == len(target):
+            return True
+        for i in xrange(start, len(target)):
+            prefix = ''.join(target[start:i+1])
+            # print prefix
+            if prefix in word_set and self.word_break(i+1, word_set, target):
+                return True
+        return False
+
+    def word_break_recursion(self, target, word_list):
+        '''
+        http://www.geeksforgeeks.org/dynamic-programming-set-32-word-break-problem/
+        https://stackoverflow.com/questions/31370674/time-complexity-of-the-word-break-recursive-solution
+        time: O(2^n)
+        Since in each step we're passing down target with one less char to parse in worst case.
+        T(n) = T(n-1) + T(n-2) + T(n-3) + ... which is equal to 2^n.
+        '''
+        word_set = set(word_list)
+        return self.word_break(0, word_set, target)
+
+#################################################################################################
 
 
     def dfs(self, index_to_words, target, word_set, start, word_len_set):
@@ -74,26 +99,6 @@ class Solution:
 
 
 #################################################################################################
-    def word_break(self, start, word_set, target):
-        if start == len(target):
-            return True
-        for i in xrange(start, len(target)):
-            prefix = ''.join(target[start:i+1])
-            # print prefix
-            if prefix in word_set and self.word_break(i+1, word_set, target):
-                return True
-        return False
-
-    def word_break_recursion(self, target, word_list):
-        '''
-        http://www.geeksforgeeks.org/dynamic-programming-set-32-word-break-problem/
-        https://stackoverflow.com/questions/31370674/time-complexity-of-the-word-break-recursive-solution
-        time: O(2^n)
-        Since in each step we're passing down target with one less char to parse in worst case.
-        T(n) = T(n-1) + T(n-2) + T(n-3) + ... which is equal to 2^n.
-        '''
-        word_set = set(word_list)
-        return self.word_break(0, word_set, target)
 
     def word_break_dp(self, target, word_list):
         '''

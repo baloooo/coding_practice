@@ -21,7 +21,9 @@ class Solution:
         if text exists or not. '''
         if not pattern:
             return not text
-        first_match = bool(text) and pattern[0] in [text[0], '.']
+        import ipdb; ipdb.set_trace()
+        # first_match = bool(text) and pattern[0] in [text[0], '.']
+        first_match = text and pattern[0] in [text[0], '.']
         if len(pattern) >= 2 and pattern[1] == '*':
             return (self.is_match_bruteforce(text, pattern[2:]) or  # Take zero instances of pattern[0]
 		    (first_match and self.is_match_bruteforce(text[1:], pattern))) # Take one instance of pattern[0]
@@ -61,10 +63,11 @@ class Solution:
 
 if __name__ == '__main__':
     test_cases = [
-        ('test1', 'sol1'),
+        # ('test1', 'sol1'),
+        (("aaa", "aaaa"), False),
     ]
     for test_case in test_cases:
-        res = Solution().my_func(test_case[0])
+        res = Solution().is_match_bruteforce(test_case[0][0], test_case[0][1])
         if res == test_case[1]:
             print "Passed"
         else:
