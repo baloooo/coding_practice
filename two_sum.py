@@ -32,7 +32,97 @@ class Solution(object):
             sum_map[num] = i+1 # Adding 1 to have pointers from 1 to prevent sum_map.get return 0 which would falsify if if-loop even when input is returned. Ex: [3, 3], 6
         return [-1, -1]
 
+########################################################################################################################
+'''
+https://leetcode.com/problems/two-sum-iii-data-structure-design/description/
+Nice way to deal with duplicates and zeroes in input.
+Also find is O(n) and add is O(1), if we want to optimize for find we can start adding all sums instead and then
+sum will be O(n) and find O(1)
 
+'''
+class TwoSum(object):
+	'''
+	add optimized
+	'''
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.data = collections.defaultdict(int)
+        
+
+    def add(self, number):
+        """
+        Add the number to an internal data structure..
+        :type number: int
+        :rtype: void
+        """
+        self.data[number] += 1
+        
+
+    def find(self, value):
+        """
+        Find if there exists any pair of numbers which sum is equal to the value.
+        :type value: int
+        :rtype: bool
+        """
+        for num1 in self.data:
+            num2 = value - num1
+            if num2 in self.data and (num2 != num1 or self.data[num1] > 1): # This deals with duplicates and zeroes
+                return True
+        
+        return False
+
+
+# Your TwoSum object will be instantiated and called as such:
+# obj = TwoSum()
+# obj.add(number)
+# param_2 = obj.find(value)
+########################################################################################################################
+class TwoSum(object):
+	'''
+	Find optimized
+	'''
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self._nums = set()
+        self._sums = set()
+        
+
+    def add(self, new_num):
+        """
+		O(n)
+        Add the number to an internal data structure..
+        :type number: int
+        :rtype: void
+        """
+        for existing_num in self._nums:
+            self._sums.add(new_num + existing_num)
+        
+        self._nums.add(new_num)
+            
+        
+
+    def find(self, value):
+        """
+		O(1)
+        Find if there exists any pair of numbers which sum is equal to the value.
+        :type value: int
+        :rtype: bool
+        """
+        return True if value in self._sums else False
+
+
+# Your TwoSum object will be instantiated and called as such:
+# obj = TwoSum()
+# obj.add(number)
+# param_2 = obj.find(value)
+
+########################################################################################################################
 
 # sum not unique
 # 2 sum with sorting O(nlogn)

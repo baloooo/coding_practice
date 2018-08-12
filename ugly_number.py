@@ -21,6 +21,7 @@ class Solution(object):
         2, 3, and 5  and pick the minimum of these since we need them in sorted order
         + it would also help in avoiding duplicates.
         http://www.geeksforgeeks.org/ugly-numbers/
+        Good explanation in comments here: https://leetcode.com/problems/ugly-number-ii/discuss/69364/My-16ms-C++-DP-solution-with-short-explanation
         """
         ugly = [1]
         i2 = i3 = i5 = 0

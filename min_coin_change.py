@@ -20,8 +20,8 @@ class Solution:
 
     def min_coin_change_recursive(self, coins, target_sum):
         '''
-        Time: O(S^n) where S=target_sum and n = len(coins)
-        S/c^1 * S/c^2 * ...S/c^n = S/c^n
+        Time: O(S**n) where S=target_sum and n = len(coins)
+        S/c1 * S/c2 * ...S/cn = (S**n)/cn
         S/c1 is the total number of ways we can use c1 to contribute in a combination that makes up total_sum
         '''
         min_coins = self.count(coins, 0, target_sum)

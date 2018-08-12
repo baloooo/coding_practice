@@ -44,7 +44,7 @@ class Solution(object):
         if self.is_palindrome(s, start, end):
             return 0
         min_cut = float('inf')
-	for k in xrange(start, end):
+        for k in xrange(start, end):
             min_cut = min(min_cut, 1 + self.dfs(s, start, k) + self.dfs(s, k+1, end))
         return min_cut
 

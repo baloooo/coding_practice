@@ -1,11 +1,15 @@
 import collections
 
 class Solution:
-    def word_break_latest(self, target, word_list):
+    def word_break_1_latest(self, target, word_list):
         '''
         This seems to be more optimized than all the other solutions for word_break1. Also this
         solution is more intutive than other solutions. On top of that this logic is very similar to
         the one we use in word_break2 so that's also a plus point.
+        Ideal test case to appreciate this:
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab"
+            ["a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa"]
+            Notice the last 'b' in target, which will force us to try combinations we might have already tried.
         '''
         if not target:
             return True
@@ -29,6 +33,35 @@ class Solution:
 
 
 #################################################################################################
+
+	def dfs(self, target_str, len_to_word_set_map, start):
+        if start >= len(target_str):
+            return True
+
+        for word_len in len_to_word_set_map:
+            cur_word = target_str[start:start+word_len]
+            if cur_word in len_to_word_set_map[word_len] and self.dfs(target_str, len_to_word_set_map, start+word_len):
+                return True
+
+        return False
+
+    def wordBreak_recursion_latest(self, target_str, wordDict):
+        '''
+		TLE
+		More inline to wordBreak2 (recursion solution)
+		This one also has TC: 2^n as it suffers from the same problem of doing repeated sub-problems again and again.
+        '''
+        import collections
+        if len(target_str) == 0 or len(wordDict) == 0:
+            return False
+        len_to_word_set_map = collections.defaultdict(set)
+        for word in wordDict:
+            len_to_word_set_map[len(word)].add(word)
+
+        return self.dfs(target_str, len_to_word_set_map, 0)
+
+#################################################################################################
+
     def word_break(self, start, word_set, target):
         if start == len(target):
             return True
@@ -39,13 +72,15 @@ class Solution:
                 return True
         return False
 
-    def word_break_recursion(self, target, word_list):
+    def word_break_1_recursion(self, target, word_list):
         '''
         http://www.geeksforgeeks.org/dynamic-programming-set-32-word-break-problem/
         https://stackoverflow.com/questions/31370674/time-complexity-of-the-word-break-recursive-solution
         time: O(2^n)
         Since in each step we're passing down target with one less char to parse in worst case.
         T(n) = T(n-1) + T(n-2) + T(n-3) + ... which is equal to 2^n.
+        Just for perspective:
+            T(n) = T(n-1) + T(n-2) is rec. relation for fibonacci which has 2^n time complexity.
         '''
         word_set = set(word_list)
         return self.word_break(0, word_set, target)
@@ -60,9 +95,8 @@ class Solution:
             for candidate_len in word_len_set:
                 prefix = target[start:start+candidate_len]
                 if prefix in word_set:
-                    for word in self.dfs(index_to_words, target, word_set,
-                                         start+candidate_len, word_len_set):
-        #https://stackoverflow.com/questions/19213535/using-and-and-or-operator-with-python-strings
+                    for word in self.dfs(index_to_words, target, word_set, start+candidate_len, word_len_set):
+						#https://stackoverflow.com/questions/19213535/using-and-and-or-operator-with-python-strings
                         # res.append(prefix + (word and ' '+word))
                         res.append(prefix + ((' '+word if word else word)))
             index_to_words[start] = res
@@ -100,7 +134,7 @@ class Solution:
 
 #################################################################################################
 
-    def word_break_dp(self, target, word_list):
+    def word_break_1_dp(self, target, word_list):
         '''
         Time: O(n^2) but can be coded as O(n*k) where n = len(target) and k = len(word_list)
         Todo: check O(n*k) version for usecases where len(word_list) is small and target string too big.
@@ -124,7 +158,7 @@ class Solution:
                 if dp[len(target)]: return True
         return dp[len(target)]
 
-    def word_break_dp_another(self, target, word_list):
+    def word_break_1_dp_another(self, target, word_list):
         # https://github.com/kamyu104/LeetCode/blob/master/Python/word-break.py
         # Time: 
         word_set = set(word_list)

@@ -89,6 +89,11 @@ class Solution(object):
         ]
         The total number of unique paths is 2.
         """
+        '''
+        possible check to avoid '1 - ...' trick below
+        if matrix[0][0] == 1 or matrix[-1][-1] == 1 or not matrix:
+            return 0
+        '''
         row_len = len(obstacle_grid)
         col_len = len(obstacle_grid[0])
         obstacle_grid[0][0] = 1 - obstacle_grid[0][0]
@@ -105,6 +110,8 @@ class Solution(object):
         for cur_row in xrange(1, row_len):
             for cur_col in xrange(1, col_len):
                 if obstacle_grid[cur_row][cur_col] == 1:
+                    ''' since we will walk over a co-ordinate before using it
+                    we can change existing walls(1) to 0(no. of ways) when we first encounter them.'''
                     obstacle_grid[cur_row][cur_col] = 0
                 else:
                     obstacle_grid[cur_row][cur_col] = obstacle_grid[cur_row-1][cur_col] + obstacle_grid[cur_row][cur_col-1]  # noqa
