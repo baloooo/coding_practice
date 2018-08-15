@@ -1,3 +1,7 @@
+'''
+https://www.geeksforgeeks.org/ugly-numbers/
+'''
+
 class Solution(object):
     def isUgly(self, num):
         """
@@ -46,17 +50,33 @@ class Solution(object):
         :type n: int
         :type primes: List[int]
         :rtype: int
+	https://leetcode.com/problems/super-ugly-number/discuss/76330/Using-min-heap-Accepted-Java-and-Python-code
         """
-        http://www.geeksforgeeks.org/super-ugly-number-number-whose-prime-factors-given-set/
-        pass
+        import heapq
+        next_ugly_min_heap = []
+        for prime in primes:
+            next_ugly_min_heap.append((prime, 0, prime))
+            
+        heapq.heapify(next_ugly_min_heap)
+        ugly_nums = [1]
+        for _ in xrange(1, n):
+            old_x, i, p = next_ugly_min_heap[0]
+            ugly_nums.append(old_x)
+            
+            while next_ugly_min_heap and old_x == next_ugly_min_heap[0][0]:
+                x, i, p = heapq.heappop(next_ugly_min_heap)
+                heapq.heappush(next_ugly_min_heap, (p*ugly_nums[i+1], i+1, p))
+        
+        return ugly_nums[-1]
         
 
 if __name__ == '__main__':
     test_cases = [
-        (7, 8),
+        ((12, [2,7,13,19]), 32),
     ]
     for test_case in test_cases:
-        res = Solution().nthUglyNumber(test_case[0])
+        # res = Solution().nthUglyNumber(test_case[0])
+        res = Solution().nthSuperUglyNumber(*test_case[0])
         if res == test_case[1]:
             print "Passed"
         else:

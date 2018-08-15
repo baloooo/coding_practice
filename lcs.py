@@ -1,9 +1,6 @@
 
 
 class Solution:
-    def lcs(self, str1, str2):
-        return self.lcs_recursive(str1, str2, len(str1)-1, len(str2)-1)
-
     def lcs_recursive(self, str1, str2, i, j):
         '''
         Idea: http://www.geeksforgeeks.org/longest-common-subsequence/
@@ -16,6 +13,11 @@ class Solution:
             return 1 + self.lcs_recursive(str1, str2, i-1, j-1)
         else:
             return max(self.lcs_recursive(str1, str2, i, j-1), self.lcs_recursive(str1, str2, i-1, j))
+
+    def lcs(self, str1, str2):
+        return self.lcs_recursive(str1, str2, len(str1)-1, len(str2)-1)
+
+######################################################################################################
 
     def lcs_dp(self, str1, str2):
         # Time = Space = O(mn)

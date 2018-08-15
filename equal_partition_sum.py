@@ -57,13 +57,50 @@ class Solution:
             print row
         return dp[target_sum][len(nums)]
 
-    def canPartitionKSubsets(self, nums, k):
+    def 
+
+    def _can_partition_into_k(self, nums, nums_index, groups, target):
+        if nums_index < 0:
+            return True
+        cur_num = nums[nums_index]
+        for group_index in xrange(len(groups)):
+            if groups[group_index] + cur_num <= target:
+                groups[group_index] += cur_num
+                if self._can_partition_into_k(nums, nums_index - 1, groups, target):
+                    return True
+                groups[group_index] -= cur_num
+                
+        return False
+    
+    def canPartitionKSubsets_recur(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: bool
+	https://leetcode.com/problems/partition-to-k-equal-sum-subsets/solution/
+        """
+        if sum(nums) % k != 0:
+            return False
+        
+        target = sum(nums)/k
+        nums.sort() # confirm how sorting helps
+        
+        if nums[-1] > target:
+            return False
+        nums_index = len(nums)-1 # confirm why going from tail is beneficial
+        
+        # if some subset are already equal to target, we don't have to solve for them.
+        while nums_index >= 0 and nums[nums_index] == target: 
+            nums_index -= 1
+            k -= 1
+        groups = [0]*k
+        
+        return self._can_partition_into_k(nums, nums_index, groups, target)
+
+    def canPartitionKSubsets_dp(self, nums, k):
         '''
-        can be done by just recursion but not DP.
-        https://discuss.leetcode.com/topic/107185/java-c-straightforward-dfs-solution
         '''
         pass
-
 
 if __name__ == '__main__':
     arr = [1, 5, 11, 5]
