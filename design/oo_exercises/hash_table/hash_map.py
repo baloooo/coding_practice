@@ -11,8 +11,6 @@ hash = hashfunc(key)
 index = hash % array_size
 In this method, the hash is independent of the array size, and it is then reduced to an index (a number between 0 and array_size − 1) using the modulo operator (%).
 
-In the case that the array size is a power of two, the remainder operation is reduced to masking, which improves speed, but can increase problems with a poor hash function.
-
 A basic requirement is that the function should provide a uniform distribution of hash values. A non-uniform distribution increases the number of collisions and the cost of resolving them. Uniformity is sometimes difficult to ensure by design, but may be evaluated empirically using statistical tests, e.g., a Pearson's chi-squared test for discrete uniform distributions
 
 Load factor = n/k
@@ -26,13 +24,15 @@ Separate chaining with linkedlists:
 Chained hash tables also inherit the disadvantages of linked lists. When storing small keys and values, the space overhead of the next pointer in each entry record can be significant. An additional disadvantage is that traversing a linked list has poor cache performance, making the processor cache ineffective.
 
 If the load factor is large and some keys are more likely to come up than others, then rearranging the chain with a move-to-front heuristic may be effective. More sophisticated data structures, such as balanced search trees, are worth considering only if the load factor is large (about 10 or more), or if the hash distribution is likely to be very non-uniform, or if one must guarantee good performance even in a worst-case scenario. However, using a larger table and/or a better hash function may be even more effective in those cases
-Instead of a list, one can use any other data structure that supports the required operations. For example, by using a self-balancing binary search tree, the theoretical worst-case time of common hash table operations (insertion, deletion, lookup) can be brought down to O(log n) rather than O(n).A real world example of a hash table that uses a self-balancing binary search tree for buckets is the HashMap class in Java version 8.
+
+*** Instead of a list, one can use any other data structure that supports the required operations. For example, by using a self-balancing binary search tree, the theoretical worst-case time of common hash table operations (insertion, deletion, lookup) can be brought down to O(log n) rather than O(n).A real world example of a hash table that uses a self-balancing binary search tree for buckets is the HashMap class in Java version 8.
 
 Open addresssing:
     * In another strategy, called open addressing, all entry records are stored in the bucket array itself. When a new entry has to be inserted, the buckets are examined, starting with the hashed-to slot and proceeding in some probe sequence, until an unoccupied slot is found. When searching for an entry, the buckets are scanned in the same sequence, until either the target record is found, or an unused array slot is found, which indicates that there is no such key in the table
     * A drawback of all these open addressing schemes is that the number of stored entries cannot exceed the number of slots in the bucket array. In fact, even with good hash functions, their performance dramatically degrades when the load factor grows beyond 0.7 or so. For many applications, these restrictions mandate the use of dynamic resizing, with its attendant costs.
     * Open addressing schemes also put more stringent requirements on the hash function: besides distributing the keys more uniformly over the buckets, the function must also minimize the clustering of hash values that are consecutive in the probe order. Using separate chaining, the only concern is that too many objects map to the same hash value; whether they are adjacent or nearby is completely irrelevant
-Load factor:
+
+** Load factor:
     * To keep the load factor under a certain limit, e.g., under 3/4, many table implementations expand the table when items are inserted. For example, in Java's HashMap class the default load factor threshold for table expansion is 3/4 and in Python's dict, table size is resized when load factor is greater than 2/3.
     * Resizing is accompanied by a full or incremental table rehash whereby existing items are mapped to new bucket locations.
     * To limit the proportion of memory wasted due to empty buckets, some implementations also shrink the size of the table—followed by a rehash—when items are deleted. From the point of space–time tradeoffs, this operation is similar to the deallocation in dynamic arrays.
@@ -50,6 +50,14 @@ hash table, can be a way for expanding hash table size.
 
 * Hashing for distributed hash tables
 
+** Redis cluster is a good example of distributed hash table
+Using a hash function like murmurhash can be a good idea.
+Using an engineered hash function like Murmur will maximize the quality of the distribution, and minimize the number of collisions, but it offers no other guarantee.
+https://stackoverflow.com/questions/11899616/murmurhash-what-is-it
+
+Also in general other points to consider for creating a massive hash table:
+    https://stackoverflow.com/questions/7315774/google-interview-question
+
 Code: https://github.com/ishaan007/Data-Structures/blob/master/HashMaps/Map.java
 https://github.com/calebmadrigal/algorithms-in-python/blob/master/hashtable.py
 https://gist.github.com/kracekumar/91e0d9a250b50ec3c0f3
@@ -59,10 +67,6 @@ Things to follow up on:
     Use with distributed hash table
     consistent hashing concept: https://www.youtube.com/watch?v=zaRkONvyGr8
     consistent hashing w/ load balancing GTalk: https://www.youtube.com/watch?v=jk6oiBJxcaA&list=PLwbhGTqjr3LtWxc401hPWh9adQ87--iso&index=7&t=0s
-
-    
-
-    
 
 '''
 
@@ -80,11 +84,16 @@ class HashTable(object):
         self.table = [[] for _ in range(self.size)]
 
     def _hash_function(self, key):
+        # can be replaced by murmurhash or any other advanced hashing function
         return key % self.size
 
     def set(self, key, value):
+        '''
+        If keys are being hashed as in murmur hash we'll store the hash instead of original key.
+        '''
         hash_index = self._hash_function(key)
         for item in self.table[hash_index]:
+            # Update existing value, if found
             if item.key == key:
                 item.value = value
                 return
