@@ -1,5 +1,8 @@
 def hamming_weight(n):
+    '''
+    The key idea here is to realize that for any number n, doing a bit-wise AND of n and n−1 flips the least-significant 1-bit in n to 0
     # https://leetcode.com/articles/number-1-bits/
+    '''
     count = 0
     while n != 0:
         count += 1
@@ -16,8 +19,9 @@ def number_of_1s(num):
 
 
 def hamming_weight(num):
-    # the reason above code works is here
-    # https://discuss.leetcode.com/topic/11385/simple-java-solution-bit-shifting
+    '''
+    https://discuss.leetcode.com/topic/11385/simple-java-solution-bit-shifting
+    '''
     ones = 0
     while num:
         ones += (num & 1)
