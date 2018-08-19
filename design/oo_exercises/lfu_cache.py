@@ -57,6 +57,19 @@ class DoublyLinkedList(object):
         node.prev = node.next = None # Clean node references
 
 class LFUCache(object):
+    '''
+    Key idea is to use separate linked lists for each frequency, and maintain a min_freq variable
+    to know which frequency linkedlist to pop a node from if capacity is reached.
+    This strategy has an additional advantage of using LRU for each linkedlist corresponding to a frequency value.
+    Most of the complexity above is because we're trying to also implement LRU as a fallback strategy, which is not
+    really required in most cases. Therefore go with the basic versions when implementing, and just mention the advanced
+    version.
+    Another key point is the strategy to track min_frequency as this allows us to remove LFU node in O(1). So keeping track
+    of this is a very crucial point.
+    Notice that if delete operation is also permitted self.min_freq cannot be just incremented, since a node with freq 1 can
+    be deleted but then next frequency can be 5.
+    In that case we can store min frequencies in a LL or array
+    '''
     def __init__(self, capacity):
         self.key_to_node = {}
         self.freq_to_ll = defaultdict(DoublyLinkedList)
@@ -72,8 +85,9 @@ class LFUCache(object):
         '''
         if key not in self.key_to_node:
             return -1
-        node = self.key_to_node[key]
-        self.freq_to_ll[node.freq].delete(node)
+        # These two accesses allow O(1) operation overall.
+        node = self.key_to_node[key] # 1
+        self.freq_to_ll[node.freq].delete(node) # 2
         if node.freq == self.min_freq and self.freq_to_ll[self.min_freq].head is None:
             self.min_freq += 1
         node.freq += 1
@@ -81,6 +95,7 @@ class LFUCache(object):
         return node.val
 
     def put(self, key, val):
+        # Just a check for invalid test case with capacity 0
         if self.capacity <= 0:
             return
         # Node already present, therefore update frequeny and new value

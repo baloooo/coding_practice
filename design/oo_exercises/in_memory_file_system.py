@@ -161,3 +161,93 @@ if __name__ == '__main__':
     # [["/# zijzllb"],["/"],["/zijzllb"],["/r"],["/"],["/r"],["/zijzllb/hfktg","d"],["/zijzllb/hfktg"],["/"],["/zijzllb/hfktg"]])
     # ["mkdir","ls","ls","mkdir","ls","ls","addContentToFile","ls","ls","ls"],
     # [["/goowmfn"],["/goowmfn"],["/"],["/z"],["/"],["/"],["/goowmfn/c","shetopcy"],["/z"],["/goowmfn/c"],["/goowmfn"]])
+
+#######################################################################################################################
+'''
+Slightly alternate way with less future placeholders and more concise representation
+
+63 / 63 test cases passed.
+Status: Accepted
+Runtime: 72 ms
+
+'''
+
+class Entry(object):
+    def __init__(self):
+        #self.permissions = 'RRR'
+        pass
+
+class Dir(Entry):
+    def __init__(self, dirname):
+        self.dirname = dirname
+        self.children = {}
+
+class File(Entry):
+    def __init__(self, file_name, file_contents):
+        self.file_name = file_name
+        self.file_contents = file_contents
+
+class FileSystem(object):
+
+    def __init__(self):
+        self.root = Dir('/')
+
+    def ls(self, path):
+        """
+        :type path: str
+        :rtype: List[str]
+        """
+        target = self._cd(path)
+        return [target.file_name] if isinstance(target, File) else sorted(target.children.keys())
+        
+
+    def mkdir(self, path):
+        """
+        :type path: str
+        :rtype: void
+        """
+        path = path.strip('/').split('/')
+        if len(path) == 1 and path[0] == '':
+            return
+        cur_dir = self.root
+        for i_dir in path:
+            if i_dir not in cur_dir.children:
+                cur_dir.children[i_dir] = Dir(i_dir)
+
+            cur_dir = cur_dir.children[i_dir]
+
+        
+    def _cd(self, path):
+        path = path.strip('/').split('/')
+        if len(path) == 1 and path[0] == '':
+            return self.root
+        cur_dir = self.root
+        for dir_name in path:
+            cur_dir = cur_dir.children[dir_name] # assumes file paths are passed valid.
+            
+        return cur_dir
+
+    def addContentToFile(self, filePath, content):
+        """
+        :type filePath: str
+        :type content: str
+        :rtype: void
+        """
+        file_dir_str, file_name = filePath.rsplit('/', 1)
+        file_dir = self._cd(file_dir_str)
+        if file_name in file_dir.children:
+            file_dir.children[file_name].file_contents += content
+            
+        else:
+            file = File(file_name, content)
+            file_dir.children[file_name] = file
+        
+    def readContentFromFile(self, filePath):
+        """
+        :type filePath: str
+        :rtype: str
+        """
+        file_dir_str, file_name = filePath.rsplit('/', 1)
+        file_dir = self._cd(file_dir_str)
+        return file_dir.children[file_name].file_contents
+        
