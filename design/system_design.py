@@ -1,3 +1,26 @@
+Design:
+    https://www.hiredintech.com/classrooms/system-design/lesson/69
+    https://www.puncsky.com/blog/2016-02-13-crack-the-system-design-interview
+
+Features:
+    pass
+
+High level design:
+    Handling user requests:
+        pass
+    Storage:
+        pass
+
+Low level design
+    Ask how much code to write.
+    Ask how much queries to write.
+
+
+
+Queries: 
+
+Databases usually have their own caching mechanisms but with memcached we have better control over what gets cached and how. For example, we could store more complex pieces of data like the results from popular queries
+
 Twitter get home timeline SQL query:
 
 version1: (From github)
