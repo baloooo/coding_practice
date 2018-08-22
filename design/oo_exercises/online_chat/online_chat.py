@@ -94,25 +94,6 @@ class Chat(metaclass=ABCMeta):
         '''
         self.messages = []
 
-    @abstractmethod
-    def registerObserver(self, observer):
-        '''
-        Registers observer/chat participants
-        '''
-        pass
-
-    @abstractmethod
-    def removeObserver(self, observer):
-        pass
-
-    @abstractmethod
-    def notifyObserver(self):
-        '''
-        Notify observers/chat participants a message was dropped.
-        '''
-        pass
-
-
 class PrivateChat(Chat):
 
     def __init__(self, first_user, second_user):
@@ -120,16 +101,6 @@ class PrivateChat(Chat):
         self.users.append(first_user)
         self.users.append(second_user)
         self.registerObserver(self.chat_id, [first_user, second_user])
-
-    def registerObserver(self, chat_id, users):
-        pass
-
-    def removeObserver(self, chat_id, users):
-        pass
-
-    def notifyObserver(self, chat_id, users):
-        pass
-
 
 class GroupChat(Chat):
     def __init__(self, users):
@@ -179,8 +150,7 @@ class AddRequest(object):
 
 
 class MessageStatus(Enum):
-    UNREAD = 0
-    READ = 1
+    UNREAD = 0 READ = 1
 
 class RequestStatus(Enum):
 

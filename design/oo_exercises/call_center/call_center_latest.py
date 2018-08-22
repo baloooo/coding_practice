@@ -75,7 +75,7 @@ class Director(Employee):
 
 class CallState(Enum):
 
-    READY = 0
+    WAITING = 0
     IN_PROGRESS = 1
     COMPLETE = 2
 
@@ -84,7 +84,7 @@ class Call(object):
 
     # Default all calls go to operator, if not present they'll be escalated.
     def __init__(self, rank=Rank.OPERATOR):
-        self.state = CallState.READY
+        self.state = CallState.WAITING
         self.rank = rank
         self.employee = None
 
@@ -186,6 +186,5 @@ if __name__ == '__main__':
     Each employee can define their own escalate call methods which would put the call back in queue with desired
     employee rank as one higher than the current or as requested by the call.
     Things like call states, Employee ranks should be made Enums.
-    Employee base class should be a metaclass and define some abstract methods like escalate_call, receive_call
-    etc.
+    Employee base class should be a metaclass and define some abstract methods like receive_call etc.
     '''
