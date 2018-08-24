@@ -57,6 +57,102 @@ Time:
 Space: 
 """
 
+###################################################################################################################
+'''
+Same as one the one below but some pros over it:
+	Logic more inline with LFU(using dummy head node for maintaining head/tail rather than two separate varaibles.
+	Controller and Model(backend) part very well abstracted
+'''
+class DLLNode(object):
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
+        self.prev = self.next = None
+
+class DLLBackend(object):
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.key_node_map = {}
+        self.head = DLLNode('dummy', 'dummy')
+        self.head.prev = self.head.next = self.head
+
+    def get(self, key):
+        if key in self.key_node_map:
+            target_node = self._dislocate_node(key)
+            self._move_to_end(target_node)
+            return self.key_node_map[key].value
+        else:
+            return -1
+
+    def _move_to_end(self, target_node):
+        target_node.prev = self.head.prev
+        target_node.next = self.head
+
+        target_node.prev.next = target_node
+        target_node.next.prev = target_node
+
+    def _pop_lru(self):
+        target_node = self.head.next
+
+        target_node.prev.next = target_node.next
+        target_node.next.prev = target_node.prev
+        
+        del self.key_node_map[target_node.key]
+        
+        self.capacity += 1
+
+    def _dislocate_node(self, key):
+        target_node = self.key_node_map[key]
+        
+
+        target_node.prev.next = target_node.next
+        target_node.next.prev = target_node.prev
+
+        # move to end
+        target_node.prev = target_node.next = None
+
+        return target_node
+
+    def put(self, key, value):
+        if key in self.key_node_map:
+            # Update existing value
+            self.key_node_map[key].value = value
+            target_node = self._dislocate_node(key)
+            self._move_to_end(target_node)
+        else:
+            if self.capacity == 0:
+                self._pop_lru()
+            new_node = DLLNode(key, value)
+            self.key_node_map[key] = new_node
+            self._move_to_end(new_node)
+            self.capacity -= 1
+
+
+class LRUCache(object):
+
+    def __init__(self, capacity):
+        """
+        :type capacity: int
+        """
+        self.backend = DLLBackend(capacity)
+
+    def get(self, key):
+        """
+        :type key: int
+        :rtype: int
+        """
+        return self.backend.get(key)
+        
+
+    def put(self, key, value):
+        """
+        :type key: int
+        :type value: int
+        :rtype: void
+        """
+        self.backend.put(key, value)
+##########################################################################################################################
+
 class DoublyLinkListNode:
     def __repr__(self):
         return 'Key: {0}, Val: {1}'.format(self.key, self.val)

@@ -1,3 +1,5 @@
+Design exercises:
+    Design twitter/fb feed
 Design:
     https://www.hiredintech.com/classrooms/system-design/lesson/69
     https://www.puncsky.com/blog/2016-02-13-crack-the-system-design-interview

@@ -8,7 +8,13 @@
 class Codec:
 	'''
 	https://discuss.leetcode.com/topic/28041/recursive-preorder-python-and-c-o-n
+    Idea: 
+        Serialize:
+            Do an preorder on the tree, and while traversal keep adding values of nodes to a shared list
+        DeSerialize:
+            Iterate over the string to get value of individual nodes and contruct root.left and right recursively from there.
 	'''
+
     def _serialize(self, root, serialized_tree):
         if root is not None:
             serialized_tree.append(str(root.val))

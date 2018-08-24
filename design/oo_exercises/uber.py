@@ -22,7 +22,7 @@ class Driver(Person):
         self.car = car
 
     def serve_request(self, request): pass
-    def _provide_routing_info(self, destination): pass # Called once request is accepted.
+    def _get_routing_info(self, destination): pass # Called once request is accepted.
 
 
 class Customer(Person):
