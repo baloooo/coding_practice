@@ -32,10 +32,23 @@ counter.getHits(300);
 
 // get hits at timestamp 301, should return 3.
 counter.getHits(301);
+
 Possible solutions:
 https://discuss.leetcode.com/topic/48758/super-easy-design-o-1-hit-o-s-gethits-no-fancy-data-structure-is-needed
 http://massivetechinterview.blogspot.jp/2015/06/algorithm-how-to-count-number-of.html
 https://stackoverflow.com/questions/17562089/how-to-count-number-of-requests-in-last-second-minute-and-hour
+
+scalable strategy:
+https://leetcode.com/problems/design-hit-counter/discuss/83510/AC-scalable-0ms-super-easy-C++-design-with-queue-and-aggregated-O(1)-operation-for-hit-and-gethits
+Another strategy would be to use a queue for storing hits and for every hit remove all timestamps from head of queue that
+occurred before the current 300 ms timestamp(while removing a timestamp decrement its count from running count of hits)
+Similarly on getHits call remove all hits from head of queue that happened earlier than 300ms window and return current running
+count of the hits.
+
+Pros:
+    No array size dependency on hitcounter window, as a global variable can change that and queue will start clearing or 
+    adding hits in to queue with the new window. This cannot be done in current implementation as size is fixed in init
+    and we only add hits with indexes afterwards.
 """
 
 

@@ -50,6 +50,8 @@ class MedianFinder(object):
         :type num: int
         :rtype: void
         """
+        # Note: Adding element to any of the heaps require element come from other heap so as to preserve the sorted
+        # sequence property
         if len(self.small_max_heap) == len(self.large_min_heap):
             # push in large
             # negate element before putting in min_heap and since finally putting in to max heap, 

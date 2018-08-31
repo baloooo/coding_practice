@@ -3,6 +3,9 @@ class MovingAverage(object):
     https://discuss.leetcode.com/topic/44108/java-o-1-time-solution
     The idea is to have a pointer 'ins_at' in the array and have it on the location
     that contains the most stale value.
+
+	Note that ins_at here is just a pointer that circulates around the array with the help of modular function.
+
     When a new value comes in subtract the value at that pointer from the cur_sum and add the
     new value in to the array, add value to cur_sum and move the pointer.
     This way we won't have to calculate cur_sum again and again and can have a running updated
@@ -46,3 +49,37 @@ if __name__ == '__main__':
     print obj.next(3)
     print obj.next(5)
     # param_1 = obj.next(val)
+
+class MovingAverage(object):
+	'''
+	With Queue
+	An alternate way is to use a queue here, main advantage being that we only need to store only k elements now,
+	moreover we don't have to keep track of the pointers too
+	'''
+
+    def __init__(self, size):
+        """
+        Initialize your data structure here.
+        :type size: int
+        """
+        self.queue = Queue.Queue()
+        self.size = size
+        self.cur_sum = 0
+        self.cur_count = 0
+
+    def next(self, val):
+        """
+        :type val: int
+        :rtype: float
+        """
+        if self.queue.qsize() == self.size:
+            front_of_q = self.queue.get()
+            self.cur_sum -= front_of_q
+            self.queue.put(val)
+            self.cur_sum += val
+        else:
+            self.queue.put(val)
+            self.cur_sum += val
+            self.cur_count += 1
+        
+        return self.cur_sum/(self.cur_count*1.0)

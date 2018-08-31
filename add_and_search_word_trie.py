@@ -1,5 +1,6 @@
 import collections
 
+# Optimized
 class TrieNode(object):
     def __init__(self):
         self.children = collections.defaultdict(TrieNode)
@@ -49,6 +50,7 @@ class WordDictionary(object):
         return self.dfs(self.root, word, 0)
 
 ########################################################################################################
+# Naive
 class TrieNode(object):
     def __init__(self):
         self.children = collections.defaultdict(TrieNode)

@@ -1,5 +1,9 @@
 '''
 https://leetcode.com/problems/implement-queue-using-stacks/solution/
+Idea is to maintain two stacks(i/p and o/p) where we would:
+    Always accept new pushes only to i/p stack.
+    For the first pop empty entire stack to o/p, and for all successive pop requests pop tos from o/p untill it's empty.
+    Trick: Keep a separate variable front which would hold the front of queue when output has not been populated
 '''
 class MyQueue(object):
 

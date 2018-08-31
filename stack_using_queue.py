@@ -1,5 +1,8 @@
 '''
-https://leetcode.com/problems/implement-stack-using-queues/solution/
+Approach3: https://leetcode.com/problems/implement-stack-using-queues/solution/
+Idea is to put cur_ele in to queue and then pop all existing elements and push them again, essentially after cur_ele
+or can be thought of: pop(get() for Queue) all elements in queue and push cur_ele and then put all elements in again
+This ensures queue elements are always in reverse order(stack format)
 '''
 
 
@@ -20,10 +23,8 @@ class MyStack(object):
         :rtype: void
         """
         self.q.put(x)
-        cur_size = len(self.q.queue)
-        while cur_size > 1:
-        	self.q.put(self.q.get())
-        	cur_size -= 1
+        for i in xrange(1, self.q.qsize()):
+            self.q.put(self.q.get())
 
     def pop(self):
         """

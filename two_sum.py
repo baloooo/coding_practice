@@ -35,9 +35,12 @@ class Solution(object):
 ########################################################################################################################
 '''
 https://leetcode.com/problems/two-sum-iii-data-structure-design/description/
-Nice way to deal with duplicates and zeroes in input.
-Also find is O(n) and add is O(1), if we want to optimize for find we can start adding all sums instead and then
+
+Note: Nice way to deal with duplicates and zeroes in input.
+
+find is O(n) and add is O(1), if we want to optimize for find we can start adding all sums instead and then
 sum will be O(n) and find O(1)
+Both the implementations are below:
 
 '''
 class TwoSum(object):
