@@ -28,7 +28,7 @@ class ValidWordAbbr(object):
             return True
         else:
 			'''
-			Note: This is the hear of the problem, check if abrvtn doesn't exist or
+			Note: This is the heart of the problem, check if abrvtn doesn't exist or
 			if it does it has only this word and no other.'''
             return True if len(self.abrvtn_wset_map[abrvtn]) == 1 and word in self.abrvtn_wset_map[abrvtn] else False
         

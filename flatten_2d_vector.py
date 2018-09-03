@@ -12,6 +12,60 @@ Unfortunately this approach take O(n) space so not very efficient
 '''
 
 class Vector2D(object):
+	'''
+	This is better implementation as this is exactly like flatten_list_iterator exercise
+	'''
+
+    def __init__(self, vec2d):
+        """
+        Initialize your data structure here.
+        :type vec2d: List[List[int]]
+        """
+        self.stack = [iter(vec2d)]
+        self.next_ele = None
+        self.next()
+        
+
+    def next(self):
+        """
+        populate next_ele and return current element under tos iterator.
+        :rtype: int
+        """
+        if self.next_ele is not None:
+            cur_ele = self.next_ele
+            self.next_ele = None
+            self.next()
+            return cur_ele
+
+        front_candidate = None
+        while self.stack and front_candidate is None:
+            front_candidate = next(self.stack[-1], None)
+            if front_candidate is None:
+                self.stack.pop()
+        
+        if front_candidate is None:
+            return
+
+        if isinstance(front_candidate, list):
+            self.stack.append(iter(front_candidate))
+            self.next()
+        else:
+            self.next_ele = front_candidate
+
+
+    def hasNext(self):
+        """
+        :rtype: bool
+        """
+        return self.next_ele is not None
+        
+
+# Your Vector2D object will be instantiated and called as such:
+# i, v = Vector2D(vec2d), []
+# while i.hasNext(): v.append(i.next())'''
+
+
+class Vector2D(object):
     '''
     Convert a 2D array to 1D array is basically the exercise.
     Time: O(elements in the 2D vector array)
