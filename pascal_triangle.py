@@ -57,10 +57,10 @@ class Solution:
 
     def kth_row_pascal(self, k):
         # Time: O(n^2)	
-	'''
-	Using the same logic as above but only using O(k) space and O(K^2) time
-	'''
-	res = [0 for _ in xrange(rowIndex+1)]
+        '''
+        Using the same logic as above but only using O(k) space and O(K^2) time
+        '''
+        res = [0 for _ in xrange(rowIndex+1)]
         for i in xrange(rowIndex+1):
             temp = [0 for _ in xrange(i+1)]
             for j in xrange(i+1):

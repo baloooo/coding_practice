@@ -4,11 +4,19 @@ Whether you can attend all meetings if intervals are given use
 https://discuss.leetcode.com/topic/20959/ac-clean-java-solution
 '''
 
-"""
-Given an array of meeting time intervals consisting of start and end times
-[[s1,e1],[s2,e2],...] find the minimum number of conference rooms required.
-"""
+class Solution:
+    def can_attend(self, arrive, depart):
+        # https://discuss.leetcode.com/topic/20959/ac-clean-java-solution
+		if len(intervals) <= 1:
+            return True
+        intervals.sort(key=lambda x: x.start)
+        for i in xrange(1, len(intervals)):
+            if intervals[i-1].end > intervals[i].start:
+                return False
+        return True
 
+#############################################################################################################################
+# need to figure out which one is this:
 
 class Interval:
     def __init__(self, start, end):
@@ -17,9 +25,6 @@ class Interval:
 
 
 class Solution:
-    def can_attend(self, arrive, depart):
-        # https://discuss.leetcode.com/topic/20959/ac-clean-java-solution
-        pass 
     def meeting_rooms(self, intervals):
         # list of sorted start intervals
         starts = []
@@ -69,6 +74,14 @@ class Solution:
                 ends_iterator += 1
         return rooms
 
+#############################################################################################################################
+
+"""
+Given an array of meeting time intervals consisting of start and end times
+[[s1,e1],[s2,e2],...] find the minimum number of conference rooms required.
+"""
+
+
 # Definition for an interval.
 class Interval(object):
     def __init__(self, s=0, e=0):
@@ -108,7 +121,7 @@ class Solution2(object):
         end_times = [intervals[0]] # min heap
         rooms = 1 
         for i in xrange(1, len(intervals)):
-            # if this meeting starts before the earliest meeting(meeting depicted by top of min heap) ends
+            # if this meeting starts before the earliest meeting ends(meeting depicted by top of min heap)
             if end_times[0].end <= intervals[i].start:
                 # Extend the min interval (Top of heap)
                 # heapreplace(end_times(interval.end, interval))

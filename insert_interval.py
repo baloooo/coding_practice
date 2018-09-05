@@ -13,12 +13,12 @@ class Solution:
 	left, right = [], []
 	for i in intervals:
 	    if i.end < s:
-		left += i,
+            left.append(i)
 	    elif i.start > e:
-		right += i,
+            right.append(i)
 	    else: # Notice one of them is min and other max
-		s = min(s, i.start)
-		e = max(e, i.end)
+            s = min(s, i.start)
+            e = max(e, i.end)
 	return left + [Interval(s, e)] + right
 
     def insert_interval2(self, intervals, new_interval):

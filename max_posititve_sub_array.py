@@ -41,8 +41,12 @@ class Solution:
         return inp_arr[max_so_far_starting_index:max_so_far_ending_index+1]
 
     def maxset2(self, arr):
-        # Idea: Two pointer
+        '''
+        Idea: Two pointer
+        make a subarr with two pointers cur_i, and cur_j keeping their running sum at the same time.
+        When loop ends compare it with max_sum until now.
         # http://www.geeksforgeeks.org/longest-subarray-non-negative-integers/
+        '''
         max_sum = cur_sum = -1
         i = j = cur_i = cur_j = index = -1
         while index < len(arr):

@@ -15,14 +15,22 @@ class Solution(object):
             res.append(matrix[row][col])
             row -= d
             col += d
-            # order of these ifs is important here Todo: why is this order important.
+            '''
+            # order of these ifs is important here
+            This is because for when we go off from top right corner we should use 'violated right boundary'
+            condition solution and not 'violated top boundary' as we can see from the diagram in problem statement
+            when we go off from top right corner 'violated right boundary' conditions can help pointers bring back
+            to actual course required.
+            Same is true when we go off from bottom right corner
+            Therefore bottom line is to have bottom and right conditions before the other two.
+            '''
             if row >= row_len: # went off bottom boundary
                 row = row_len - 1
                 col += 2
                 d = -d
             if col >= col_len: # went off right boundary
                 col = col_len - 1
-                row += 2 # since row
+                row += 2 # This will make more sense when you visualize the trajectory of going off right boundary.
                 d = -d
             if row < 0: # went off top border
                 row = 0 # col is already at correct pos'n

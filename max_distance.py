@@ -28,8 +28,8 @@ class Solution:
         pass
     def max_gap(self, nums):
         # https://leetcode.com/problems/maximum-gap/description/
-	# https://discuss.leetcode.com/topic/5999/bucket-sort-java-solution-with-explanation-o-n-time-and-space
-	pass
+        # https://discuss.leetcode.com/topic/5999/bucket-sort-java-solution-with-explanation-o-n-time-and-space
+        pass
 
     def max_distance(self, arr):
         # http://www.geeksforgeeks.org/given-an-array-arr-find-the-maximum-j-i-such-that-arrj-arri/
