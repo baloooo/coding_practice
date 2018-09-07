@@ -36,6 +36,7 @@ class Solution:
     def totalHammingDistance(self, arr):
         """
         Just an alternate way where mask moves rather than each number as in above case.
+        might be better since we don't move n elements at each step and only the mask
         """
         max_num, mask, ham_dis = max(arr), 1, 0
         while max_num:

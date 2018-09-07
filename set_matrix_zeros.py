@@ -1,6 +1,7 @@
 """
 https://discuss.leetcode.com/topic/5056/any-shorter-o-1-space-solution/2
 Idea: Idea is simple: store states of each row in the first of that row, and store states of each column in the first of that column. Because the state of row0 and the state of column0 would occupy the same cell, I let it be the state of row0, and use another variable "col0" for column0. In the first phase, use matrix elements to set states in a top-down way. In the second phase, use states to set matrix elements in a bottom-up way.
+Note that in phase2 we traverse from bottom right to top left and not the other way around. 
 """
 
 

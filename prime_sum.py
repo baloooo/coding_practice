@@ -2,7 +2,8 @@ class Solution:
     '''
     Seive of eratosthenes:
     From: https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
-    The sieve of Eratosthenes is a popular way to benchmark computer performance.[14] As can be seen from the above by removing all constant offsets and constant factors and ignoring terms that tend to zero as n approaches infinity, the time complexity of calculating all primes below n in the random access machine model is O(n log log n) operations, a direct consequence of the fact that the prime harmonic series asymptotically approaches log log n.
+    The sieve of Eratosthenes is a popular way to benchmark computer performance.[14]
+    As can be seen from the above by removing all constant offsets and constant factors and ignoring terms that tend to zero as n approaches infinity, the time complexity of calculating all primes below n in the random access machine model is O(n log log n) operations, a direct consequence of the fact that the prime harmonic series asymptotically approaches log log n.
     https://stackoverflow.com/questions/2582732/time-complexity-of-sieve-of-eratosthenes-algorithm
     '''
     def find_prime_numbers(self, A):

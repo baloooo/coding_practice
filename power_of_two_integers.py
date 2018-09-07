@@ -15,11 +15,14 @@ class Solution:
         return bool(n!=0 and not (n&(n-1)) )
 
     def power_of_two_integers(self, n):
-        # http://www.geeksforgeeks.org/check-if-a-number-can-be-expressed-as-xy-x-raised-to-power-y/
-        # x^y where x >0 and y > 1
+        '''
+        Idea is to check all powers of all the numbers from 2 upuntill sqrt(n)
+        http://www.geeksforgeeks.org/check-if-a-number-can-be-expressed-as-xy-x-raised-to-power-y/
+        x^y where x >0 and y > 1
+        '''
         from math import sqrt
         if n <= 1: return True
-        for base in xrange(2, sqrt(n)):
+        for base in xrange(2, int(sqrt(n))):
             cur = base
             while cur <= n:
                 cur = cur * base
@@ -31,6 +34,7 @@ class Solution:
 if __name__ == '__main__':
     test_cases = [
         (4, True),
+        (9, True),
     ]
     for test_case in test_cases:
         res = Solution().power_of_two_integers(test_case[0])
