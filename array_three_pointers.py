@@ -43,7 +43,10 @@ def min_max_diff_three_pointers(arr1, arr2, arr3):
     one element from one of the lists. (To be precise, it's O(Nm) time, where m=3,
     but we can treat as m as a constant in the current formulation.)
 
-    Even though it's pretty easy to prove the correctness of the algorithm, there is still risk in messing up the implementation. Fortunately, this problem has a trivial O(N^3) solution as well, so you can use your slow implementation to validate the fast implementation for a bunch of randomly generated small lists. This won't conclusively prove that the faster algorithm works, but it can help identify bugs in the implementation
+    Even though it's pretty easy to prove the correctness of the algorithm, there is still risk in messing up the implementation.
+    Fortunately, this problem has a trivial O(N^3) solution as well, so you can use your slow implementation to validate the fast
+    implementation for a bunch of randomly generated small lists. This won't conclusively prove that the faster algorithm works,
+    but it can help identify bugs in the implementation
     '''
     i, j, k = 0, 0, 0
     min_till_now = float('inf')

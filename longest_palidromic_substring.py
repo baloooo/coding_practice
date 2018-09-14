@@ -26,6 +26,8 @@ class Solution:
         # https://articles.leetcode.com/longest-palindromic-substring-part-ii/
         pass
 
+########################################################################################################################
+
     def max_palindrom_at_pos(self, string, i, j):
         # returns max_palindrome extending from i and j respectively
         while i >= 0 and j < len(string) and string[i] == string[j]:
@@ -63,6 +65,7 @@ class Solution:
             self.max_palindrom_at_pos(string, i, i+1)
         return string[self.start:self.start+self.max_len]
 
+########################################################################################################################
 
     def check_palindrome(self, target):
         start = 0

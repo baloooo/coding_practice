@@ -1,8 +1,21 @@
 '''
+Given a string, your task is to count how many palindromic substrings in this string.
+
+The substrings with different start indexes or end indexes are counted as different substrings even they consist of same characters.
+
+Example 1:
+Input: "abc"
+Output: 3
+Explanation: Three palindromic strings: "a", "b", "c".
+Example 2:
+Input: "aaa"
+Output: 6
+Explanation: Six palindromic strings: "a", "a", "a", "aa", "aa", "aaa".
+
 A more efficent solution of O(n) time exists using manacher algo.
 https://leetcode.com/problems/palindromic-substrings/solution/
 '''
-
+# Naive solution with O(n^3) TC.
 class Solution(object):
     def _is_palindrome(self, s, start, end):
         while start < end:
@@ -17,7 +30,7 @@ class Solution(object):
         """
         :type s: str
         :rtype: int
-	Time: O(n^3), n^2 for number of substrings and for each we check palindrome of O(n)
+	    Time: O(n^3), n^2 for number of substrings and for each we check palindrome of O(n)
         """
         count = 0
         for i in xrange(len(s)):

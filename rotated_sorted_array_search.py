@@ -41,6 +41,9 @@ def search(nums, target):
 def search_w_repetitions(nums, target):
     '''
     Idea: The logic is entirely the same as above, just remove the repetitions/duplicates
+
+    O(logn) average, O(n) worst as the entire list can have duplicates.
+
     https://discuss.leetcode.com/topic/19116/easy-c-solution-based-on-version-i-of-the-problem
     '''
     lo, hi = 0, len(nums)-1

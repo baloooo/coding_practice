@@ -20,6 +20,14 @@ class TrieNode(object):
 
 class TrieSolution():
     def lcp_by_trie(str_list):
+        '''
+        If lcp needs to called multiple times for a given string, use trie.
+        Time complexity : preprocessing O(S), where SS is the number of all characters in the array, LCP query O(m).
+
+        Trie build has O(S) time complexity. To find the common prefix of qq in the Trie takes in the worst case O(m).
+
+        Space complexity : O(S). We only used additional SS extra space for the Trie.
+        '''
         main_root = root = TrieNode()
         # add strings to trie
         for cur_str in str_list:

@@ -12,10 +12,15 @@ Your function should return length = 2, and A is now [1,2].
 """
 def remove_duplicates_generalized(arr):
         """
+        remove duplicates which occur more than 2 (or k in general).
         Idea: https://discuss.leetcode.com/topic/7673/share-my-o-n-time-and-o-1-solution-when-duplicates-are-allowed-at-most-k-times/12
+        The idea being that rather than just moving the cur_index ahead if ele at cur_index != ele at unique_index, we also
+        check if cur_duplciate_count < k, if it is we add element at cur_uniq_index, else our tolerable limit for
+        duplicates is already reached move ahead.
         """
         if len(arr) <= 1: return len(arr)
         count = 1
+        k = 2 # Tolerable duplicates
         unique_index = 0
         for iter_index in xrange(1, len(arr)):
             if arr[iter_index] != arr[unique_index]:
@@ -23,7 +28,7 @@ def remove_duplicates_generalized(arr):
                 unique_index += 1
                 arr[unique_index] = arr[iter_index]
             else:
-                if count < 2:
+                if count < k:
                     count += 1
                     unique_index += 1
                     arr[unique_index] = arr[iter_index]

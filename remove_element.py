@@ -16,6 +16,7 @@ def remove_ele(arr, x):
     start = 0
     while(start<=last):
         if arr[start] == x:
+            # get the first occurrence of x from tail of arr.
             while (arr[last] == x and last>start):
                 last -= 1
             if start == last:

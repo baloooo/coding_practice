@@ -4,7 +4,7 @@ class Solution(object):
         http://www.geeksforgeeks.org/sort-an-array-of-0s-1s-and-2s/
         """
         lo, mid, hi = 0, 0, len(arr)-1
-        while mid <= hi: # Note: equal sign
+        while mid <= hi: # Note: equal sign, since hi sits on an unknown value mid should go up until hi.
             if arr[mid] == 0:
                 arr[lo], arr[mid] = arr[mid], arr[lo]
                 lo += 1
