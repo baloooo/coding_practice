@@ -10,6 +10,8 @@ class Solution(object):
     '''
     def mergeKLists(self, lists):
         """
+        Note that these are unsorted lists, if we had k sorted lists to merge we would use the below method
+        instead explained in `merge_k_sorted_lists_optimized`.
         https://leetcode.com/articles/merge-k-sorted-list/
 
         :type lists: List[ListNode]

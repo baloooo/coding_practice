@@ -9,7 +9,7 @@ class Solution(object):
         idx = 0
         for c in s:
             zig_zag[idx].append(c)
-	    # Helpls change direction when idx is at first or last index (only after first element has been placed)
+	        # Helps change direction when idx is at first or last index (only after first element has been placed)
             if idx == num_rows-1 or idx == 0:
                 step = -step
             idx += step

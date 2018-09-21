@@ -4,9 +4,24 @@ from linkedlistbase import construct_linked_list_from_array, print_linked_list
 class Solution(object):
     def rotateRight(self, head, k):
         """
-        :type head: ListNode
-        :type k: int
-        :rtype: ListNode
+        Given a linked list, rotate the list to the right by k places, where k is non-negative.
+
+        Example 1:
+
+        Input: 1->2->3->4->5->NULL, k = 2
+        Output: 4->5->1->2->3->NULL
+        Explanation:
+        rotate 1 steps to the right: 5->1->2->3->4->NULL
+        rotate 2 steps to the right: 4->5->1->2->3->NULL
+        Example 2:
+
+        Input: 0->1->2->NULL, k = 4
+        Output: 2->0->1->NULL
+        Explanation:
+        rotate 1 steps to the right: 2->0->1->NULL
+        rotate 2 steps to the right: 1->2->0->NULL
+        rotate 3 steps to the right: 0->1->2->NULL
+        rotate 4 steps to the right: 2->0->1->NULL
         Idea:https://discuss.leetcode.com/topic/14470/my-clean-c-code-quite-standard-find-tail-and-reconnect-the-list/22
         """
         if not head or not k or not head.next:

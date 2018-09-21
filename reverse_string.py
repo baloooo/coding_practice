@@ -39,12 +39,16 @@ class Solution:
     def sanitize(self, str_list):    
         i, j = 0, 0
         while j < len(str_list):
+            # Strip leading redundant spaces
             while j < len(str_list) and str_list[j] == ' ': j+= 1
+            # Add valid chars in a word
             while j < len(str_list) and str_list[j]!= ' ':
                 str_list[i] = str_list[j]
                 i += 1
                 j += 1
+            # Strip redundant spaces in middle of words
             while j < len(str_list) and str_list[j] == ' ': j+=1
+            # Add one required space as we stripped all spaces above(only when this was not the last word)
             if j < len(str_list):
                 str_list[i] = ' ' 
                 i += 1
