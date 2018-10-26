@@ -128,18 +128,18 @@ class TwoSum(object):
 
 ########################################################################################################################
 
-# sum not unique
-# 2 sum with sorting O(nlogn)
-# working solution for above question
-def two_sum_with_sorting(arr, target):
+def two_sum_w_hash(arr, target):
     from collections import defaultdict
+    '''
+    returns all possible two sums (inputs are not unique, neither are sums)
+    '''
     inp_map = defaultdict(list)  # {ele: [index1, index2]}
     possible_sol = []
     for index, ele in enumerate(arr):
         inp_map[ele].append(index)
     for index, ele in enumerate(arr):
         second_ele = target-ele
-        for cur_index in inp_map[second_ele]:
+        for cur_index in inp_map[second_ele]: # check if second_ele is different than first element
             if cur_index != index and index < cur_index:
                 possible_sol.append([index+1, cur_index+1])
     # Sort for min index2

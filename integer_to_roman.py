@@ -11,9 +11,36 @@ Example :
     Input : 14
     Return : "XIV"
 """
+def int_roman_optimized(num):
+    int_rom_map = {
+        1: 'I',
+        4: 'IV',
+        5: 'V',
+        9: 'IX',
+        10: 'X',
+        40: 'XL',
+        50: 'L',
+        90: 'XC',
+        100: 'C',
+        400: 'CD',
+        500: 'D',
+        900: 'CM',
+        1000: 'M',
+        }
+    # num = 45266
+    sort_keys = sorted(int_rom_map.keys(), reverse=True)
+    res = []
+    for idx in xrange(len(sort_keys)):
+        if sort_keys[idx] <= num:
+            freq = num / sort_keys[idx]
+            val = int_rom_map[sort_keys[idx]]
+            res.append(val*freq)
 
+            num -= (freq * sort_keys[idx])
 
-def integer_to_roman_optimized(num):
+    return ''.join(res)
+
+def integer_to_roman(num):
     """
     :type num: int
     :rtype: str

@@ -10,16 +10,13 @@ class Solution(object):
     '''
     def mergeKLists(self, lists):
         """
-        Note that these are unsorted lists, if we had k sorted lists to merge we would use the below method
-        instead explained in `merge_k_sorted_lists_optimized`.
-        https://leetcode.com/articles/merge-k-sorted-list/
-
         :type lists: List[ListNode]
         if there are k lists each with n elements. Total elements:nk
-        Time: klogk (create min_heap) + (nk-k)logk (for pushing elements) + nklogk (for popping all elements)
+        Time: klogk (create min_heap) + (n-k)logk (for pushing elements) + nlogk (for popping all elements)
 
-        Total time: nklogk
+        Total time: nlogk
         Space: O(k) for min_heap
+        Only con of this approach is that it takes O(k) space which can be inevitable if modifying of existing nodes is not supported.
         """
         from heapq import heappop, heapify, heapreplace
         min_heap = [(node.val, node) for node in lists if node]
@@ -52,7 +49,9 @@ class Solution(object):
 
     def merge_k_sorted_lists_optimized(sorted_ll_lists):
         '''
-        time: O(nklogk)
+        time: O(nlogk)
+        Thus, we'll traverse almost N nodes per pairing and merging, and repeat this procedure about
+        logk times.(check LC article link below for diagram and details)
         space: O(1)
         http://www.geeksforgeeks.org/merge-k-sorted-linked-lists/
         https://leetcode.com/articles/merge-k-sorted-list/
@@ -81,7 +80,10 @@ class Solution(object):
 ########################################################################################################
 
 def merge_k_sorted_lists_naive(list_head):
-    # Time: O(nk) where k is the number of lists, with each list having n nodes
+    # Time: O(nk) where k is the number of lists, with each list has n nodes
+    # Logic: For each of the n nodes we would go over k lists to find minimum of these k elements.
+    # For current implementation list_head should be a set so as to support remove operation in O(1)
+    # or min() implementation needs to be changed to do inplace replacements of next minimum.
     original_head = merged_link_list = ListNode(None)
     while list_head:
         min_ll_head = min(list_head, key=lambda cur_head: cur_head.val)
