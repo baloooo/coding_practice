@@ -23,7 +23,7 @@
 #        :rtype List[NestedInteger]
 #        """
 
-class NestedIterator(object):
+class NestedIterator_naive(object):
 
     def __init__(self, nestedList):
         """
@@ -80,7 +80,7 @@ class NestedIterator(object):
 
 ##############################################################################################################################
 
-class NestedIterator(object):
+class NestedIterator_optimized(object):
 	'''
 	Time: O(n) // For traversing it once and once for populating stack.
 	Space: O(h) // For stack, where h is the depth of the nested Lists.
