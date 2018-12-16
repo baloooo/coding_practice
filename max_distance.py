@@ -17,12 +17,12 @@ Example :
 class Solution:
     '''
     There are 3 variations to this problem:
-	max diff b/w the indexes of elements where arr[i] <= arr[j]
-		http://www.geeksforgeeks.org/given-an-array-arr-find-the-maximum-j-i-such-that-arrj-arri/
-	max diff b/w two elements where only cond'n is first should be smaller
-		http://www.geeksforgeeks.org/maximum-difference-between-two-elements/
-	this says max diff b/w consecutive elements only
-		https://leetcode.com/problems/maximum-gap/description/
+    max diff b/w the indexes of elements where arr[i] <= arr[j]
+        http://www.geeksforgeeks.org/given-an-array-arr-find-the-maximum-j-i-such-that-arrj-arri/
+    max diff b/w two elements where only cond'n is first should be smaller
+        http://www.geeksforgeeks.org/maximum-difference-between-two-elements/
+    this says max diff b/w consecutive elements only
+        https://leetcode.com/problems/maximum-gap/description/
     '''
     def __init__(self):
         pass
@@ -32,29 +32,37 @@ class Solution:
         pass
 
     def max_distance(self, arr):
+        '''
+        Note that the intent here is to find max distance between indexes of element that follow the rule
+        that a[i] <= a[j].
+        Another variation of the same concept is where we're looking for max distance between the numbers themselves
+        such that a[i] <= a[j]: https://www.geeksforgeeks.org/maximum-difference-between-two-elements/
+        :param arr:
+        :return:
+        '''
         # http://www.geeksforgeeks.org/given-an-array-arr-find-the-maximum-j-i-such-that-arrj-arri/
         # check simple and optimized solns there
-		if not arr: return 0
-		cur_min = arr[0]
-		arr_l = [cur_min]
-		for i in xrange(1, len(arr)):
-			cur_min = min(cur_min, arr[i])
-			arr_l.append(cur_min)
-		cur_max = arr[-1]
-		arr_r = [0]*len(arr)
-		arr_r[-1] = cur_max
-		for i in xrange(len(arr)-2, -1, -1):
-			cur_max = max(cur_max, arr[i])
-			arr_r[i] = cur_max
-		i = j = 0
-		max_distance = -float('inf')
-		while i < len(arr_l) and j < len(arr_r):
-			if arr_l[i] > arr_r[j]:
-				i += 1 # since arr[i] has to be smaller than arr[j] (base condition)
-			else:
-				max_distance = max(max_distance, j-i)
-				j += 1
-		return max_distance
+        if not arr: return 0
+        cur_min = arr[0]
+        arr_l = [cur_min]
+        for i in xrange(1, len(arr)):
+            cur_min = min(cur_min, arr[i])
+            arr_l.append(cur_min)
+        cur_max = arr[-1]
+        arr_r = [0]*len(arr)
+        arr_r[-1] = cur_max
+        for i in xrange(len(arr)-2, -1, -1):
+            cur_max = max(cur_max, arr[i])
+            arr_r[i] = cur_max
+        i = j = 0
+        max_distance = -float('inf')
+        while i < len(arr_l) and j < len(arr_r):
+            if arr_l[i] > arr_r[j]:
+                i += 1 # since arr[i] has to be smaller than arr[j] (base condition)
+            else:
+                max_distance = max(max_distance, j-i)
+                j += 1
+        return max_distance
         # cur_min = arr[0]
         # lmin = [arr[0]]
         # for index in xrange(1, len(arr)):
@@ -79,9 +87,9 @@ class Solution:
 
 if __name__ == '__main__':
     test_cases = [
-		# ([1, 10], 1),
-		([100, 100, 100, 100], 4),
-		# ([1, 3, 100], 97),
+        # ([1, 10], 1),
+        ([100, 100, 100, 100], 4),
+        # ([1, 3, 100], 97),
         # ([3, 5, 4, 2], 2),
         # ([34, 8, 10, 3, 2, 80, 30, 33, 1], 6),
         # ([9, 2, 3, 4, 5, 6, 7, 8, 18, 0], 8),

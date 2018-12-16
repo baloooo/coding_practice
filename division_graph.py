@@ -31,48 +31,50 @@ class Solution:
         # If there're multiple ways to reach a destination, DFS will find path from
         # all of them, we can run a min query after that to get the shortest path (else use floyd warshall)
         self.results = []
-	graph = self.build_graph(equations, values)
-	for src, dest in queries:
-            visited = set()
-            self.dfs(graph, src, dest, 1, visited)
-            if dest not in visited:
-                self.results.append(-1)
-            # results.append(-1 if dist == 0.0 else dist)
+        graph = self.build_graph(equations, values)
+        for src, dest in queries:
+                visited = set()
+                self.dfs(graph, src, dest, 1, visited)
+                if dest not in visited:
+                    self.results.append(-1)
+                # results.append(-1 if dist == 0.0 else dist)
         return self.results
 
     def build_graph(self, equations, values):
-	quot = collections.defaultdict(dict)
-	for (num, den), val in zip(equations, values):
-	    quot[num][num] = quot[den][den] = 1.0
-	    quot[num][den] = val
-	    quot[den][num] = 1 / (val*1.0)
-	return quot
+        quot = collections.defaultdict(dict)
+        for (num, den), val in zip(equations, values):
+            quot[num][num] = quot[den][den] = 1.0
+            quot[num][den] = val
+            quot[den][num] = 1 / (val*1.0)
+        return quot
 
     def floyd_warshall(self, equations, values, queries):
-	'''
-	Use warshall if number of queries will outweigh number of vertices since once
-	table is populated all queries can be answered in O(1), whereas use DFS O(V + E) if
-	no. of queries are not so large also you won't have to look out for negative edge cycle
-	as in floyd warshall'l algo.
-        Tushar warshal: https://www.youtube.com/watch?v=LwJdNfdLF9s
-        Broad idea is dynamic programming, basically we go over all the nodes(k-> 1 to n) and check
-        if for going from i to j (where i and j themselves will be all the pair of nodes possible)
-        do we have a shorter distance path via k than the original direct path i to j. Where all
-        paths will be updated b/w all given nodes and all the other can default to infinity.
-	Time: O(V^3)
-	'''
-	quot = self.build_graph(equations, values)
-	for k in quot:
-	    for i in quot[k]:
-		for j in quot[k]:
-		    # quot[i][j] = quot[i][k] * quot[k][j]
-                    dist_via_k = quot[i][k] + quot[k][j]
-                    if quot[i][j] > dist_via_k:
-                        quot[i][j] = dist_via_k
-	return [quot[num].get(den, -1.0) for num, den in queries]
+        '''
+        Use warshall if number of queries will outweigh number of vertices since once
+        table is populated all queries can be answered in O(1), whereas use DFS O(V + E) if
+        no. of queries are not so large also you won't have to look out for negative edge cycle
+        as in floyd warshall'l algo.
+            Tushar warshal: https://www.youtube.com/watch?v=LwJdNfdLF9s
+            Notice negative edge weight is fine for warshall, but negative edge cycle is a problem for warshal.
+            Broad idea is dynamic programming, basically we go over all the nodes(k-> 1 to n) and check
+            if for going from i to j (where i and j themselves will be all the pair of nodes possible)
+            do we have a shorter distance path via k than the original direct path i to j. Where all
+            paths will be updated b/w all given nodes and all the other can default to infinity.
+        Time: O(V^3)
+        '''
+        quot = self.build_graph(equations, values)
+        for k in quot:
+            for i in quot[k]:
+                for j in quot[k]:
+                # quot[i][j] = quot[i][k] * quot[k][j]
+                dist_via_k = quot[i][k] + quot[k][j]
+                if quot[i][j] > dist_via_k:
+                    quot[i][j] = dist_via_k
+        return [quot[num].get(den, -1.0) for num, den in queries]
 
     def calcEquation_alternate(self, equations, values, queries):
         """
+        This is the better version for repeated queries, and when graph is dense.
 		simpler version of floyd warshal, rest is same
 
         :type equations: List[List[str]]

@@ -46,10 +46,12 @@ class Solution:
     def pow_mod_iterative(base, power, mod_no):
         '''
         Preferable than above since it is iterative
-        Idea is similar to power_function below
+        Idea is similar to find power_function(base, power) below, the only difference being here that we bring the base and result back with the mod_no.
+        This technique is used to keep powers of a base under some manageable bound.
         check out these, if you need some revision on mod rules
         https://math.stackexchange.com/questions/111330/explain-for-students-why-does-0-mod-n-equal-0-zero
         https://math.stackexchange.com/questions/516251/why-is-n-mod-0-undefined
+
         '''
         # check if any of the three are zero
         if mod_no == 0:

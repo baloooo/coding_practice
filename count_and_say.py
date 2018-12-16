@@ -5,7 +5,10 @@ class Solution:
     def count_and_say(self, n):
         """
         Idea: https://discuss.leetcode.com/topic/28084/simple-python-solution
-        Time:
+        Time: O(mn) where n is the num till which we calculate the sequence and m is the max length
+
+        we perform n steps and on each step you iterate over the length of the current string at that
+        step which is also increasing per step. This is order O(n*m) where m is the length of the string at step n.
         """
         arr = [1]
         for _ in xrange(n-1): # Here trick is to run this for n-1 times and not n

@@ -60,8 +60,13 @@ For all nodes as potential roots or start points, we have: N + (N-1) + (N-2) +..
                 self.pathSum_bruteforce(root.right, target_sum))
         else:
             return 0
-        
+
+#################################################################################################################
+
     def find_sum(self, root, target_sum, sum_until_now, prefix_sum):
+        '''
+        diagram: https://leetcode.com/problems/path-sum-iii/discuss/141424/Python-step-by-step-walk-through.-Easy-to-understand.-Two-solutions-comparison.-:-)
+        '''
         if not root: return
         sum_until_now = sum_until_now + root.val
         complement_sum = sum_until_now - target_sum

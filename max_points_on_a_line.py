@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import collections
 import numpy as np
 
@@ -13,8 +15,8 @@ class Solution:
         https://www.geeksforgeeks.org/count-maximum-points-on-same-line/
         Idea:
             Main idea is to calculate slope for each combination of points in the list.
-            and check which slope as the maximum number of points on it. Notice that since
-            slope here is calculate
+            and check which slope as the maximum number of points on it.
+
             Gotchas: Deal with duplicate points.
             Deal with points on x-axis and y-axis.
 
@@ -51,8 +53,10 @@ class Solution:
                     cur_max = max(cur_max, slopes[(ydiff, xdiff)])
             # total points are whatever maximum we've found till now
             # + overlapping points for the base point + base point itself.
+            # since cur_max is the maximum points in line with base_point, and since overlapping points
+            # are points same as base_point we can add that and then 1 for the base point itself.
             maxp = max(maxp, cur_max + overlapping_points + 1)
-            slopes.clear()
+            slopes.clear()  # Note: we need to clear the slopes after every base point covered.
         return maxp
 
 

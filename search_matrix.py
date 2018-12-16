@@ -1,12 +1,32 @@
 import pytest
 
 class Solution(object):
+    def searchMatrix_optimized(self, matrix, target):
+        '''
+        time: Log(m+n)
+        '''
+        if len(matrix) == 0 or len(matrix[0]) == 0 or target < matrix[0][0] or target > matrix[-1][-1]:
+            return False
+        start, rows, cols = 0, len(matrix), len(matrix[0])
+        end = rows * cols -1
+        while start <= end: # Note: remember the equal sign
+            mid = rows + (cols-rows)/2
+            mid_ele = matrix[mid / cols][mid % cols] # heart of the trick
+            if mid_ele == target: return True
+            if mid_ele < target:
+                start = mid + 1
+            else:
+                end = mid - 1
+
+        return False
+
     def searchMatrix(self, matrix, target):
         """
         :type matrix: List[List[int]]
         :type target: int
         :rtype: bool
         https://leetcode.com/problems/search-a-2d-matrix/discuss/26204/Share-my-two-O(logm-+-logn)-solutions
+        time: Log(mn)
         """
         import math
         if not matrix or target < matrix[0][0] or target > matrix[-1][-1]:  # some optimization

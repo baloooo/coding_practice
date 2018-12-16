@@ -7,7 +7,17 @@ Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
 Output: 7 -> 0 -> 8
 
 """
+def add_two_numbsers_advanced(l1, l2):
+    '''
+    here l1 and l2 are given from msb and not lsb.
+    Also you're not allowed to modify the list, i.e you cannot reverse l1 and l2
 
+    Trick here is to use two stacks to get values of l1 and l2 and then pop elements from stack to construct
+    the sum.
+    https: // leetcode.com / problems / add - two - numbers - ii / discuss / 92623 / Easy - O(
+        n) - Java - Solution - using - Stack
+    '''
+    pass
 
 def add_two_numbers(l1, l2):
     # https://discuss.leetcode.com/topic/799/is-this-algorithm-optimal-or-what

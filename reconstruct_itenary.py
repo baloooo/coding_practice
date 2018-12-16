@@ -20,6 +20,9 @@ class Solution():
         route.append(airport)
 
     def task(self, tickets):
+        '''
+        Greedy DFS to find the Eulerian path.(Every edge is visited exactly once)
+        '''
         from Queue import PriorityQueue
         route = []
         graph = collections.defaultdict(PriorityQueue) # PQ due to lexicographically sorted requirement.

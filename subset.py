@@ -22,6 +22,11 @@ If S = [1,2,3], a solution is:
 ]
 """
 class Solution(object):
+    """
+    Time: O(2^n)
+    Space: O(n + 2^n) = O(n) as max depth of recursive tree/stack will be when all elements are added to get the
+    set consisting of all elements, the other 2^n for storing 2^n lists each being a set in the power set.
+    """
     def backtrack(self, nums, result, cur_subset, start):
         result.append(cur_subset[:])
         for index in xrange(start, len(nums)):
@@ -48,14 +53,16 @@ class Solution2(object):
         """
         :type nums: List[int]
         :rtype: List[List[int]]
-        Visualization of the idea: https://discuss.leetcode.com/topic/46159/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/26
+        Must see Visualization of the idea in comments @jeremy:
+            https://discuss.leetcode.com/topic/46159/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/26
         """
         result, cur_subset = [], []
         self.backtrack(nums, result, cur_subset, 0)
         return result
 
+################################################################################################
 
-def subset_without_duplicates(arr):
+def subset_without_duplicates_iteratively(arr):
     res = [[]]
     for ele in arr:
         res = res + [each+[ele] for each in res]

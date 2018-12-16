@@ -1,4 +1,7 @@
 """
+Things to remember:
+    graph in solution
+    take an example of [1, 2, 3, 4] and see how next permutations are formed in lexicographic perm.
 Steps:
     1. Find the largest index k such that nums[k] < nums[k + 1]. If no such index
     exists, the permutation is sorted in descending order, just reverse it to

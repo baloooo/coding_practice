@@ -15,7 +15,9 @@ class Solution:
     When next() be called, I just pop one element and process its right child as new root.
     The code is pretty straightforward.
 
-    The average time complexity of next() function is O(1) indeed in your case. As the next function can be called n times at most, and the number of right nodes in self.pushAll(tmpNode.right) function is maximal n in a tree which has n nodes, so the amortized time complexity is O(1).
+    The average time complexity of next() function is O(1) indeed in your case. As the next function can be called n times
+    at most, and the number of right nodes in self.pushAll(tmpNode.right) function is maximal n in a tree which
+    has n nodes, so the amortized time complexity is O(1).
     """
 
 # Definition for a  binary tree node

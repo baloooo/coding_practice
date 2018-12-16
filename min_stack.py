@@ -76,7 +76,7 @@ class MinStack2(object):
         We can conclude 2*x - minEle < new minEle 
         If we term x as new_min since then only we'll initiate this sequence, we can say:
             pushed_ele = 2*new_min - old_min (1)
-        where pushed_ele is the element we'll finally push in to the stack and since from the proof
+        where pushed_ele is the element we'll finally push in to the stack andpas since from the proof
         above it's clear that this pushed element will be less than min_ele we'll keep track of, while
         popping when we encounter the popped element to be less than min_ele we'll use the same
         relation (1) to get back old_min.
