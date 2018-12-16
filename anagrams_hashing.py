@@ -27,7 +27,7 @@ class Solution(object):
         """
         str_map = collections.defaultdict(list)
         for cur_str in strs:
-	    str_signature = [0]*26
+	        str_signature = [0]*26
             for ch in cur_str:
                 str_signature[ord(ch)-ord('a')] += 1
             str_map[tuple(str_signature)].append(cur_str)

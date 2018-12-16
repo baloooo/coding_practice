@@ -37,8 +37,7 @@ class Solution(object):
         if not preorder or not inorder: return
         self.preorder_index = 0
         return self.get_tree(preorder, inorder, 0, len(inorder)) # Note: len of inorder is passed not last index
-        '''
-        '''
+
 
 # Definition for a binary tree node.
 # class TreeNode(object):

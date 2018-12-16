@@ -1,6 +1,6 @@
 # coding: utf-8
 """
-Max Heap is a special kind of complete binary tree in which for every node the value present in that node is greater than the value present in it’s children nodes. If you want to know more about Heaps, please visit this link
+Max Heap is a special kind of complete binary tree in which for every node the value present in that node is greater than the value present in it’s children nodes
 
 So now the problem statement for this question is:
 
@@ -8,7 +8,8 @@ How many distinct Max Heap can be made from n distinct integers
 
 In short, you have to ensure the following properties for the max heap :
 
-Heap has to be a complete binary tree ( A complete binary tree is a binary tree in which every level, except possibly the last, is completely filled, and all nodes are as far left as possible. )
+Heap has to be a complete binary tree ( A complete binary tree is a binary tree in which every level, except possibly the last,
+is completely filled, and all nodes are as far left as possible. )
 Every node is greater than all its children
 Let us take an example of 4 distinct integers. Without loss of generality let us take 1 2 3 4 as our 4 distinct integers
 
@@ -69,6 +70,8 @@ class Solution:
 
     def ways_max_heap(self, num_range):
         # Time: O(n!*nlogn)
+        # since all the n! permutations will have different root, they will create different max heaps.
+        # and nlogn for creating a heap of n nodes.
         arr = range(1, num_range+1)
         max_heap_set = set()
         self.permute(arr, 0, len(arr))

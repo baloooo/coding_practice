@@ -29,7 +29,8 @@ class Solution(object):
         for i, num in enumerate(nums):
             if sum_map.get(target-num):
                 return [sum_map[target-num]-1, i]
-            sum_map[num] = i+1 # Adding 1 to have pointers from 1 to prevent sum_map.get return 0 which would falsify if if-loop even when input is returned. Ex: [3, 3], 6
+            # Adding 1 to have pointers from 1 to prevent sum_map.get return 0 which would falsify if if-loop even when input is returned. Ex: [3, 3], 6
+            sum_map[num] = i+1
         return [-1, -1]
 
 ########################################################################################################################
@@ -127,18 +128,18 @@ class TwoSum(object):
 
 ########################################################################################################################
 
-# sum not unique
-# 2 sum with sorting O(nlogn)
-# working solution for above question
-def two_sum_with_sorting(arr, target):
+def two_sum_w_hash(arr, target):
     from collections import defaultdict
+    '''
+    returns all possible two sums (inputs are not unique, neither are sums)
+    '''
     inp_map = defaultdict(list)  # {ele: [index1, index2]}
     possible_sol = []
     for index, ele in enumerate(arr):
         inp_map[ele].append(index)
     for index, ele in enumerate(arr):
         second_ele = target-ele
-        for cur_index in inp_map[second_ele]:
+        for cur_index in inp_map[second_ele]: # check if second_ele is different than first element
             if cur_index != index and index < cur_index:
                 possible_sol.append([index+1, cur_index+1])
     # Sort for min index2
@@ -189,7 +190,7 @@ def two_sum_with_hash(arr, target):
         return [(matches[0][0])+1, (matches[0][1])+1]
 
 
-# naive O(n*n)
+# naive O(n^2)
 def two_sum(arr, target):
     n = len(arr)
     i = 0

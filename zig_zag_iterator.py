@@ -22,7 +22,7 @@ class ZigzagIterator(object):
     def _get_next_element(self):
         front_ele = None
 		# similar to flatten 2d list exercise
-        while front_ele is None and self.q.qsize():
+        while self.q.qsize():
             front = self.q.get()
             front_ele = next(front, None)
             if front_ele is not None:

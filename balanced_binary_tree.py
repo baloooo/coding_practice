@@ -31,7 +31,7 @@ def is_balance_binary_tree(root):
     # https://discuss.leetcode.com/topic/7798/the-bottom-up-o-n-solution-would-be-better/46
     # Here -1 means it's not balanced and is translated to False in base method.
     def height(root, cur_height):
-        if root == None:
+        if root is None:
             return 0
         else:
             height_left_subtree = height(root.left, cur_height+1)
