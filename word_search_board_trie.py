@@ -36,7 +36,7 @@ class Solution(object):
         
     def findWords(self, board, words):
         """
-	Time: O(m * n * l) where m*n is the dimension of board and l is the max size of word
+	    Time: O(m * n * l) where m*n is the dimension of board and l is the max size of word
         Idea: In standard DFS (used in word_search_board 1) we can only chech for one word at
         a time. For example if word_list = [peaty, pea, bob, peas, zorro, peat] in Trie based solution
         when for 'peaty' we will check out all prefixes of pea so peaty, pea, peas, peat all will be
@@ -81,7 +81,7 @@ class Solution(object):
                 
     def findWords_naive(self, board, words):
         """
-	Gets TLE
+	    Gets TLE
         """
         found_words = set()
         words = {word for word in words}

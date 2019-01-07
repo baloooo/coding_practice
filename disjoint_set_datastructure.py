@@ -6,7 +6,11 @@ forest as our end goal is to have minimum number of edges that can join all the 
 Here disjoint set helps in:
 Helping find if this min. weight edge joins two nodes of already connected graph or not.
 
-In computer science, a disjoint-set data structure, also called a union–find data structure or merge–find set, is a data structure that keeps track of a set of elements partitioned into a number of disjoint (non-overlapping) subsets. It provides near-constant-time operations (bounded by the inverse Ackermann function) to add new sets, to merge existing sets, and to determine whether elements are in the same set. In addition to many other uses (see the Applications section), disjoint-sets play a key role in Kruskal's algorithm for finding the minimum spanning tree of a graph.
+In computer science, a disjoint-set data structure, also called a union–find data structure or merge–find set,
+is a data structure that keeps track of a set of elements partitioned into a number of disjoint (non-overlapping) subsets.
+It provides near-constant-time operations (bounded by the inverse Ackermann function) to add new sets, to merge existing sets,
+and to determine whether elements are in the same set. In addition to many other uses (see the Applications section), disjoint-sets play a
+key role in Kruskal's algorithm for finding the minimum spanning tree of a graph.
 
 https://leetcode.com/articles/redundant-connection/
 Time and space complexity: Amortized O(1) https://en.wikipedia.org/wiki/Disjoint-set_data_structure#Time_complexity
@@ -68,7 +72,7 @@ class DisjointSet(object):
         node2 = self.data_node_map[data2]
         node1_parent = self.find_parent_node(node1)
         node2_parent = self.find_parent_node(node2)
-        ''' combining two forests based on their rank is a optimization tehnique,
+        ''' combining two forests based on their rank is a optimization technique,
         as in later stages when find_parent_node is called on this combined forest.
         Less number of nodes will have to change their parent(rather if we've choosen one randomly)
         as larger rank(or node with more followers) was made the rank of combined forest'''

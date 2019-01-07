@@ -60,7 +60,7 @@ class Solution:
                     word_list.remove(test_word)
         return -1
 
-    def word_ladder_optimized(self, word_list, source_word, goal_word):
+    def word_ladder_optimized_w_two_level_bfs(self, word_list, source_word, goal_word):
         """
         Uses separate lists instead of one queue
         Note:
@@ -108,38 +108,33 @@ class Solution:
             cur_distance += 1
         return 0 # if we reach here, means we didn't find goal_word
 
-    def word_ladder_optimized_queue(self, beginWord, endWord, wordList):
-        """
-        Same as above, but uses regular queue instead of two lists for marking
-        different levels.
-        Appends None after every level therefore whenever queue front has None we can be 
-        sure that one level has completed, and when consecutive None are encountered BFS
-        has ended.
-        """
-        from Queue import Queue
-        from string import ascii_lowercase
-        word_set = set(wordList)
-        cur_word_q, visited_set = Queue(), set(beginWord)
-        cur_word_q.put(beginWord)
-        cur_word_q.put(None)
-        cur_distance = 0
-        while not cur_word_q.empty():
-            cur_word = cur_word_q.get()
-            if cur_word is None:
-                # end of level
-                cur_distance += 1
-                cur_word_q.put(None)
-                cur_word = cur_word_q.get()
-                if cur_word is None: break
-            if cur_word == endWord: return cur_distance + 1
-            for index in xrange(len(cur_word)):
-                for ch in ascii_lowercase:
-                    candidate_word = ''.join([cur_word[:index], ch, cur_word[index+1:]])
-                    if candidate_word in word_set and candidate_word not in visited_set:
-                        #if candidate_word == endWord: return cur_distance + 1
-                        cur_word_q.put(candidate_word)
-                        visited_set.add(candidate_word)
-        return 0
+    class Solution(object):
+        def ladderLength1_optimized_w_bfs_queue(self, beginWord, endWord, wordList):
+            """
+            :type beginWord: str
+            :type endWord: str
+            :type wordList: List[str]
+            :rtype: int
+            """
+            from Queue import Queue
+            import string
+
+            word_set = {word for word in wordList}
+            bfs_q = Queue()
+            bfs_q.put((beginWord, 0))
+            visited = set()
+            while not bfs_q.empty():
+                cur_word, cur_distance = bfs_q.get()
+                if cur_word == endWord:
+                    return cur_distance + 1
+                for idx in xrange(len(cur_word)):
+                    for ch in string.ascii_lowercase:
+                        candidate_word = cur_word[:idx] + ch + cur_word[idx + 1:]
+                        if candidate_word in word_set and candidate_word not in visited:
+                            bfs_q.put((candidate_word, cur_distance + 1))
+                            visited.add(candidate_word)
+
+            return 0
 
     def dfs(self, cur_word, goal_word, neighbor_dict, goal_path):
         # O(n) where n = total_nodes in neighbor_dict

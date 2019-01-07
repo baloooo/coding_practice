@@ -31,6 +31,8 @@ class Solution(object):
             Has n-1 edges and is acyclic.
             Has n-1 edges and is connected.  
         Now n-1 edges can be checked in the very first line very straight forward. And for the part
+        Solution3 is also more straight forward since we're deleting edges from set rather than keys from dict.
+        Time/space complexity and logic is almost same.
         '''
         if len(edges) != n-1:
             return False
@@ -114,7 +116,42 @@ class Solution(object):
                 return False
         return True
         
+######################
+'''Regular DFS with popping the reverse edge when you visit a edge from one side.
+This is done so as to burn the bridge once it has been traversed in any one side. Notice we added both side paths
+because they were bidirectional edges but we can only walk on them once.
+Also this technique allows us to start from any node and therefore for a graph[[1, 0], [2, 0]], will work fine even when we start our DFS from 0
+'''
 
+class Solution3(object):
+    def is_valid_tree(self, graph, src, visited):
+        if src in visited:
+            return False
+        visited.add(src)
+        for adj in graph[src]:
+            graph[adj].discard(src)
+            if not self.is_valid_tree(graph, adj, visited):
+                return False
+
+        return True
+
+    def validTree(self, n, edges):
+        """
+        :type n: int
+        :type edges: List[List[int]]
+        :rtype: bool
+        2
+        [[1,0]]
+        """
+
+        graph = collections.defaultdict(set)
+        for src, dest in edges:
+            graph[src].add(dest)
+            graph[dest].add(src)
+        visited = set()
+        return self.is_valid_tree(graph, 0, visited) and len(visited) == n
+
+###########
 class TestSolution(object):
 
     def setUp(self):

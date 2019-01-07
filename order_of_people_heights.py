@@ -13,7 +13,7 @@ Consider that heights will be unique
 Example
 
 Input :
-Heights: 5 3 2 6 1 4
+Heights:  5 3 2 6 1 4
 InFronts: 0 1 2 0 3 2
 Output :
 actual order is: 5 3 2 1 6 4
@@ -30,7 +30,8 @@ You can do similar inference for other people in the list.
 class Solution:
     def reconstructQueue_BST(self, people):
         '''
-        This https://stackoverflow.com/a/27768717/2795050 has a O(nlogn) average time complexity
+        This
+         has a O(nlogn) average time complexity
         algorithm using BST
         '''
         pass

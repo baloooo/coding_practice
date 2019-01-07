@@ -54,7 +54,10 @@ class Solution(object):
 
 """
 Always be wary of duplicate edges, which might be excluded in some exercises here.
-Topological Sorting: A topological sort or topological ordering of a directed Acyclic graph is a linear ordering of its vertices such that for every directed edge uv from vertex u to vertex v, u comes before v in the ordering. For instance, the vertices of the graph may represent tasks to be performed, and the edges may represent constraints that one task must be performed before another.
+Topological Sorting: A topological sort or topological ordering of a directed Acyclic graph is a linear ordering of its 
+vertices such that for every directed edge uv from vertex u to vertex v, u comes before v in the ordering. 
+For instance, the vertices of the graph may represent tasks to be performed, and the edges may represent constraints 
+that one task must be performed before another.
 Problem understanding: https://discuss.leetcode.com/topic/22395/the-description-is-wrong
 Idea is Topological sorting using DFS
 """

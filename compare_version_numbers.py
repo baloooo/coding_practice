@@ -34,6 +34,11 @@ class Solution():
 
     def isgreater(self, va, vb):
         '''
+        Idea is that we can just iterate over va and vb. And for each substring(subversion) we can compare which one is
+        bigger(Notice that we're dealing with LHS zero stripped substrings here, not integers which CAN overflow).
+        Now we can check which number(subversion/substring) is bigger without converting it to integer, if we
+        can just clean all leading zeros the logic for calculating which number is bigger is pretty straightforward as
+        seen in compare_subversion method.
         https://www.geeksforgeeks.org/compare-version-numbers-large-inputs-allowed/
         Time: O(2n) => O(n)
         returns:
@@ -131,6 +136,31 @@ def version_is_greater_bruteforce(version1, version2):
             if v1_len+1 == v2_len and ver1[-1] == 0:
                 return 0
             return -1
+
+def version_is_greater_bruteforce2(version1, version2):
+    v2 = version2.split('.')
+    v1 = version1.split('.')
+    v1_idx = v2_idx = 0
+    while v1 and int(v1[-1]) == 0:
+        v1.pop()
+    while v2 and int(v2[-1]) == 0:
+        v2.pop()
+    while v1_idx < len(v1) and v2_idx < len(v2):
+        if int(v1[v1_idx]) < int(v2[v2_idx]):
+            return -1
+        elif int(v1[v1_idx]) > int(v2[v2_idx]):
+            return 1
+
+        v1_idx += 1
+        v2_idx += 1
+
+    if v1_idx < len(v1) or v2_idx < len(v2):
+        if v1_idx < len(v1):
+            return 1
+        else:
+            return -1
+    else:
+        return 0
 
 if __name__ == '__main__':
     version1 = '1.0'

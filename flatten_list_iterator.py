@@ -80,7 +80,7 @@ class NestedIterator_naive(object):
 
 ##############################################################################################################################
 
-class NestedIterator_optimized(object):
+class NestedIterator_optimized_v1(object):
 	'''
 	Time: O(n) // For traversing it once and once for populating stack.
 	Space: O(h) // For stack, where h is the depth of the nested Lists.
@@ -120,6 +120,94 @@ class NestedIterator_optimized(object):
         		for i in xrange(len(cur_list)-1, -1, -1):
         			self.stack.append(cur_list[i])
         return False
+#####################
+'''
+Slightly different implementation than the optimized one: Clears up the self.next_ele whenever next has been called.
+Which allows us to call hasNext any number of times for checking and only when one consumes next element from next()
+method would we clear and load it using the next call to hasNext
+'''
+class NestedIterator_optimized_v2(object):
+
+    def __init__(self, nestedList):
+        """
+        Initialize your data structure here.
+        :type nestedList: List[NestedInteger]
+        """
+        for idx in xrange(len(nestedList)-1 , -1, -1):
+            self.stack.append(nestedList[idx])
+        self.next_ele = None
+        self.hasNext()
+
+    def next(self):
+        """
+        :rtype: int
+        getting the next() element, clears the variable and therefore setsup the hasNext to load the next element.
+        Notice that this allows us to call hasNext any number of times without clearing self.next_ele.
+        """
+        cur = self.next_ele
+        self.next_ele = None
+        return cur
+
+    def hasNext(self):
+        """
+        :rtype: bool
+        """
+        while self.stack and self.next_ele is None:
+            tos = self.stack.pop()
+            if tos.isInteger():
+                self.next_ele = tos.getInteger()
+            else:
+                tos_list = tos.getList()
+                for idx in xrange(len(tos_list)-1, -1, -1):
+                    self.stack.append(tos_list[idx])
+
+        return self.next_ele is not None
+    ################ ################ ################ ################ ################
+'''
+Update on the above one: This uses an iterator rather than iterating over the lists twice by first adding the list
+on to the stack in reverse and then traversing it.
+
+'''
+class NestedIterator_optimized_v3(object):
+
+    def __init__(self, nestedList):
+        """
+        Initialize your data structure here.
+        :type nestedList: List[NestedInteger]
+        """
+        self.stack = [iter(nestedList)]
+        self.next_ele = None
+        self.hasNext()
+
+    def next(self):
+        """
+        :rtype: int
+        getting the next() element, clears the variable and therefore setsup the hasNext to load the next element.
+        Notice that this allows us to call hasNext any number of times without clearing self.next_ele.
+        """
+        cur = self.next_ele
+        self.next_ele = None
+        return cur
+
+    def hasNext(self):
+        """
+        :rtype: bool
+        """
+        while self.stack and self.next_ele is None:
+            tos_iterator = self.stack.pop()
+            try:
+                tos_obj = tos_iterator.next()
+            except StopIteration:
+                continue
+            self.stack.append(tos_iterator)
+            if tos_obj.isInteger():
+                self.next_ele = tos_obj.getInteger()
+            else:
+                tos_list = tos_obj.getList()
+                self.stack.append(iter(tos_list))
+
+        return self.next_ele is not None
+
 
 # if __name__ == '__main__':
 # 	my_list =  [[1,1],2,[1,1]]

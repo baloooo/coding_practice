@@ -31,7 +31,41 @@ class Solution:
             max_so_far = max(max_so_far, max_ending_here)
         return max_so_far
 
-    def maxProduct(self, nums):
+    def maxProduct_optimized(self, nums):
+        '''
+        More intutive than below one.
+        https://leetcode.com/problems/maximum-product-of-three-numbers/solution/
+
+        Key idea here is that a num can reside in minimum and maximum variables both.
+        To deal with the cases like:
+            [1, 2, 3]
+            [-1, -2, -3]
+
+        '''
+        if len(nums) == 1: return nums[0]
+        max1 = max2 = max3 = -float('inf')
+        min1 = min2 = float('inf')
+
+        for num in nums:
+            if num < min1:
+                min2 = min1
+                min1 = num
+            elif num < min2:
+                min2 = num
+
+            if num > max3:
+                max1 = max2
+                max2 = max3
+                max3 = num
+            elif num > max2:
+                max1 = max2
+                max2 = num
+            elif num > max1:
+                max1 = num
+
+        return max(max1*max2*max3, min1*min2*max3)
+
+    def maxProduct_old(self, nums):
         """
         :type nums: List[int]
         :rtype: int

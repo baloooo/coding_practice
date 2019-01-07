@@ -6,16 +6,21 @@ def sliding_window_max(arr, k):
     :type k: int
     :rtype: List[int]
     Idea: http://www.geeksforgeeks.org/maximum-of-all-subarrays-of-size-k/
-    We create a Dequeue, Qi of capacity k, that stores only useful elements of current window of k elements. An element is useful if it is in current window and is greater than all other elements on left side of it in current window. We process all array elements one by one and maintain Qi to contain useful elements of current window and these useful elements are maintained in sorted order. The element at front of the Qi is the largest and element at rear of Qi is the smallest of current window
-    There're two kind of pops here, one is to remove all elements smaller than element
-    to be added from the rear of the queue.
-    Second is while adding each element after the first k elements pop all elements
-    from the front of the queue that went outside the k window size.
+    We create a Dequeue, Qi of capacity k, that stores only useful elements of current window of k elements.
+
+    An element is useful if it is in current window and is greater than all other elements on left side of it in current window.
+    We process all array elements one by one and maintain Qi to contain useful elements of current window and these useful elements
+    are maintained in sorted order.
+    The element at front of the Qi is the largest and element at rear of Qi is the smallest of current window
+
+    There're two kind of pops here, one is to remove all elements smaller than element to be added from the rear of the queue.
+
+    Second is while adding each element after the first k elements pop all elements from the front of the queue that went outside the k window size.
     """
     from collections import deque
     if not arr:
         return []
-    q = deque() # q = [Front ........ Rear]
+    q = deque() # q = [Front ........ Rear](pop)
     res = []
     # Parse starting window size elements
     for index in range(k):
@@ -43,6 +48,48 @@ def sliding_window_max(arr, k):
     # Add maximum element of the last window
     res.append(arr[q[0]])
     return res
+
+def sliding_window_max_v2(nums, k):
+    '''
+    Possibly more intutive than v1, complexity wise exactly the same.
+    '''
+
+    import Queue
+    if len(nums) == 0 or k == 0:
+        return []
+    elif len(nums) <= k:
+        return [max(nums)]
+    max_queue = Queue.deque()
+    max_queue.append(0)
+    sliding_win_max_list = []
+    # put in first k elements
+    for idx in xrange(1, k):
+        while max_queue:
+            # go from left to right in Q:
+            #    - Removing all elements smaller than nums[idx] or max_elements(on right end of the queue) that went out of window.
+            if nums[max_queue[0]] <= nums[idx] or max_queue[0] <= idx-k:
+                max_queue.popleft()
+            else:
+                break
+        max_queue.appendleft(idx)
+    # add remaining eles
+    for idx in xrange(k, len(nums)):
+        sliding_win_max_list.append(nums[max_queue[-1]])
+        # remove max element if it went out of window(notice in one step only one max can go out of window, so no need of while loop)
+        if max_queue[-1] <= idx-k:
+            max_queue.pop()
+        # go from left to right in Q:
+        #    - Removing all elements smaller than nums[idx]
+        while max_queue:
+            if nums[max_queue[0]] <= nums[idx] or max_queue[0] <= idx-k:
+                max_queue.popleft()
+            else:
+                break
+        max_queue.appendleft(idx)
+    else:
+        sliding_win_max_list.append(nums[max_queue[-1]])
+
+    return sliding_win_max_list
 
 # def sliding_window_max(stream, window_size):
 #     from collections import deque

@@ -1,4 +1,4 @@
-https://leetcode.com/articles/number-of-islands/
+'''https://leetcode.com/articles/number-of-islands/ '''
 
 class Solution(object):
     def dfs(self, grid, row, col):

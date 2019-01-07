@@ -251,36 +251,6 @@ class Solution2:
 #         else:
 #             print "Failed: Test case: {0} Got {1} Expected {2}".format(
 #                 test_case[0], res, test_case[1])
-class Solution3(object):
-    def dfs(self, board, row, col, word, index, visited):
-        if index == len(word): return True
-        if (row < 0 or col < 0 or row >= len(board) or col >= len(board[0]) or 
-                board[row][col] != word[index] or (row,col) in visited):
-            return False
-        visited.add((row, col))
-        return (
-            self.dfs(board, row+1, col, word, index+1, visited) or 
-            self.dfs(board, row, col+1, word, index+1, visited) or 
-            self.dfs(board, row-1, col, word, index+1, visited) or 
-            self.dfs(board, row, col-1, word, index+1, visited))
-
-    def exist(self, board, word):
-        """
-        :type board: List[List[str]]
-        :type word: str
-        :rtype: bool
-	Todo: This didn't pass all test cases last time around.
-        Time: (m*n*(4^L)) m*n is the dimension of board and for each char in the board we dfs, which
-        has TC 4^L as at each step in DFS, we have max 4 choices and there are at max L steps where L is the 
-        number of words in word to be searched
-        https://discuss.leetcode.com/topic/37162/what-is-the-time-complexity-for-the-dfs-solution/11
-        """
-        for i in xrange(len(board)):
-            for j in xrange(len(board[0])):
-                visited = set()
-                if self.dfs(board, i, j, word, 0, visited):
-                    return True
-        return False
                 
 if __name__ == '__main__':
     test_cases = [

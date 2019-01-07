@@ -11,7 +11,8 @@ The length of times will be in the range [1, 6000].
 All edges times[i] = (u, v, w) will have 1 <= u, v <= N and 1 <= w <= 100.
 
 https://cs.stackexchange.com/questions/33136/is-single-source-single-destination-shortest-path-problem-easier-than-its-single
-It turns out, this is one of the weird things about shortest paths, according to the-state of-the-art we know today, it seems to be the best algorithm for solving the A to B problem (given s, given t, go from s to t) is no easier than this problem (going from s to all vertices).
+It turns out, this is one of the weird things about shortest paths, according to the-state of-the-art we know today,
+it seems to be the best algorithm for solving the A to B problem (given s, given t, go from s to t) is no easier than this problem (going from s to all vertices).
 
 The best way we know how to solve going from A to B is to solve how to go from A to everywhere else.
 
