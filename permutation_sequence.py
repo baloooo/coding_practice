@@ -14,6 +14,21 @@ class Solution:
             #k = k - cur_index * factorial(n-i)  # Number of items we've counted already when including arr[cur_index]
         return res
 
+    def getPermutation_alternate(self, n, k):
+        """
+        possible simpler with factorial calculation
+        """
+        target = []
+        arr = range(1, n + 1)
+        k = k - 1 # B'coz we're calculating everything zero based, so ordering of k will also be zero based.
+        for i in xrange(1, n + 1):
+            fact = math.factorial(len(arr) - 1)
+            idx = k / fact
+            target.append(str(arr[idx]))
+            arr.remove(arr[idx])
+            k -= (idx * fact)
+        return ''.join(target)
+
     def permutation_sequence2(self, n, k):
         from math import factorial
         arr = range(1, n+1)

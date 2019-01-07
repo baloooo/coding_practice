@@ -49,8 +49,11 @@ class Solution(object):
         :rtype: ListNode
         Idea: Outside loop for traversing LL and inside loop for removing duplicates
         Take two pointers prev and head, incase of duplicates traverse ahead using head, keep
-        prev at last unique node position and jump it's next to first next unique node.
-        and then continue as it is with prev -- head pointers one step at a time.
+        prev at last unique node position now pre's next will be next probable unique node. Probable because
+        if head just jumped couple of nodes this new position of head may or may not be unique so the only thing
+        we do is link pre.next to cur probable unique head and start head while loop for checking again.
+        If the element is actually unique pre's next will still be head and at that point we can move pre one
+        step ahead as after head checking pre.next is still head so head is at unique position.
         """
         orig_head = pre = ListNode(float('inf'))
         pre.next = head

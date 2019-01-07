@@ -12,7 +12,7 @@ class Solution():
         cur_ele > target
 
     Time: O(log(m + n))
-    This solution can be used to solve search_matrix1 also.
+    This solution can be used to solve search_matrix1 and search_matrix2.
     '''
     def search_matrix(self, matrix, target):
         if matrix in [[[]], []] or not (matrix[0][0] <= target <= matrix[len(matrix)-1][len(matrix[0])-1]):
@@ -71,7 +71,10 @@ class Solution():
                 return True
         
         return False
-    
+
+############################################################################################################
+
+
     def searchMatrix(self, matrix, target):
         """
         :type matrix: List[List[int]]

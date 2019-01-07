@@ -58,7 +58,7 @@ class ListNode(object):
         		prev = cur
         		cur = next
         		count += 1
-        	# Stich prev head with reversed list's head.
+        	# Note: Stich prev head with reversed list's head.
         	cur_head.next, prev_grp_head.next = cur, prev
 			# Readjust pointers for next iteration
         	cur_head, prev_grp_head = cur, cur_head

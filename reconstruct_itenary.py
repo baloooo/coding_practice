@@ -23,6 +23,9 @@ class Solution():
         route.append(airport) # The placement of this line is the most important step in the algo.
 
     def findItinerary(self, tickets):
+        '''
+        Greedy DFS to find the Eulerian path.(Every edge is visited exactly once)
+        '''
         from Queue import PriorityQueue
         route = []
         graph = collections.defaultdict(PriorityQueue) # PQ due to lexicographically sorted requirement.

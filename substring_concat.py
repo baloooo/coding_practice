@@ -4,29 +4,42 @@ https://leetcode.com/problems/substring-with-concatenation-of-all-words/descript
 import collections
 
 
-def findSubstring2(self, s, words):
+def substring_concat_optimized(s, words):
         """
         More efficient, uses min string window technique.
+        The idea is to use a sliding window over "s"
+
         Todo: why start only goes until w_len and not untill s_len-w_len_total
-        Time: O(len(words)) * O(w_len)
-        Space: O(len(word_list)), same as basic algo
-        Todo: start only goes until w_len and not untill s_len-w_len_total, b'coz
+
+        ans for todo: start only goes until w_len and not untill s_len-w_len_total, b'coz
         w_len * (w_len_total/wlen), means the same thing.
         https://discuss.leetcode.com/topic/35676/accepted-java-solution-12ms-with-explanation
 
-        The idea is to use a sliding window over "s"
+        Time: O(len(words)) * O(w_len)
+        Space: O(len(word_list)), same as basic algo
 
+        Note: basic one is very clear but optimized logic is clear, but how the current bounds of loop are sufficent in
+        finding all combinations is a little dicy.
         """
         s_len, w_len = len(s), len(words[0])
         w_len_total = len(words) * w_len
         need_to_find = {}
         for word in words:
             need_to_find[word] = need_to_find.get(word, 0) + 1
-        have_found = {}
         res = []
+        '''
+        To see why the fact that all strings have the same length, implies that we have just M 
+        (being M the length of each target string) possible starting points draw the sequence.
+        You'll find that in each inside while loop we traverse the entire "s" with 0 to w_len_total windows, where
+        each jump is of w_len.
+        Now for level of search we can start from 1 to w_len_total window, with each jump same as prev. of w_len.
+        and this can continue up until w_len, after this we can be sure we have checked all possible windows in "s"
+        for w_len_total windows.
+        '''
         for start in range(w_len):
             have_found = {}
             end = start
+            # Go and try to get entire words window chars from start pointer.
             while start + w_len_total <= s_len:
                 cur_word = s[end:end+w_len]
                 end += w_len
@@ -35,6 +48,8 @@ def findSubstring2(self, s, words):
                     start = end
                 else:
                     have_found[cur_word] = have_found.get(cur_word, 0) + 1
+                    # squeeze in start until extra cur_word occurrence is not removed from start.
+                    # Ex: base_str, word_list = "wordgoodgoodgoodbestword", ["word","good","best","good"]
                     while have_found[cur_word] > need_to_find[cur_word]:
                         have_found[s[start: start+w_len]] -= 1
                         start += w_len
@@ -89,4 +104,4 @@ if __name__ == '__main__':
     # base_str = "aaaaaaaaaaaaaaaaaaa"
     # word_list = ["aaa", "aaa", "aaa", "aaa", "aaa"]
     base_str, word_list = "wordgoodgoodgoodbestword", ["word","good","best","good"]
-    print substring_concat_orig(base_str, word_list)
+    print substring_concat_optimized(base_str, word_list)

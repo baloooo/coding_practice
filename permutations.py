@@ -1,8 +1,14 @@
 '''
 Time: O(n!)
-Space: O(len(arr)) // In the form of stack frames.
+Space: O(len(arr)) // In the form of stack frames.+ space for perms and cur
 Duplicates: allowed
 Lexicographic sorted: Yes
+
+
+check for iterative versions:
+    https://leetcode.com/problems/permutations/discuss/18237/My-AC-simple-iterative-javapython-solution
+    and
+    https://leetcode.com/problems/permutations-ii/discuss/18602/9-line-python-solution-with-1-line-to-handle-duplication-beat-99-of-others-:-)
 '''
 class Solution(object):
     def dfs(self, arr, cur, used, perms):
@@ -34,7 +40,7 @@ class Solution(object):
         return perms
         
 
-class Solution(object):
+class Solution_old(object):
     def generate_permutations(self, arr, start):
         if start == len(arr):
             self.permutations.append(arr[::])
@@ -107,7 +113,9 @@ def permute_recursive_heap_naive(arr):
 
 if __name__ == '__main__':
     arr = [1, 2, 3, 4, 5, 6, 7]
-    for x in permute_recursive_best_naive(arr):
-        print x
+    #for x in permute_recursive_best_naive(arr):
+    #    print x
     # for x in permute_recursive_heap_naive(arr):
     #     print x
+    arr = [1, 1, 2]
+    print Solution().permute2(arr)

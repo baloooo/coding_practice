@@ -12,13 +12,27 @@ def selection_sort(arr):
 
     print ''.join(map(str, arr))
 
+
+class LargerNumKey(str):
+    def __lt__(x, y):
+        return x + y > y + x
+
+
+class Solution:
+    def largestNumber(self, nums):
+        '''
+        This seems like better implemntation than the one below, though algos are same.
+        '''
+        largest_num = ''.join(sorted(map(str, nums), key=LargerNumKey))
+        return '0' if largest_num[0] == '0' else largest_num
+
 def largest_number(arr):
     """
     Idea is to concat strings and compare their ASCIIs to check which is smaller and bigger
     O(nlogn)
     Proof why this works, instead of str(num1) + str(num2) they mathemetically append it(by
     multiplying and then adding it).
-    https://discuss.leetcode.com/topic/36004/mathematical-proof-of-correctness-of-sorting-method
+    https://leetcode.com/problems/largest-number/solution/
     """
     nums = [str(x) for x in arr]
     # https://docs.python.org/3/howto/sorting.html#the-old-way-using-the-cmp-parameter
