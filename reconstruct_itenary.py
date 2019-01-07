@@ -9,6 +9,9 @@ class Solution():
     '''
     As every path in the itineary needs to be included(exactly once w/ added requirement of correct order)
     this models the Eulerian path exercise.
+        https://www.geeksforgeeks.org/hierholzers-algorithm-directed-graph/
+    Also for checking whether Euler path/cycle exists:
+        https://math.stackexchange.com/questions/1871065/euler-path-for-directed-graph
     '''
 
     def visit(self, graph, route, airport):
@@ -17,9 +20,9 @@ class Solution():
         # on PQ get() call
         while not graph[airport].empty():
             self.visit(graph, route, graph[airport].get())
-        route.append(airport)
+        route.append(airport) # The placement of this line is the most important step in the algo.
 
-    def task(self, tickets):
+    def findItinerary(self, tickets):
         from Queue import PriorityQueue
         route = []
         graph = collections.defaultdict(PriorityQueue) # PQ due to lexicographically sorted requirement.
@@ -46,4 +49,4 @@ class TestSolution(object):
         ])
     def test_task(self, args, result):
         sol = Solution()
-        assert sol.task(args) == result
+        assert sol.findItinerary(args) == result
