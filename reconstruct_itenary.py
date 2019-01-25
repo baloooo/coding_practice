@@ -25,6 +25,7 @@ class Solution():
     def findItinerary(self, tickets):
         '''
         Greedy DFS to find the Eulerian path.(Every edge is visited exactly once)
+        Explanation of hierholzers algo: zhof https://www.youtube.com/watch?v=8MpoO2zA2l4
         '''
         from Queue import PriorityQueue
         route = []
