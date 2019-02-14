@@ -1,166 +1,113 @@
 '''
-You want to build a house on an empty land which reaches all buildings in the shortest amount of distance.
-You can only move up, down, left and right. You are given a 2D grid of values 0, 1 or 2, where:
+Suppose you have a random list of people standing in a queue. Each person is described by a pair of integers (h, k),
+where h is the height of the person and k is the number of people in front of this person who have a height greater
+than or equal to h. Write an algorithm to reconstruct the queue.
 
-Each 0 marks an empty land which you can pass by freely.
-Each 1 marks a building which you cannot pass through.
-Each 2 marks an obstacle which you cannot pass through.
-Example:
-
-Input: [[1,0,2,0,1],[0,0,0,0,0],[0,0,1,0,0]]
-
-1 - 0 - 2 - 0 - 1
-|   |   |   |   |
-0 - 0 - 0 - 0 - 0
-|   |   |   |   |
-0 - 0 - 1 - 0 - 0
-
-
-1 - 0 - 2 - 0 - 1
-|   |   |   |   |
-0 - 0 - 0 - 0 - 0
-|   |   |   |   |
-0 - 0 - 1 - 0 - 0
-
-Output: 7
-
-Explanation: Given three buildings at (0,0), (0,4), (2,2), and an obstacle at (0,2),
-             the point (1,2) is an ideal empty land to build a house, as the total
-             travel distance of 3+3+1=7 is minimal. So return 7.
 Note:
-There will be at least one building. If it is not possible to build such house according to the above rules, return -1.
+The number of people is less than 1,100.
+
+
+Example
+
+Input:
+[[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
+
+Output:
+[[5,0], [7,0], [5,2], [6,1], [4,4], [7,1]]
 '''
 
 import pytest
+import collections
+
+def cmp_persons(person1, person2):
+    '''
+    return
+        -1 if person1 < person2
+        0 if person1 == person2
+        +1 if person1 > person2
+    '''
+    if person1.height < person2.height:
+        return 1
+    elif person1.height > person2.height:
+        return -1
+    elif person1.height == person2.height and person1.in_front != person2.in_front:
+        if person1.in_front <= person2.in_front:
+            return 1
+        else:
+            return -1
+    else:
+        return 0
+
+class Person(object):
+    def __init__(self, height, in_front):
+        self.height = height
+        self.in_front = in_front
+
+class PersonNode(object):
+    def __init__(self, height, in_front):
+        self.height = height
+        self.in_front = in_front
+        self.left = None
+        self.right = None
 
 class Solution(object):
-    def shortestDistance2(self, city_map):
-        self.UNREACHABLE = float('inf')
-        city_distance_matrix = [[self.UNREACHABLE for _ in xrange(len(city_map[0]))] for _ in xrange(len(city_map))]
-        self.number_of_buildings = self.get_number_of_buildings(city_map)
-
-        for row in xrange(len(city_map)):
-            for col in xrange(len(city_map[0])):
-                if city_map[row][col] == 1:
-                    if not self.reach_all_other_buildings_bft(city_map, city_distance_matrix, row, col):
-                        return -1
-        shortest_distance = self.get_shortest_distance_to_all_other_buildings(city_distance_matrix)
-        return shortest_distance if shortest_distance != self.UNREACHABLE else -1
-
-    def get_number_of_buildings(self, city_map):
-        number_of_buildings = 0
-        for row in xrange(len(city_map)):
-            for col in xrange(len(city_map[0])):
-                if city_map[row][col] == 1:
-                    number_of_buildings += 1
-
-        return number_of_buildings
-
-    def reach_all_other_buildings_bft(self, city_map, city_distance_matrix, origin_row, origin_col):
-        from Queue import Queue
-        visited = set()
-        bfs_queue = Queue()
-        bfs_queue.put((origin_row, origin_col))
-        visited.add((origin_row, origin_col))
-        cur_hop = 0
-        adj_coordinates = [(1, 0), (-1, 0), (0, 1), (0, -1)]
-        visited_buildings = set() # since we always start from a building and try to visit all other cells of 0 and 1.
-        visited_buildings.add((origin_row, origin_col))
-        while not bfs_queue.empty():
-            cur_hop += 1
-            for _ in xrange(len(bfs_queue.queue)):
-                row, col = bfs_queue.get()
-                for d_row, d_col in adj_coordinates:
-                    adj_row, adj_col = row+d_row, col+d_col
-                    if not(0 <= adj_row < len(city_map) and 0 <= adj_col < len(city_map[0])):
-                        continue
-                    if city_map[adj_row][adj_col] == 0 and (adj_row, adj_col) not in visited:
-                        if city_distance_matrix[adj_row][adj_col] == self.UNREACHABLE:
-                            city_distance_matrix[adj_row][adj_col] = cur_hop
-                        else:
-                            city_distance_matrix[adj_row][adj_col] += cur_hop
-                        bfs_queue.put((adj_row, adj_col))
-                        visited.add((adj_row, adj_col))
-                    elif city_map[adj_row][adj_col] == 1:
-                        visited_buildings.add((adj_row, adj_col))
-        return len(visited_buildings) == self.number_of_buildings
-
-    def get_shortest_distance_to_all_other_buildings(self, city_distance_matrix):
-        closest_pos_to_all_buildings = self.UNREACHABLE
-        for row in xrange(len(city_distance_matrix)):
-            for col in xrange(len(city_distance_matrix[0])):
-                closest_pos_to_all_buildings = min(closest_pos_to_all_buildings, city_distance_matrix[row][col])
-
-        return closest_pos_to_all_buildings
-
-
-    def shortestDistance1(self, city_map):
+    def reconstructQueue(self, person_info_list):
         """
-        Naive:
-            For each building, traverse the matrix, use BFS to compute the shortest distance from each '0' to
-            this building. After we do this for all the buildings, we can get the sum of shortest distance
-            from every '0' to all reachable buildings. This value is stored
-            in 'distance[][]'. For example, if grid[2][2] == 0, distance[2][2] is the sum of shortest distance from this block to all reachable buildings.
-            Time complexity: O(number of 1)O(number of 0) ~ O(m^2n^2)
-
-        Optimized for less zeros:
-            we just run BFS at each '0', summing up the distance to each '1'.
-            Once we've hit every node, we can return this distance only if we were able to go to all the 1's on the board.
-            Time:  O(K*(mn)), where K is the number of zeroes in the city_map.
-            Notice that this strategy is more favorable when number of zeros are less in test cases.
-
-        Optimized for less ones:
-            Start from a building (a ONE), traverse the entire city map in BFT, and update the distance to each zero on the city map grid.
-                As a side note see that you can reach all other buildings, if not return immediately since every building should be reachable from every other for the
-                new position to reach all existing buildings.
-                Edge case: [[1, 1], [0, 1]] This should return -1 not 2 since [1][1] cannot reach the valid new house location.
-
-        :type grid: List[List[int]]
-        :rtype: int
+        :type people: List[List[int]]
+        :rtype: List[List[int]]
         """
-        num_of_target_houses = 0
-        for row in xrange(len(city_map)):
-            for col in xrange(len(city_map[0])):
-                if city_map[row][col] == 1:
-                    num_of_target_houses += 1
-        min_distance_to_all_targets = float('inf')
-        for row in xrange(len(city_map)):
-            for col in xrange(len(city_map[0])):
-                if city_map[row][col] == 0:
-                    min_distance_to_all_targets = min(min_distance_to_all_targets, self.bft_1(city_map, row, col, num_of_target_houses))
+        person_object_list = self.get_people_object_list(person_info_list)
+        root = PersonNode(person_info_list[0].height, person_info_list[1].in_front)
+        self.create_persons_height_tree(root, 1, person_object_list)
+        self.reconstructed_queue = []
+        self.inorder(root)
+        return self.reconstructed_queue
 
-        return min_distance_to_all_targets if min_distance_to_all_targets != float('inf') else -1
+    def inorder(self, root):
+        pass
 
-    def bft_1(self, city_map, origin_row, origin_col, num_of_target_houses):
-        visited = set()
-        visited.add((origin_row, origin_col))
-        visited_houses = 0
-        total_distance_travelled = 0
-        cur_distance_from_origin = 0
-        # Implement Level order bfs
-        cur_level = [(origin_row, origin_col)]
-        while cur_level:
-            next_level = []
-            for house_pos_x, house_pos_y in cur_level:
-                for adjacent_house_x, adjacent_house_y in [(house_pos_x+1, house_pos_y), (house_pos_x-1, house_pos_y), (house_pos_x, house_pos_y+1),(house_pos_x, house_pos_y-1)]:
-                    if (not (0 <= adjacent_house_x < len(city_map) and 0 <= adjacent_house_y < len(city_map[0])) or
-                            city_map[adjacent_house_x][adjacent_house_y] == 2 or
-                            (adjacent_house_x, adjacent_house_y) in visited):
-                        continue
-                    else:
-                        visited.add((adjacent_house_x, adjacent_house_y))
+    def create_persons_height_tree(self, root, person_object_list_idx, person_object_list):
+        if person_object_list_idx == len(person_object_list):
+            return
+        cur_person = person_object_list[person_object_list_idx]
+        if cur_person.in_front > root.in_front: # go left
+            if root.left is None:
+                cur_person_tree_node_obj = PersonNode(cur_person.height, cur_person.in_front)
+                root.left = cur_person_tree_node_obj
+            else:
+                self.create_persons_height_tree(root.left, person_object_list_idx, person_object_list)
+            root.in_front += 1
+        else: # go right
+            if root.right is None:
+                cur_person_tree_node_obj = PersonNode(cur_person.height, cur_person.in_front)
+                root.right = cur_person_tree_node_obj
+            else:
+                self.create_persons_height_tree(root.right, person_object_list_idx, person_object_list)
 
-                    if city_map[adjacent_house_x][adjacent_house_y] == 1:
-                        total_distance_travelled += cur_distance_from_origin + 1
-                        visited_houses += 1
-                    else:
-                        next_level.append((adjacent_house_x, adjacent_house_y))
 
-            cur_level = next_level
-            cur_distance_from_origin += 1
+    def get_people_object_list(self, people_info_list):
+        persons_list = []
+        for height, in_front in people_info_list:
+            person = Person(height, in_front)
+            persons_list.append(person)
+        # Add sorting on second attribute also.
+        persons_list.sort(cmp=cmp_persons)
+        return persons_list
 
-        return total_distance_travelled if visited_houses == num_of_target_houses else float('inf')
+if __name__ == '__main__':
+    input_str, expected_output = ["ab", "ba"], 1
+    input_str, expected_output = ["abc", "bca"], 2
+    input_str, expected_output = ["aabc", "abca"], 2
+    input_str, expected_output = ["aaaabbbbccccddddeeee","abcdeabcdeabcdeabcde"], 8
+    res = Solution().test_code(*input_str)
+    print "Input {0}".format(input_str)
+    print "Output   {0}".format(res)
+    if not res == expected_output:
+        print "expected {0}".format(expected_output)
 
+
+
+'''
 class TestShortestDistance(object):
     def setUp(self):
         #self.test_object = Solution()
@@ -181,11 +128,4 @@ class TestShortestDistance(object):
     def tearDown(self):
         pass
 
-'''
-if __name__ == '__main__':
-    city_map, expected_distance = [[1]], -1
-    city_map, expected_distance = [[1, 0]], 1
-    city_map, expected_distance = [[1, 0, 2, 0, 1], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0]], 7
-
-    print Solution().shortestDistance2(city_map)
 '''

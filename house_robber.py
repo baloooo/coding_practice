@@ -4,6 +4,57 @@
 
 
 class Solution:
+    def get_max_robbery_amount(self, house_list):
+        '''
+        '''
+        self.house_list = house_list
+        # return self.rob_houses_w_bruteforce(0)
+        return self.rob_houses_w_dp()
+
+    def rob_houses_w_dp_circular(self):
+        '''
+        Time: O(n)
+        Space: O(n)
+        '''
+        dp = [0] * len(self.house_list)
+        for house_index in xrange(len(self.house_list) - 1, -1, -1):
+            profit_after_robbing_cur_house = self.house_list[house_index] + (
+                dp[house_index + 2] if house_index + 2 < len(self.house_list) else 0)
+            profit_after_not_robbing_cur_house = dp[house_index + 1] if house_index + 1 < len(
+                self.house_list) else 0
+            dp[house_index] = max(profit_after_robbing_cur_house, profit_after_not_robbing_cur_house)
+        return dp[0]
+
+    def rob_houses_w_dp(self):
+        '''
+        Time: O(n)
+        Space: O(n)
+        '''
+        dp = [0] * len(self.house_list)
+        for house_index in xrange(len(self.house_list) - 1, -1, -1):
+            profit_after_robbing_cur_house = self.house_list[house_index] + (
+                dp[house_index + 2] if house_index + 2 < len(self.house_list) else 0)
+            profit_after_not_robbing_cur_house = dp[house_index + 1] if house_index + 1 < len(
+                self.house_list) else 0
+            dp[house_index] = max(profit_after_robbing_cur_house, profit_after_not_robbing_cur_house)
+        return dp[0]
+
+    def rob_houses_w_bruteforce(self, house_start_index):
+        '''
+        Getting profits from right to left
+        O(N^2) where N is the len(self.house_list)
+        '''
+        if house_start_index >= len(self.house_list):
+            return 0
+        max_profit = 0
+        for house_index in xrange(house_start_index, len(self.house_list)):
+            # profit when cur house is robbed
+            max_profit = max(
+                max_profit,
+                self.house_list[house_index] + self.rob_houses_w_bruteforce(house_index + 2),
+                self.rob_houses_w_bruteforce(house_index + 1)
+            )
+        return max_profit
 
     def rob(self, arr):
         """
