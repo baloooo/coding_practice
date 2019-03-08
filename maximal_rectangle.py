@@ -5,6 +5,18 @@ class Solution(object):
         :rtype: int
         Time : O(mn) For each row, height arr is calculated(O(n)) and then processed O(n) so O(m) * O(2n) = O(mn)
         Idea: https://discuss.leetcode.com/topic/27844/ac-python-dp-solutioin-120ms-based-on-largest-rectangle-in-histogram
+        [
+  ["1","0","1","0","0"],
+  ["1","0","1","1","1"],
+  ["1","1","1","1","1"],
+  ["1","0","0","1","0"]
+]
+[
+  ["1","0","1","0","0"],
+  ["1","0","1","2","3"],
+  ["1","2","3","4","5"],
+  ["4","0","0","1","0"]
+]
         """
         heights = [0] * (len(matrix[0]) + 1) # appends a zero so as to allow stack to be emptied
         max_area = 0
@@ -31,24 +43,23 @@ class Solution(object):
         return max_area
 
     def maximal_square(self, matrix):
-	'''
-	Same as above, the only difference being area will be calculated based on min(height, width)
-	'''
-	if not matrix: return 0
-        heights = [0] * (len(matrix[0]) + 1) # appends a zero so as to allow stack to be emptied
-        max_area = 0
-        for row in matrix:
-            # don't use length of height array here
-            for i in xrange(len(matrix[0])):
-                # cumulative height for column pillars so to speak.
-                heights[i] = heights[i] + 1 if row[i] == '1' else 0
-            stack = []
-            for i in xrange(len(heights)):
-                while stack and heights[i] < heights[stack[-1]]:
-                    h = heights[stack.pop()]
-                    w = i - stack[-1] - 1 if stack else i
-                    sq_len = min(h, w)
-                    max_area = max(max_area, sq_len*sq_len)
-                stack.append(i)
-        
-        return max_area
+        '''
+        Same as above, the only difference being area will be calculated based on min(height, width)
+        '''
+        if not matrix: return 0
+            heights = [0] * (len(matrix[0]) + 1) # appends a zero so as to allow stack to be emptied
+            max_area = 0
+            for row in matrix:
+                # don't use length of height array here
+                for i in xrange(len(matrix[0])):
+                    # cumulative height for column pillars so to speak.
+                    heights[i] = heights[i] + 1 if row[i] == '1' else 0
+                stack = []
+                for i in xrange(len(heights)):
+                    while stack and heights[i] < heights[stack[-1]]:
+                        h = heights[stack.pop()]
+                        w = i - stack[-1] - 1 if stack else i
+                        sq_len = min(h, w)
+                        max_area = max(max_area, sq_len*sq_len)
+                    stack.append(i)
+
