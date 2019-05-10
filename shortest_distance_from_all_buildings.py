@@ -112,3 +112,117 @@ if __name__ == '__main__':
 
     print Solution().shortestDistance(city_map)
 '''
+# Latest solution where logic is called on the basis if number of ones are less or number of zeroes.
+# Time complexity is same for both logics but time can vary a lot on big test cases with disproportianate zeroes over ones or vice versa
+
+class Solution(object):
+    def shortestDistance(self, matrix):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        return Sol().test_bf_2(matrix)
+
+class Sol(object):
+    def get_min_distance_house_location(self, matrix):
+        min_distance = float('inf')
+        for row in xrange(len(matrix)):
+            for col in xrange(len(matrix[0])):
+                if matrix[row][col] == 0:
+                    min_distance = min(min_distance, self.get_distance_to_all_ones(matrix, row, col))
+
+        return min_distance
+
+
+    def get_distance_to_all_ones(self, matrix, row, col):
+        cur_bfs_q = []
+        cur_bfs_q.append((row, col))
+        cur_distance = 0
+        distance = 0
+        no_of_houses_visited = 0
+        visited = set()
+        visited.add((row, col))
+        while cur_bfs_q:
+            next_bfs_queue = []
+            for row, col in cur_bfs_q:
+                for adj_row, adj_col in [(row+1, col), (row-1, col), (row, col+1), (row, col-1)]:
+                    if 0 <= adj_row < len(matrix) and 0 <= adj_col < len(matrix[0]) and (adj_row, adj_col) not in visited:
+                        if matrix[adj_row][adj_col] == 1:
+                            distance += cur_distance + 1
+                            no_of_houses_visited += 1
+                        elif matrix[adj_row][adj_col] == 0:
+                            next_bfs_queue.append((adj_row, adj_col))
+
+                        visited.add((adj_row, adj_col))
+            cur_bfs_q = next_bfs_queue
+            cur_distance += 1
+        return distance if no_of_houses_visited == self.number_of_ones else float('inf')
+
+    def test_bf_2(self, matrix):
+        """
+        Time: O(o * (m*n)), o being number of ones
+        start from ones and try to reach all other zeroes and mark the distance it travelled to reach it, at the same time
+        keep recording the number of ones visited. If at any point we cannot reach all ones quit and return -1
+        """
+        self.distance_matrix = [[0 for _ in xrange(len(matrix[0]))] for _ in xrange(len(matrix))]
+        self.number_of_ones = 0
+        self.number_of_zeroes = 0
+
+        # get total no of ones and zeroes, to decide which algo to use and also to check if all ones are reachable from a zero.
+        for row in xrange(len(matrix)):
+            for col in xrange(len(matrix[0])):
+                if matrix[row][col] == 1:
+                    self.number_of_ones += 1
+                elif matrix[row][col] == 0:
+                    self.number_of_zeroes += 1
+        if self.number_of_ones > self.number_of_zeroes:
+            min_distance = self.get_min_distance_house_location(matrix)
+            return min_distance if min_distance != float('inf') else -1
+        else:
+            return self.get_min_distance_house_location2(matrix)
+
+    def get_min_distance_house_location2(self, orig_matrix):
+        distance_matrix = [[0 for _ in xrange(len(orig_matrix[0]))] for _ in xrange(len(orig_matrix))]
+        houses_reachable_from_loc_matrix = [[0 for _ in xrange(len(orig_matrix[0]))] for _ in xrange(len(orig_matrix))]
+        for row in xrange(len(orig_matrix)):
+            for col in xrange(len(orig_matrix[0])):
+                if orig_matrix[row][col] == 1:
+                    if self.populate_distance_matrix_for2(row, col, orig_matrix, distance_matrix, houses_reachable_from_loc_matrix) == -1:
+                        return -1
+
+        return self.get_min_distance2(distance_matrix, houses_reachable_from_loc_matrix)
+
+    def get_min_distance2(self, distance_matrix, houses_reachable_from_loc_matrix):
+        min_distance = float('inf')
+        for row in xrange(len(distance_matrix)):
+            for col in xrange(len(distance_matrix[0])):
+                # Ignores position with obstacles( represented by 2 in exercise)
+                if distance_matrix[row][col] != 0 and houses_reachable_from_loc_matrix[row][col] == self.number_of_ones:
+                    min_distance = min(min_distance, distance_matrix[row][col])
+
+        return min_distance if min_distance != float('inf') else -1
+
+    def populate_distance_matrix_for2(self, row, col, orig_matrix, distance_matrix, houses_reachable_from_loc_matrix):
+        cur_bfs_q = []
+        cur_bfs_q.append((row, col))
+        cur_distance = 0
+        distance = 0
+        no_of_houses_visited = 0
+        visited = set()
+        visited.add((row, col))
+        while cur_bfs_q:
+            next_bfs_queue = []
+            for row, col in cur_bfs_q:
+                for adj_row, adj_col in [(row+1, col), (row-1, col), (row, col+1), (row, col-1)]:
+                    if 0 <= adj_row < len(orig_matrix) and 0 <= adj_col < len(orig_matrix[0]) and (adj_row, adj_col) not in visited:
+                        if orig_matrix[adj_row][adj_col] == 1:
+                            no_of_houses_visited += 1
+                        elif orig_matrix[adj_row][adj_col] == 0:
+                            distance_matrix[adj_row][adj_col] += (cur_distance + 1)
+                            next_bfs_queue.append((adj_row, adj_col))
+                            houses_reachable_from_loc_matrix[adj_row][adj_col] += 1
+
+                        visited.add((adj_row, adj_col))
+            cur_bfs_q = next_bfs_queue
+            cur_distance += 1
+        return distance if (no_of_houses_visited + 1) == self.number_of_ones else -1

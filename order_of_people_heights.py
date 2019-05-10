@@ -33,8 +33,38 @@ class Solution:
         This
          has a O(nlogn) average time complexity
         algorithm using BST
+        Also as indicated in one of the comments, using interval tree may produce an O(nlogn) sol
+        https://stackoverflow.com/questions/19174796/puzzle-find-the-order-of-n-persons-standing-in-a-line-based-on-their-heights
+        Using merge sort:
+        https://leetcode.com/problems/queue-reconstruction-by-height/discuss/143403/O(nlogn)-modified-merge-sort-solution-with-detailed-explanation
+        Binary tree:
+        https://leetcode.com/problems/queue-reconstruction-by-height/discuss/89455/Worse-case-O(n2)-and-O(nlogn)-in-average-using-binary-tree-travel
         '''
         pass
+
+    def reconstructQueue(self, people):
+        '''
+        same as below, but with a better custom sort function
+        '''
+        import functools
+        people.sort(key=functools.cmp_to_key(self.custom_sort))
+        final_standing = []
+        for person in people:
+            final_standing.insert(person[1], person)
+
+        return final_standing
+
+    def custom_sort(self, first_person, second_person):
+        '''
+        custom sorts person tuple by:
+            Decreasing height, if height is equal sort on increasing K
+        '''
+        if first_person[0] == second_person[0]:
+            # sort on K in increasing order
+            return first_person[1] - second_person[1]
+        else:
+            # sort on height in decreasing order
+            return second_person[0] - first_person[0]
 
     def reconstructQueue(self, people):
         """

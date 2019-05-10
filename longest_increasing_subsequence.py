@@ -25,29 +25,29 @@ class Solution(object):
     def lengthOfLIS_dp(self, nums):
         '''
         Idea: check all subsequences similar to checking all subarrays.
-	for each j in i (subarray scan) get max len of subsequence seen before, which has its num
-	less than current num(as we want to attach our num in front)
+        for each j in i (subarray scan) get max len of subsequence seen before, which has its num
+        less than current num(as we want to attach our num in front)
 
-        Time: O(n^2) as loops are similar to finding all subarrays
-        Space: O(n)
-	
-	Todo: There is a O(nlogn) solution using B.search too.
-        '''
-	if len(nums) == 0: return 0
+            Time: O(n^2) as loops are similar to finding all subarrays
+            Space: O(n)
+
+        Todo: There is a O(nlogn) solution using B.search too.
+            '''
+        if len(nums) == 0: return 0
         dp = [0]*len(nums)
         dp[0] = 1
-        
+
         max_len = 1
-        
+
         for i in xrange(1, len(nums)):
             max_len_for_i = 0
             for j in xrange(0, i):
                 if nums[j] < nums[i]:
                     max_len_for_i = max(max_len_for_i, dp[j])
-            
+
             dp[i] = max_len_for_i + 1
             max_len = max(max_len, dp[i])
-        
+
         return max_len
 
 

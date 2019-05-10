@@ -7,9 +7,11 @@ class Solution:
         solution is more intutive than other solutions. On top of that this logic is very similar to
         the one we use in word_break2 so that's also a plus point.
         Ideal test case to appreciate this:
-            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab"
-            ["a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa"]
+            "aaaaab"
+            ["a","aa","aaa","aaaa","aaaaa"]
             Notice the last 'b' in target, which will force us to try combinations we might have already tried.
+
+        Logic is also very similar to min_jumps exercise, only here we're interested in reaching the end and not with necessarily with min jumps.
         '''
         if not target:
             return True
@@ -35,6 +37,19 @@ class Solution:
 #################################################################################################
 
 	def dfs(self, target_str, len_to_word_set_map, start):
+        '''
+        http://www.geeksforgeeks.org/dynamic-programming-set-32-word-break-problem/
+        The loose time complexity is O(n^n) but when we take examples such as:
+            word_dict = [a, b, c, ab, bc, abc} for target string = abcd.
+        we come to know that actual time complexity is much stricter to be 2^n.
+
+        https://stackoverflow.com/questions/31370674/time-complexity-of-the-word-break-recursive-solution
+        time: O(2^n)
+        Since in each step we're passing down target with one less char to parse in worst case.
+        T(n) = T(n-1) + T(n-2) + T(n-3) + ... which is equal to 2^n.
+        Just for perspective:
+            T(n) = T(n-1) + T(n-2) is rec. relation for fibonacci which has 2^n time complexity.
+        '''
         if start >= len(target_str):
             return True
 
@@ -50,6 +65,7 @@ class Solution:
 		TLE
 		More inline to wordBreak2 (recursion solution)
 		This one also has TC: 2^n as it suffers from the same problem of doing repeated sub-problems again and again.
+		i.e in worst case word dict can have strings of all lengths like the test case listed in dp solution
         '''
         import collections
         if len(target_str) == 0 or len(wordDict) == 0:
@@ -75,6 +91,10 @@ class Solution:
     def word_break_1_recursion(self, target, word_list):
         '''
         http://www.geeksforgeeks.org/dynamic-programming-set-32-word-break-problem/
+        The loose time complexity is O(n^n) but when we take examples such as:
+            word_dict = [a, b, c, ab, bc, abc} for target string = abcd.
+        we come to know that actual time complexity is much stricter to be 2^n.
+
         https://stackoverflow.com/questions/31370674/time-complexity-of-the-word-break-recursive-solution
         time: O(2^n)
         Since in each step we're passing down target with one less char to parse in worst case.

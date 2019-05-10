@@ -42,6 +42,26 @@ We pick the smallest one which is 2 so DP[13] = 2. Hope it helps.
 
 class Solution(object):
     def numSquares(self, n):
+		'''
+		Idea is to iterate over nums up untill n and for each num check if the curent num is a perfect square or not.
+		If it's a perfect square we only need that num to generate current num but if its not we need a combinations
+		of previous perfect squares to get current num.
+		Time: O(n*(m^2)) where m is the perfect squares up untill n, and n is the the sum till we want to calculate the number of squares.
+		'''
+		dp = [0] + [0]*(n)
+        perfect_squares = []
+        for num in xrange(1, len(dp)):
+            if math.sqrt(num) - int(math.sqrt(num)):  # if num is not a perfect square
+                min_coins_req = float('inf')
+                for perfect_square in perfect_squares:
+                    min_coins_req = min(min_coins_req, dp[num-perfect_square])
+                dp[num] = 1 + min_coins_req
+            else:
+                perfect_squares.append(num)
+                dp[num] = 1
+        return dp[n]
+
+    def numSquares(self, n):
         """
         :type n: int
         :rtype: int
