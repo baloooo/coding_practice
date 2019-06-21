@@ -21,7 +21,6 @@ class Solution:
         if text exists or not. '''
         if not pattern:
             return not text
-        import ipdb; ipdb.set_trace()
         # first_match = bool(text) and pattern[0] in [text[0], '.']
         first_match = text and pattern[0] in [text[0], '.']
         if len(pattern) >= 2 and pattern[1] == '*':
@@ -29,6 +28,23 @@ class Solution:
 		    (first_match and self.is_match_bruteforce(text[1:], pattern))) # Take one instance of pattern[0]
         else:
             return first_match and self.is_match_bruteforce(text[1:], pattern[1:])
+
+    def is_match(self, text, text_ptr, pattern, pattern_idx):
+        '''
+        Bruteforce is_match with indices rather than copies of text and pattern
+        '''
+        # Base condition
+        if pattern_idx >= len(pattern):
+            return text_ptr >= len(text)
+
+        cur_char_match = text_ptr < len(text) and pattern[pattern_idx] in [text[text_ptr], '.']
+
+        if pattern_idx + 1 < len(pattern) and pattern[pattern_idx+1] == '*':
+                # take current ele with * occurence or leave it.
+                return ((cur_char_match and self.is_match(text, text_ptr + 1, pattern, pattern_idx)) or
+                            self.is_match(text, text_ptr, pattern, pattern_idx + 2))
+        else:
+            return cur_char_match and self.is_match(text, text_ptr + 1, pattern, pattern_idx + 1)
 
     def is_match_dp(self, text, pattern):
         '''
