@@ -72,3 +72,13 @@ class Solution(object):
                         temp.append(res[j]+c)
             res[:] = temp
         return res
+
+
+    def letterCombinations(self, digits):
+        letters = ['', '', 'abc', 'def', 'ghi', 'jkl', 'mno', 'pqrs', 'tuv', 'wxyz']
+        res = ['']
+        for digit in digits:
+            res = [prefix + suffix for prefix in res for suffix in letters[digit]]
+
+        return res
+
